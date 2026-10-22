@@ -1,4 +1,4 @@
-# Changelog: EH3D-DOCS
+# Changelog
 
 All notable changes to this project are documented here.
 
