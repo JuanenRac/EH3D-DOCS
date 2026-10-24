@@ -33,6 +33,20 @@
 | Technologie-Stack | Markdown / Python 3.10+ (die Prüfungen) |
 | Auf echter Hardware | Nicht zutreffend: Dokumentation |
 
+## 🚦 Projektstatus
+
+Jede Zeile ist ein Teil dieses Repositorys, und die Ampel sagt, wie weit er heute ist. Sie beruht auf dem, was das Repository zeigen kann (Tests, Builds, Läufe), nicht auf dem, was geplant ist.
+
+🟢 Fertig und überprüft · 🟡 Funktioniert, mit bekannten Grenzen · 🟠 Teilweise fertig oder noch nicht überprüft · 🔴 Nicht gemacht oder funktioniert nicht
+
+| Bereich | Stand | Was das hier bedeutet |
+|---|---|---|
+| Repository-Prüfungen | 🟢 | Die Repository-Prüfung und die Prüfung der Links zwischen den Dokumenten laufen in der CI und bestehen. |
+| Tests | 🟠 | Es gibt keine eigene Testsuite: die einzigen automatischen Prüfungen sind diese beiden Skripte. |
+| Karte und Fähigkeitsmatrix | 🟠 | Die Karte, die Architekturnotizen und die Fähigkeitsmatrix decken nur die ersten drei veröffentlichten Repositorys ab; EH3D-DRILLPRO, EH3D-ROUTEPRO, EH3D-SERVER und EH3D-NODE-BUNGARD fehlen noch. |
+| Echte Hardware | 🟢 | Nicht zutreffend: Dokumentation, nichts hier läuft auf Hardware. |
+| Dokumentation | 🟢 | README in acht Sprachen, bei jeder Änderung mit dem Manifest und dem Änderungsprotokoll abgeglichen. |
+
 ## 🎯 Überblick
 
 * **Die Karte der Suite:** jedes Repository, wofür es da ist und ob es veröffentlicht oder nur geplant ist.

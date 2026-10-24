@@ -33,6 +33,20 @@
 | Stack tecnologico | Markdown / Python 3.10+ (i controlli) |
 | Su hardware reale | Non applicabile: documentazione |
 
+## 🚦 Stato del progetto
+
+Ogni riga è una parte di questo repository e il semaforo dice a che punto è oggi. È scritta in base a ciò che il repository può mostrare (test, compilazioni, esecuzioni), non a ciò che è previsto.
+
+🟢 Fatto e verificato · 🟡 Funziona, con limiti noti · 🟠 Fatto a metà o non ancora verificato · 🔴 Non fatto o non funzionante
+
+| Area | Stato | Cosa significa qui |
+|---|---|---|
+| Controlli del repository | 🟢 | Il controllo del repository e quello dei collegamenti tra i documenti girano in CI e passano. |
+| Test | 🟠 | Non ha una suite di test propria: gli unici controlli automatici sono quei due script. |
+| Mappa e matrice delle capacità | 🟠 | La mappa, le note di architettura e la matrice delle capacità coprono solo i primi tre repository pubblicati; EH3D-DRILLPRO, EH3D-ROUTEPRO, EH3D-SERVER ed EH3D-NODE-BUNGARD non ci sono ancora. |
+| Hardware reale | 🟢 | Non applicabile: è documentazione, nulla qui gira su hardware. |
+| Documentazione | 🟢 | README in otto lingue, verificato con il manifesto e il registro delle modifiche a ogni modifica. |
+
 ## 🎯 Panoramica
 
 * **La mappa della suite:** ogni repository, a cosa serve e se è pubblicato o solo pianificato.

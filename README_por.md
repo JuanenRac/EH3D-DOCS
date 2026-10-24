@@ -33,6 +33,20 @@
 | Pilha tecnológica | Markdown / Python 3.10+ (as verificações) |
 | Em hardware real | Não aplicável: documentação |
 
+## 🚦 Estado do projeto
+
+Cada linha é uma parte deste repositório e a luz diz até onde chega hoje. É escrita com o que o repositório consegue demonstrar (testes, compilações, execuções), não com o que está previsto.
+
+🟢 Feito e verificado · 🟡 Funciona, com limites conhecidos · 🟠 Feito a meio ou ainda por verificar · 🔴 Por fazer ou a não funcionar
+
+| Área | Estado | O que significa aqui |
+|---|---|---|
+| Verificações do repositório | 🟢 | A verificação do repositório e a das ligações entre documentos correm no CI e passam. |
+| Testes | 🟠 | Não tem um conjunto de testes próprio: as únicas verificações automáticas são esses dois scripts. |
+| Mapa e matriz de capacidades | 🟠 | O mapa, as notas de arquitetura e a matriz de capacidades só cobrem os três primeiros repositórios publicados; EH3D-DRILLPRO, EH3D-ROUTEPRO, EH3D-SERVER e EH3D-NODE-BUNGARD ainda não constam. |
+| Hardware real | 🟢 | Não se aplica: é documentação, nada aqui corre em hardware. |
+| Documentação | 🟢 | README em oito idiomas, verificado contra o manifesto e o registo de alterações a cada alteração. |
+
 ## 🎯 Visão geral
 
 * **O mapa da suite:** cada repositório, para que serve e se está publicado ou apenas planeado.

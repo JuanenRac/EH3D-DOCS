@@ -33,6 +33,20 @@
 | Pile technique | Markdown / Python 3.10+ (les vérifications) |
 | Sur matériel réel | Sans objet : documentation |
 
+## 🚦 État du projet
+
+Chaque ligne est une partie de ce dépôt et le feu dit où elle en est aujourd'hui. Elle est écrite d'après ce que le dépôt peut montrer (tests, compilations, exécutions), pas d'après ce qui est prévu.
+
+🟢 Fait et vérifié · 🟡 Fonctionne, avec des limites connues · 🟠 À moitié fait ou pas encore vérifié · 🔴 Pas fait ou ne fonctionne pas
+
+| Domaine | État | Ce que cela veut dire ici |
+|---|---|---|
+| Vérifications du dépôt | 🟢 | La vérification du dépôt et celle des liens entre les documents s'exécutent en CI et réussissent. |
+| Tests | 🟠 | Il n'a pas de suite de tests propre : les seules vérifications automatiques sont ces deux scripts. |
+| Carte et matrice des capacités | 🟠 | La carte, les notes d'architecture et la matrice des capacités ne couvrent que les trois premiers dépôts publiés ; EH3D-DRILLPRO, EH3D-ROUTEPRO, EH3D-SERVER et EH3D-NODE-BUNGARD n'y figurent pas encore. |
+| Matériel réel | 🟢 | Sans objet : de la documentation, rien ici ne tourne sur du matériel. |
+| Documentation | 🟢 | README en huit langues, vérifié par rapport au manifeste et au journal des modifications à chaque changement. |
+
 ## 🎯 Vue d'ensemble
 
 * **La carte de la suite :** chaque dépôt, à quoi il sert et s'il est publié ou seulement prévu.

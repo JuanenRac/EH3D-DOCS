@@ -33,6 +33,20 @@
 | Stack | Markdown / Python 3.10+ (the checks) |
 | On real hardware | Not applicable: documentation |
 
+## 🚦 Project status
+
+Each line is one part of this repository and the light says how far it is today. It is written from what the repository can show (tests, builds, runs), not from what is planned.
+
+🟢 Done and verified · 🟡 Works, with known limits · 🟠 Partly done or not verified yet · 🔴 Not done or not working
+
+| Area | State | What it means here |
+|---|---|---|
+| Repository checks | 🟢 | The repository check and the check of the links between the documents run in CI and pass. |
+| Tests | 🟠 | There is no test suite of its own: the only automated checks are those two scripts. |
+| Map and capability matrix | 🟠 | The map, the architecture notes and the capability matrix only cover the first three published repositories; EH3D-DRILLPRO, EH3D-ROUTEPRO, EH3D-SERVER and EH3D-NODE-BUNGARD are not in them yet. |
+| Real hardware | 🟢 | Not applicable: documentation, nothing here runs on hardware. |
+| Documentation | 🟢 | README in eight languages, checked against the manifest and the changelog on every change. |
+
 ## 🎯 Overview
 
 * **The map of the suite:** every repository, what it is for, and whether it is published or only planned.
