@@ -22,3 +22,5 @@ jobs:
         run: python -I tools/ci_validate.py
       - name: Links between the documents
         run: python -I tools/check_links.py
+      - name: Tests of the repository checks
+        run: python -I -m unittest discover -s tools -p "test_*.py"
