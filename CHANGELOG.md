@@ -4,6 +4,8 @@ All notable changes to this project are documented here.
 
 ## [Unreleased]
 
+- The suite map lists EH3D-DRILLPRO and EH3D-ROUTEPRO as published programs (they were marked as planned).
+
 - **The layout of the README is checked in the CI:** the validator runs `tools/universal_readme_check.py` and lists, as a warning, what differs from the universal layout of the README.
 
 ## [0.0.1] - The hub of the documentation

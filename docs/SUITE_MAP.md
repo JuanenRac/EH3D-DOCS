@@ -11,8 +11,8 @@ What each repository of the EH3D Fabrication Suite is for, and whether it exists
 | EH3D-SUITE-LAUNCHER | Desktop program | Planned | The central window: workspaces, projects and the other programs. |
 | EH3D-TOOL-MANAGER | Desktop program | Planned | The inventory of drill bits, V-bits and routers. |
 | EH3D-ISOCAM | CAM program | Planned | Copper isolation toolpaths from Gerber layers. |
-| EH3D-DRILLPRO | CAM program | Planned | Drilling from Excellon files. |
-| EH3D-ROUTEPRO | CAM program | Planned | Board outline milling and pockets. |
+| [EH3D-DRILLPRO](https://github.com/JuanenRac/EH3D-DRILLPRO) | Desktop program | Published | The classic screens of the Bungard CCD drilling software in Rust: Excellon files, the manual and the basic automatic tool change, on a simulator or a real machine. |
+| [EH3D-ROUTEPRO](https://github.com/JuanenRac/EH3D-ROUTEPRO) | Desktop program | Published | The classic screens of the Bungard CCD routing software in Rust: HP-GL files, multi-pass paths, on a simulator or a real machine. |
 | EH3D-LASER-CAM | CAM program | Planned | Job preparation for laser cutting and engraving. |
 | EH3D-GERBERVIEWER | Viewer | Planned | A light viewer for Gerber and drill files. |
 | EH3D-STENCILCAM | CAM program | Planned | Solder paste stencils from the paste layers. |
