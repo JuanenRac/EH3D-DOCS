@@ -13,6 +13,9 @@ What each repository of the EH3D Fabrication Suite is for, and whether it exists
 | EH3D-ISOCAM | CAM program | Planned | Copper isolation toolpaths from Gerber layers. |
 | [EH3D-DRILLPRO](https://github.com/JuanenRac/EH3D-DRILLPRO) | Desktop program | Published | The classic screens of the Bungard CCD drilling software in Rust: Excellon files, the manual and the basic automatic tool change, on a simulator or a real machine. |
 | [EH3D-ROUTEPRO](https://github.com/JuanenRac/EH3D-ROUTEPRO) | Desktop program | Published | The classic screens of the Bungard CCD routing software in Rust: HP-GL files, multi-pass paths, on a simulator or a real machine. |
+| [EH3D-SERVER](https://github.com/JuanenRac/EH3D-SERVER) | Service | Published | The center of the programs: it takes jobs from EH3D-DRILLPRO and EH3D-ROUTEPRO, plans them with their libraries, runs them on the machine through its node and tells every client how they go; tested against a simulator. |
+| [EH3D-NODE-BUNGARD](https://github.com/JuanenRac/EH3D-NODE-BUNGARD) | ESP32-S3 node | Published | Firmware that puts the RS-232 port of a Bungard CCD control unit on the network, with the machine's lamps, a spindle output and a web panel; the rules are tested on a computer and nothing has been flashed to a board. |
+| [ELECTRO-HOBBY-3D-UPDATER](https://github.com/JuanenRac/ELECTRO-HOBBY-3D-UPDATER) | Tool | Published | A thin dispatcher above the updaters of the four ecosystems, EH3D-UPDATER among them. |
 | EH3D-LASER-CAM | CAM program | Planned | Job preparation for laser cutting and engraving. |
 | EH3D-GERBERVIEWER | Viewer | Planned | A light viewer for Gerber and drill files. |
 | EH3D-STENCILCAM | CAM program | Planned | Solder paste stencils from the paste layers. |

@@ -1,0 +1,128 @@
+{
+  "repo": "EH3D-DOCS",
+  "ecosystem": "eh3d",
+  "tagline": "The map, the architecture and the honest status of the suite, with two small checks.",
+  "description": "EH3D-DOCS holds Markdown documents: the map of the suite, its architecture notes, the capability matrix that separates what has been tested on a computer from what has run on a machine, and the conventions of the repositories. Two Python scripts keep it clean: a repository check (manifest, versions, changelog, the eight READMEs, words that must not appear) and a check of the links between the documents. It runs nothing on a machine.",
+  "columns": [
+    "WHO READS IT",
+    "THIS REPOSITORY",
+    "WHAT IT DESCRIBES"
+  ],
+  "nodes": [
+    {
+      "id": "reader",
+      "column": 0,
+      "level": "external",
+      "title": "A reader",
+      "lines": [
+        "someone who wants to know what",
+        "the suite is and what runs today"
+      ]
+    },
+    {
+      "id": "authors",
+      "column": 0,
+      "level": "external",
+      "title": "The other repositories",
+      "lines": [
+        "each describes itself in its",
+        "README; this one says how",
+        "they fit together"
+      ]
+    },
+    {
+      "id": "map",
+      "column": 1,
+      "level": "tested",
+      "title": "Map and architecture",
+      "lines": [
+        "every repository, published or",
+        "planned; the layers and the rules"
+      ],
+      "code": [
+        "docs/SUITE_MAP.md",
+        "docs/ARCHITECTURE.md"
+      ]
+    },
+    {
+      "id": "matrix",
+      "column": 1,
+      "level": "tested",
+      "title": "Capability matrix",
+      "lines": [
+        "tested on a computer, versus run",
+        "on a machine, one row at a time"
+      ],
+      "code": [
+        "docs/CAPABILITY_MATRIX.md"
+      ]
+    },
+    {
+      "id": "checks",
+      "column": 1,
+      "level": "tested",
+      "title": "Two checks",
+      "lines": [
+        "repository check with 5 tests;",
+        "links between the documents"
+      ],
+      "code": [
+        "tools/ci_validate.py",
+        "tools/check_links.py",
+        "tools/test_ci_validate.py"
+      ]
+    },
+    {
+      "id": "published",
+      "column": 2,
+      "level": "external",
+      "title": "Published repositories",
+      "lines": [
+        "nine, tested on a computer;",
+        "only the DRILLPRO protocol",
+        "has moved a real machine"
+      ]
+    },
+    {
+      "id": "planned",
+      "column": 2,
+      "level": "config",
+      "title": "The planned programs",
+      "lines": [
+        "a name and a purpose on the map,",
+        "no code anybody can run"
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "from": "reader",
+      "to": "map",
+      "label": "reads",
+      "level": "tested"
+    },
+    {
+      "from": "authors",
+      "to": "matrix",
+      "label": "feed",
+      "level": "tested"
+    },
+    {
+      "from": "map",
+      "to": "published",
+      "level": "tested"
+    },
+    {
+      "from": "matrix",
+      "to": "planned",
+      "label": "lists",
+      "level": "config"
+    }
+  ],
+  "legend": {
+    "tested": "covered by the checks of this repository",
+    "config": "planned, not built",
+    "external": "a person or other repositories"
+  },
+  "footer": "Documents only: nothing here runs on a machine."
+}
