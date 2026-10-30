@@ -2,7 +2,7 @@
   "schema_version": "1.0",
   "ecosystem": "EH3D",
   "name": "EH3D-DOCS",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "role": "docs",
   "stack": "docs",
   "technologies": [
@@ -16,7 +16,7 @@
   "family": "Documentation",
   "parent": null,
   "build": "python -I tools/ci_validate.py; python -I tools/check_links.py",
-  "notes": "Scaffolding v0.0.1: the hub of the documentation of the EH3D Fabrication Suite: the map of the suite (what each repository is for and whether it exists yet), the architecture rules, and a capability matrix that says what has been run and what has not. It documents three published repositories (EH3D-COMMON, EH3D-CORE-LIBS, EH3D-UPDATER); every other program of the suite is a plan and is listed as one.",
+  "notes": "Scaffolding v0.0.2: the hub of the documentation of the EH3D Fabrication Suite: the map of the suite (what each repository is for and whether it exists yet), the architecture rules, and a capability matrix that says what has been run and what has not. It documents three published repositories (EH3D-COMMON, EH3D-CORE-LIBS, EH3D-UPDATER); every other program of the suite is a plan and is listed as one.",
   "native_version": {
     "file": "VERSION",
     "pattern": "^(\\d+\\.\\d+\\.\\d+)"
