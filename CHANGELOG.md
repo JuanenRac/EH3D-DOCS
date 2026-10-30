@@ -4,6 +4,8 @@ All notable changes to this project are documented here.
 
 ## [Unreleased]
 
+- **The node of the drill head through the server and in Studio:** the matrix and the architecture say that the server relays the node (`/api/v1/machines/:id/head/...`), that Studio shows it on the page of a machine, that the cameras are the OV2640 and the OV5640 and that the drivers of the sensors are written but have never run.
+
 ## [0.0.2] - The drill head node, the height map of the table and the updates of the services in the map, the matrix and the architecture
 
 - **The map and the matrix:** the node of the drill head (EH3D-NODE-BUNGARD-AUX), the height map of the table, the calibration, the update of the services from GitHub, the keyboards of the touch screen and the other new capabilities are listed with what has been tested and what has not; the lists of repositories of the README are complete in the eight languages.
