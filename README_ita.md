@@ -44,11 +44,11 @@ Ogni riga è una parte di questo repository e il semaforo dice a che punto è og
 
 | Area | Stato | Cosa significa qui |
 |---|---|---|
-| Controlli del repository | 🟢 | Il controllo del repository, quello dei link tra i documenti e i 5 test del controllo del repository girano nella CI e passano. |
+| Controlli del repository | 🟡 | Il controllo del repository, quello dei link tra i documenti e i 5 test del controllo del repository girano nella CI e passano. |
 | Test | 🟠 | Solo il controllo del repository ha test (5); i documenti e le affermazioni che contengono sono letti e verificati a mano e dai due script. |
 | Mappa e matrice delle capacità | 🟡 | La mappa della suite, le note di architettura e la matrice delle capacità coprono i undici repository pubblicati ed elencano ogni altro programma come previsto; sono scritte a mano e possono restare indietro rispetto ai repository. |
-| Hardware reale | 🟢 | Non applicabile: documentazione, nulla qui gira su hardware. |
-| Documentazione | 🟢 | README in otto lingue, verificato a ogni modifica contro il manifesto e il registro delle modifiche. |
+| Hardware reale | 🟡 | Non applicabile: documentazione, nulla qui gira su hardware. |
+| Documentazione | 🟡 | README in otto lingue, verificato a ogni modifica contro il manifesto e il registro delle modifiche. |
 
 ## 🎯 Panoramica
 

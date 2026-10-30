@@ -44,11 +44,11 @@ Chaque ligne est une partie de ce dépôt et le feu dit où elle en est aujourd'
 
 | Domaine | État | Ce que cela veut dire ici |
 |---|---|---|
-| Contrôles du dépôt | 🟢 | Le contrôle du dépôt, celui des liens entre les documents et les 5 tests du contrôle du dépôt tournent dans la CI et réussissent. |
+| Contrôles du dépôt | 🟡 | Le contrôle du dépôt, celui des liens entre les documents et les 5 tests du contrôle du dépôt tournent dans la CI et réussissent. |
 | Tests | 🟠 | Seul le contrôle du dépôt a des tests (5) ; les documents et les affirmations qu'ils contiennent sont lus et vérifiés à la main et par les deux scripts. |
 | Carte et matrice des capacités | 🟡 | La carte de la suite, les notes d'architecture et la matrice des capacités couvrent les onze dépôts publiés et listent tout autre programme comme prévu ; elles sont écrites à la main et peuvent prendre du retard sur les dépôts. |
-| Matériel réel | 🟢 | Sans objet : documentation, rien ici ne tourne sur du matériel. |
-| Documentation | 🟢 | README en huit langues, vérifié à chaque changement contre le manifeste et le journal des modifications. |
+| Matériel réel | 🟡 | Sans objet : documentation, rien ici ne tourne sur du matériel. |
+| Documentation | 🟡 | README en huit langues, vérifié à chaque changement contre le manifeste et le journal des modifications. |
 
 ## 🎯 Présentation
 

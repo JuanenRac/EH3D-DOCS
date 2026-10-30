@@ -44,11 +44,11 @@ Jede Zeile ist ein Teil dieses Repositorys, und die Ampel sagt, wie weit er heut
 
 | Bereich | Stand | Was das hier bedeutet |
 |---|---|---|
-| Repository-Prüfungen | 🟢 | Die Repository-Prüfung, die Prüfung der Links zwischen den Dokumenten und die 5 Tests der Repository-Prüfung laufen in der CI und bestehen. |
+| Repository-Prüfungen | 🟡 | Die Repository-Prüfung, die Prüfung der Links zwischen den Dokumenten und die 5 Tests der Repository-Prüfung laufen in der CI und bestehen. |
 | Tests | 🟠 | Nur die Repository-Prüfung hat Tests (5); die Dokumente und ihre Aussagen werden von Hand und mit den beiden Skripten gelesen und geprüft. |
 | Karte und Fähigkeitsmatrix | 🟡 | Die Karte der Suite, die Architekturnotizen und die Fähigkeitsmatrix decken die elf veröffentlichten Repositories ab und führen jedes andere Programm als geplant; sie werden von Hand geschrieben und können hinter den Repositories zurückbleiben. |
-| Echte Hardware | 🟢 | Nicht zutreffend: Dokumentation, nichts hier läuft auf Hardware. |
-| Dokumentation | 🟢 | README in acht Sprachen, bei jeder Änderung gegen Manifest und Änderungsprotokoll geprüft. |
+| Echte Hardware | 🟡 | Nicht zutreffend: Dokumentation, nichts hier läuft auf Hardware. |
+| Dokumentation | 🟡 | README in acht Sprachen, bei jeder Änderung gegen Manifest und Änderungsprotokoll geprüft. |
 
 ## 🎯 Überblick
 

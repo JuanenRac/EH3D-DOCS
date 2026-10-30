@@ -44,11 +44,11 @@ Each line is one part of this repository and the light says how far it is today.
 
 | Area | State | What it means here |
 |---|---|---|
-| Repository checks | 🟢 | The repository check, the check of the links between the documents and the 5 tests of the repository check run in CI and pass. |
+| Repository checks | 🟡 | The repository check, the check of the links between the documents and the 5 tests of the repository check run in CI and pass. |
 | Tests | 🟠 | Only the repository check has tests (5); the documents and the claims in them are read and checked by hand and by the two scripts. |
 | Map and capability matrix | 🟡 | The suite map, the architecture notes and the capability matrix cover the eleven published repositories and list every other program as planned; they are written by hand and can fall behind the repositories. |
-| Real hardware | 🟢 | Not applicable: documentation, nothing here runs on hardware. |
-| Documentation | 🟢 | README in eight languages, checked against the manifest and the changelog on every change. |
+| Real hardware | 🟡 | Not applicable: documentation, nothing here runs on hardware. |
+| Documentation | 🟡 | README in eight languages, checked against the manifest and the changelog on every change. |
 
 ## 🎯 Overview
 

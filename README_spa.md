@@ -44,11 +44,11 @@ Cada línea es una parte de este repositorio y la luz dice hasta dónde llega ho
 
 | Área | Estado | Qué significa aquí |
 |---|---|---|
-| Comprobaciones del repositorio | 🟢 | La comprobación del repositorio, la de los enlaces entre los documentos y las 5 pruebas de la comprobación del repositorio se ejecutan en el CI y pasan. |
+| Comprobaciones del repositorio | 🟡 | La comprobación del repositorio, la de los enlaces entre los documentos y las 5 pruebas de la comprobación del repositorio se ejecutan en el CI y pasan. |
 | Pruebas | 🟠 | Solo la comprobación del repositorio tiene pruebas (5); los documentos y las afirmaciones que contienen se leen y comprueban a mano y con los dos scripts. |
 | Mapa y matriz de capacidades | 🟡 | El mapa de la suite, las notas de arquitectura y la matriz de capacidades cubren los once repositorios publicados y listan cualquier otro programa como previsto; se escriben a mano y pueden quedar por detrás de los repositorios. |
-| Hardware real | 🟢 | No aplica: documentación, nada aquí se ejecuta en hardware. |
-| Documentación | 🟢 | README en ocho idiomas, comprobado contra el manifiesto y el registro de cambios en cada cambio. |
+| Hardware real | 🟡 | No aplica: documentación, nada aquí se ejecuta en hardware. |
+| Documentación | 🟡 | README en ocho idiomas, comprobado contra el manifiesto y el registro de cambios en cada cambio. |
 
 ## 🎯 Resumen
 
