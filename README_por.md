@@ -18,7 +18,7 @@
 
 ---
 
-**Verificação de honestidade - o que funciona hoje:** documentos e duas pequenas verificações. A suite está nos primeiros passos: estão publicados onze repositórios (EH3D-COMMON, EH3D-CORE-LIBS, EH3D-DRILLPRO, EH3D-ROUTEPRO, EH3D-BUNGARD-GUI, EH3D-MOTIONCNC, EH3D-SERVER, EH3D-NODE-BUNGARD, EH3D-UPDATER, ELECTRO-HOBBY-3D-UPDATER e este) e qualquer outro programa da suite é um plano. Tudo o que está publicado foi testado num computador; de toda a suite só o protocolo série do EH3D-DRILLPRO moveu uma máquina real (a referência e os movimentos de cada eixo numa Bungard CCD MTC), e nenhum trabalho completo correu ainda numa máquina. 5 testes cobrem a verificação do repositório.
+**Verificação de honestidade - o que funciona hoje:** documentos e duas pequenas verificações. A suite está nos primeiros passos: estão publicados catorze repositórios (EH3D-COMMON, EH3D-CORE-LIBS, EH3D-DRILLPRO, EH3D-ROUTEPRO, EH3D-BUNGARD-GUI, EH3D-MOTIONCNC, EH3D-SERVER, EH3D-STUDIO, EH3D-NODE-BUNGARD, EH3D-NODE-BUNGARD-HMI, EH3D-NODE-BUNGARD-AUX, EH3D-UPDATER, ELECTRO-HOBBY-3D-UPDATER e este) e qualquer outro programa da suite é um plano. Tudo o que está publicado foi testado num computador; de toda a suite só o protocolo série do EH3D-DRILLPRO moveu uma máquina real (a referência e os movimentos de cada eixo numa Bungard CCD MTC), e nenhum trabalho completo correu ainda numa máquina. 5 testes cobrem a verificação do repositório.
 
 ---
 
@@ -174,6 +174,7 @@ O README e os textos existem em inglês, espanhol, francês, italiano, alemão, 
 * [EH3D-DRILLPRO](https://github.com/JuanenRac/EH3D-DRILLPRO) e [EH3D-ROUTEPRO](https://github.com/JuanenRac/EH3D-ROUTEPRO): os programas de furação e de fresagem
 * [EH3D-BUNGARD-GUI](https://github.com/JuanenRac/EH3D-BUNGARD-GUI) e [EH3D-MOTIONCNC](https://github.com/JuanenRac/EH3D-MOTIONCNC): a interface moderna das máquinas Bungard e o programa de controlo de máquina
 * [EH3D-SERVER](https://github.com/JuanenRac/EH3D-SERVER) e [EH3D-NODE-BUNGARD](https://github.com/JuanenRac/EH3D-NODE-BUNGARD): o centro dos programas e o nó que chega à máquina
+* [EH3D-STUDIO](https://github.com/JuanenRac/EH3D-STUDIO), [EH3D-NODE-BUNGARD-HMI](https://github.com/JuanenRac/EH3D-NODE-BUNGARD-HMI) e [EH3D-NODE-BUNGARD-AUX](https://github.com/JuanenRac/EH3D-NODE-BUNGARD-AUX): o painel de configuração do servidor (com as suas atualizações a partir do GitHub), o ecrã tátil da máquina e o nó da cabeça de furação (câmara por RTSP e ONVIF, laser que mede a mesa, velocidade e temperatura do fuso)
 * [EH3D-UPDATER](https://github.com/JuanenRac/EH3D-UPDATER) e [ELECTRO-HOBBY-3D-UPDATER](https://github.com/JuanenRac/ELECTRO-HOBBY-3D-UPDATER): instalam e atualizam os repositórios
 
 ## 📚 Documentação

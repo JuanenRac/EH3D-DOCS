@@ -18,7 +18,7 @@
 
 ---
 
-**正直さの確認 - 今日実際に動くもの：** ドキュメントと 2 つの小さなチェック。スイートはまだ最初の段階です。公開されているリポジトリは 11 件（EH3D-COMMON、EH3D-CORE-LIBS、EH3D-DRILLPRO、EH3D-ROUTEPRO、EH3D-BUNGARD-GUI、EH3D-MOTIONCNC、EH3D-SERVER、EH3D-NODE-BUNGARD、EH3D-UPDATER、ELECTRO-HOBBY-3D-UPDATER、そしてこれ）で、スイートの他のプログラムはすべて計画です。公開済みのものはすべてコンピューター上でテスト済みですが、スイート全体で実機を動かしたのは EH3D-DRILLPRO のシリアル プロトコルだけで（Bungard CCD MTC 1 台での原点復帰と各軸の動き）、ジョブ全体を機械で実行したことはまだありません。5 件のテストがリポジトリ チェックを網羅します。
+**正直さの確認 - 今日実際に動くもの：** ドキュメントと 2 つの小さなチェック。スイートはまだ最初の段階です。公開されているリポジトリは 14 件（EH3D-COMMON、EH3D-CORE-LIBS、EH3D-DRILLPRO、EH3D-ROUTEPRO、EH3D-BUNGARD-GUI、EH3D-MOTIONCNC、EH3D-SERVER、EH3D-STUDIO、EH3D-NODE-BUNGARD、EH3D-NODE-BUNGARD-HMI、EH3D-NODE-BUNGARD-AUX、EH3D-UPDATER、ELECTRO-HOBBY-3D-UPDATER、そしてこれ）で、スイートの他のプログラムはすべて計画です。公開済みのものはすべてコンピューター上でテスト済みですが、スイート全体で実機を動かしたのは EH3D-DRILLPRO のシリアル プロトコルだけで（Bungard CCD MTC 1 台での原点復帰と各軸の動き）、ジョブ全体を機械で実行したことはまだありません。5 件のテストがリポジトリ チェックを網羅します。
 
 ---
 
@@ -174,6 +174,7 @@ README とテキストは、英語、スペイン語、フランス語、イタ�
 * [EH3D-DRILLPRO](https://github.com/JuanenRac/EH3D-DRILLPRO) と [EH3D-ROUTEPRO](https://github.com/JuanenRac/EH3D-ROUTEPRO)：ドリルとルーティングのプログラム
 * [EH3D-BUNGARD-GUI](https://github.com/JuanenRac/EH3D-BUNGARD-GUI) と [EH3D-MOTIONCNC](https://github.com/JuanenRac/EH3D-MOTIONCNC)：Bungard マシンのモダンなインターフェースとマシン制御プログラム
 * [EH3D-SERVER](https://github.com/JuanenRac/EH3D-SERVER) と [EH3D-NODE-BUNGARD](https://github.com/JuanenRac/EH3D-NODE-BUNGARD)：プログラムの中心と、機械に届くノード
+* [EH3D-STUDIO](https://github.com/JuanenRac/EH3D-STUDIO)、[EH3D-NODE-BUNGARD-HMI](https://github.com/JuanenRac/EH3D-NODE-BUNGARD-HMI)、[EH3D-NODE-BUNGARD-AUX](https://github.com/JuanenRac/EH3D-NODE-BUNGARD-AUX)：サーバーの設定パネル（GitHub からの更新付き）、マシンのタッチスクリーン、ドリルヘッドのノード（RTSP と ONVIF のカメラ、テーブルを測るレーザー、スピンドルの回転数と温度）
 * [EH3D-UPDATER](https://github.com/JuanenRac/EH3D-UPDATER) と [ELECTRO-HOBBY-3D-UPDATER](https://github.com/JuanenRac/ELECTRO-HOBBY-3D-UPDATER)：リポジトリのインストールと更新
 
 ## 📚 ドキュメント

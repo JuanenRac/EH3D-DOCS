@@ -18,7 +18,7 @@
 
 ---
 
-**Honesty check - what actually runs today:** documents and two small checks. The suite is at its first steps: eleven repositories are published (EH3D-COMMON, EH3D-CORE-LIBS, EH3D-DRILLPRO, EH3D-ROUTEPRO, EH3D-BUNGARD-GUI, EH3D-MOTIONCNC, EH3D-SERVER, EH3D-NODE-BUNGARD, EH3D-UPDATER, ELECTRO-HOBBY-3D-UPDATER and this one) and every other program of the suite is a plan. Everything published has been tested on a computer; of the whole suite only the serial protocol of EH3D-DRILLPRO has moved a real machine (the reference run and the moves of each axis on one Bungard CCD MTC), and no whole job has run on a machine yet. 5 tests cover the repository check.
+**Honesty check - what actually runs today:** documents and two small checks. The suite is at its first steps: fourteen repositories are published (EH3D-COMMON, EH3D-CORE-LIBS, EH3D-DRILLPRO, EH3D-ROUTEPRO, EH3D-BUNGARD-GUI, EH3D-MOTIONCNC, EH3D-SERVER, EH3D-STUDIO, EH3D-NODE-BUNGARD, EH3D-NODE-BUNGARD-HMI, EH3D-NODE-BUNGARD-AUX, EH3D-UPDATER, ELECTRO-HOBBY-3D-UPDATER and this one) and every other program of the suite is a plan. Everything published has been tested on a computer; of the whole suite only the serial protocol of EH3D-DRILLPRO has moved a real machine (the reference run and the moves of each axis on one Bungard CCD MTC), and no whole job has run on a machine yet. 5 tests cover the repository check.
 
 ---
 
@@ -174,6 +174,7 @@ README and texts exist in English, Spanish, French, Italian, German, Chinese, Ja
 * [EH3D-DRILLPRO](https://github.com/JuanenRac/EH3D-DRILLPRO) and [EH3D-ROUTEPRO](https://github.com/JuanenRac/EH3D-ROUTEPRO): the drilling and routing programs
 * [EH3D-BUNGARD-GUI](https://github.com/JuanenRac/EH3D-BUNGARD-GUI) and [EH3D-MOTIONCNC](https://github.com/JuanenRac/EH3D-MOTIONCNC): the modern interface of the Bungard machines, and the machine-control program
 * [EH3D-SERVER](https://github.com/JuanenRac/EH3D-SERVER) and [EH3D-NODE-BUNGARD](https://github.com/JuanenRac/EH3D-NODE-BUNGARD): the center of the programs and the node that reaches the machine
+* [EH3D-STUDIO](https://github.com/JuanenRac/EH3D-STUDIO), [EH3D-NODE-BUNGARD-HMI](https://github.com/JuanenRac/EH3D-NODE-BUNGARD-HMI) and [EH3D-NODE-BUNGARD-AUX](https://github.com/JuanenRac/EH3D-NODE-BUNGARD-AUX): the configuration panel of the server (with its updates from GitHub), the touch screen of the machine, and the node of the drill head (camera as RTSP and ONVIF, laser that measures the table, speed and temperature of the spindle)
 * [EH3D-UPDATER](https://github.com/JuanenRac/EH3D-UPDATER) and [ELECTRO-HOBBY-3D-UPDATER](https://github.com/JuanenRac/ELECTRO-HOBBY-3D-UPDATER): install and update the repositories
 
 ## 📚 Documentation

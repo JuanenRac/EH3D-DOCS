@@ -18,7 +18,7 @@
 
 ---
 
-**Vérification d'honnêteté - ce qui tourne aujourd'hui :** des documents et deux petits contrôles. La suite en est à ses premiers pas : onze dépôts sont publiés (EH3D-COMMON, EH3D-CORE-LIBS, EH3D-DRILLPRO, EH3D-ROUTEPRO, EH3D-BUNGARD-GUI, EH3D-MOTIONCNC, EH3D-SERVER, EH3D-NODE-BUNGARD, EH3D-UPDATER, ELECTRO-HOBBY-3D-UPDATER et celui-ci) et tout autre programme de la suite est un projet. Tout ce qui est publié a été testé sur un ordinateur ; dans toute la suite, seul le protocole série d'EH3D-DRILLPRO a déplacé une vraie machine (la référence et les mouvements de chaque axe sur une Bungard CCD MTC), et aucun travail complet n'a encore tourné sur une machine. 5 tests couvrent le contrôle du dépôt.
+**Vérification d'honnêteté - ce qui tourne aujourd'hui :** des documents et deux petits contrôles. La suite en est à ses premiers pas : quatorze dépôts sont publiés (EH3D-COMMON, EH3D-CORE-LIBS, EH3D-DRILLPRO, EH3D-ROUTEPRO, EH3D-BUNGARD-GUI, EH3D-MOTIONCNC, EH3D-SERVER, EH3D-STUDIO, EH3D-NODE-BUNGARD, EH3D-NODE-BUNGARD-HMI, EH3D-NODE-BUNGARD-AUX, EH3D-UPDATER, ELECTRO-HOBBY-3D-UPDATER et celui-ci) et tout autre programme de la suite est un projet. Tout ce qui est publié a été testé sur un ordinateur ; dans toute la suite, seul le protocole série d'EH3D-DRILLPRO a déplacé une vraie machine (la référence et les mouvements de chaque axe sur une Bungard CCD MTC), et aucun travail complet n'a encore tourné sur une machine. 5 tests couvrent le contrôle du dépôt.
 
 ---
 
@@ -174,6 +174,7 @@ Le README et les textes existent en anglais, espagnol, français, italien, allem
 * [EH3D-DRILLPRO](https://github.com/JuanenRac/EH3D-DRILLPRO) et [EH3D-ROUTEPRO](https://github.com/JuanenRac/EH3D-ROUTEPRO) : les programmes de perçage et de défonçage
 * [EH3D-BUNGARD-GUI](https://github.com/JuanenRac/EH3D-BUNGARD-GUI) et [EH3D-MOTIONCNC](https://github.com/JuanenRac/EH3D-MOTIONCNC) : l'interface moderne des machines Bungard et le programme de commande de machine
 * [EH3D-SERVER](https://github.com/JuanenRac/EH3D-SERVER) et [EH3D-NODE-BUNGARD](https://github.com/JuanenRac/EH3D-NODE-BUNGARD) : le centre des programmes et le nœud qui atteint la machine
+* [EH3D-STUDIO](https://github.com/JuanenRac/EH3D-STUDIO), [EH3D-NODE-BUNGARD-HMI](https://github.com/JuanenRac/EH3D-NODE-BUNGARD-HMI) et [EH3D-NODE-BUNGARD-AUX](https://github.com/JuanenRac/EH3D-NODE-BUNGARD-AUX) : le panneau de configuration du serveur (avec ses mises à jour depuis GitHub), l'écran tactile de la machine et le nœud de la tête de perçage (caméra en RTSP et ONVIF, laser qui mesure la table, vitesse et température de la broche)
 * [EH3D-UPDATER](https://github.com/JuanenRac/EH3D-UPDATER) et [ELECTRO-HOBBY-3D-UPDATER](https://github.com/JuanenRac/ELECTRO-HOBBY-3D-UPDATER) : installent et mettent à jour les dépôts
 
 ## 📚 Documentation
