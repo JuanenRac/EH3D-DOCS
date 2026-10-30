@@ -18,7 +18,7 @@
 
 ---
 
-**诚实性核对 - 今天真正能运行的内容：** 文档和两个小检查。套件处于最初阶段：已发布九个仓库（EH3D-COMMON、EH3D-CORE-LIBS、EH3D-DRILLPRO、EH3D-ROUTEPRO、EH3D-SERVER、EH3D-NODE-BUNGARD、EH3D-UPDATER、ELECTRO-HOBBY-3D-UPDATER 以及本仓库），套件的其他程序都只是计划。已发布的内容都在计算机上测试过；整个套件中只有 EH3D-DRILLPRO 的串行协议让真实机床动过（在一台 Bungard CCD MTC 上做了参考运行和各轴运动），还没有任何完整作业在机床上运行过。5 个测试覆盖仓库检查。
+**诚实性核对 - 今天真正能运行的内容：** 文档和两个小检查。套件处于最初阶段：已发布十一个仓库（EH3D-COMMON、EH3D-CORE-LIBS、EH3D-DRILLPRO、EH3D-ROUTEPRO、EH3D-BUNGARD-GUI、EH3D-MOTIONCNC、EH3D-SERVER、EH3D-NODE-BUNGARD、EH3D-UPDATER、ELECTRO-HOBBY-3D-UPDATER 以及本仓库），套件的其他程序都只是计划。已发布的内容都在计算机上测试过；整个套件中只有 EH3D-DRILLPRO 的串行协议让真实机床动过（在一台 Bungard CCD MTC 上做了参考运行和各轴运动），还没有任何完整作业在机床上运行过。5 个测试覆盖仓库检查。
 
 ---
 
@@ -46,7 +46,7 @@
 |---|---|---|
 | 仓库检查 | 🟢 | 仓库检查、文档之间的链接检查以及仓库检查的 5 个测试都在 CI 中运行并通过。 |
 | 测试 | 🟠 | 只有仓库检查有测试（5 个）；文档及其中的说法靠手工和两个脚本阅读与核对。 |
-| 地图与能力矩阵 | 🟡 | 套件地图、架构说明和能力矩阵涵盖九个已发布的仓库，并把其他所有程序列为计划中；它们由人工编写，可能落后于仓库。 |
+| 地图与能力矩阵 | 🟡 | 套件地图、架构说明和能力矩阵涵盖十一个已发布的仓库，并把其他所有程序列为计划中；它们由人工编写，可能落后于仓库。 |
 | 真实硬件 | 🟢 | 不适用：文档，这里的内容不会在硬件上运行。 |
 | 文档 | 🟢 | 八种语言的 README，每次更改都会与清单和变更日志对照。 |
 
@@ -172,6 +172,7 @@ README 和文本提供英语、西班牙语、法语、意大利语、德语、�
 * [EH3D-COMMON](https://github.com/JuanenRac/EH3D-COMMON)：项目容器、机床类型和节点的固件基础
 * [EH3D-CORE-LIBS](https://github.com/JuanenRac/EH3D-CORE-LIBS)：Gerber、Excellon 和 G 代码的读取库
 * [EH3D-DRILLPRO](https://github.com/JuanenRac/EH3D-DRILLPRO) 和 [EH3D-ROUTEPRO](https://github.com/JuanenRac/EH3D-ROUTEPRO)：钻孔和铣削程序
+* [EH3D-BUNGARD-GUI](https://github.com/JuanenRac/EH3D-BUNGARD-GUI) 和 [EH3D-MOTIONCNC](https://github.com/JuanenRac/EH3D-MOTIONCNC)：Bungard 机床的现代界面和机床控制程序
 * [EH3D-SERVER](https://github.com/JuanenRac/EH3D-SERVER) 和 [EH3D-NODE-BUNGARD](https://github.com/JuanenRac/EH3D-NODE-BUNGARD)：程序的中心和通往机床的节点
 * [EH3D-UPDATER](https://github.com/JuanenRac/EH3D-UPDATER) 和 [ELECTRO-HOBBY-3D-UPDATER](https://github.com/JuanenRac/ELECTRO-HOBBY-3D-UPDATER)：安装和更新这些仓库
 

@@ -16,5 +16,10 @@
 | Plan a job, keep users and machines, run it through a node with a stop and operator dialogs | EH3D-SERVER | Yes | No | Tested through its interface with jobs on the simulator; it does not terminate TLS. |
 | Control link, lamps, spindle output, web panel and update with rollback of the node | EH3D-NODE-BUNGARD | Yes | No | The rules are tested on a computer and both firmware images build; nothing has been flashed to a board. |
 | The firmware base that every node copies | EH3D-COMMON | Yes | No | Tested only through EH3D-NODE-BUNGARD, the one node that uses it. |
+| The files of the Bungard machines: Excellon, HP-GL (with arcs, circles and scaling), tool tables, configuration; Gerber and DXF outlines as routing paths | EH3D-COMMON | Yes | No | Shared by DRILLPRO, ROUTEPRO and BUNGARD-GUI; the outlines were tried on written examples, not on a collection of real files. |
+| Jobs in ZIP archives and the Open and Save windows (places, sorting, filters, replace check) | EH3D-COMMON | Yes | No | The state of the windows has no interface of its own; BUNGARD-GUI and MOTIONCNC draw it. |
+| Interface of the machine controllers: GRBL on a scripted line, a simulated controller with limits, stored positions and G-code | EH3D-COMMON | Yes | No | GRBL has not been connected to a serial port; the other families are listed as not driven. |
+| The job in 2D and 3D, eleven themes, eight languages, simulation at the speed of the machine, panels, board library, recent files, hole counts | EH3D-BUNGARD-GUI | Yes | No | Run on the simulator of the classic programs and on a computer; no machine has been driven from this window. |
+| Machine control: position, jog, zeros, stored positions, a G-code program with pause, stop and emergency stop, menus, settings, files | EH3D-MOTIONCNC | Yes | No | Only over the simulated controller; no real controller is connected, and the emergency stop of the window is not a safety circuit. |
 | 2D geometry (offsets, booleans), toolpaths, HP-GL | | No | No | Planned in EH3D-CORE-LIBS. |
-| Every program of the suite (CAM, viewers, machine control, launcher) | | No | No | Planned; see [SUITE_MAP.md](SUITE_MAP.md). |
+| The programs that do not exist yet (CAM, viewers, the launcher, the real controllers for machine control) | | No | No | Planned; see [SUITE_MAP.md](SUITE_MAP.md). |

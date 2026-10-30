@@ -18,7 +18,7 @@
 
 ---
 
-**正直さの確認 - 今日実際に動くもの：** ドキュメントと 2 つの小さなチェック。スイートはまだ最初の段階です。公開されているリポジトリは 9 つ（EH3D-COMMON、EH3D-CORE-LIBS、EH3D-DRILLPRO、EH3D-ROUTEPRO、EH3D-SERVER、EH3D-NODE-BUNGARD、EH3D-UPDATER、ELECTRO-HOBBY-3D-UPDATER、そしてこれ）で、スイートの他のプログラムはすべて計画です。公開済みのものはすべてコンピューター上でテスト済みですが、スイート全体で実機を動かしたのは EH3D-DRILLPRO のシリアル プロトコルだけで（Bungard CCD MTC 1 台での原点復帰と各軸の動き）、ジョブ全体を機械で実行したことはまだありません。5 件のテストがリポジトリ チェックを網羅します。
+**正直さの確認 - 今日実際に動くもの：** ドキュメントと 2 つの小さなチェック。スイートはまだ最初の段階です。公開されているリポジトリは 11 件（EH3D-COMMON、EH3D-CORE-LIBS、EH3D-DRILLPRO、EH3D-ROUTEPRO、EH3D-BUNGARD-GUI、EH3D-MOTIONCNC、EH3D-SERVER、EH3D-NODE-BUNGARD、EH3D-UPDATER、ELECTRO-HOBBY-3D-UPDATER、そしてこれ）で、スイートの他のプログラムはすべて計画です。公開済みのものはすべてコンピューター上でテスト済みですが、スイート全体で実機を動かしたのは EH3D-DRILLPRO のシリアル プロトコルだけで（Bungard CCD MTC 1 台での原点復帰と各軸の動き）、ジョブ全体を機械で実行したことはまだありません。5 件のテストがリポジトリ チェックを網羅します。
 
 ---
 
@@ -46,7 +46,7 @@
 |---|---|---|
 | リポジトリ チェック | 🟢 | リポジトリ チェック、ドキュメント間のリンク チェック、リポジトリ チェックの 5 件のテストは CI で実行され、通っています。 |
 | テスト | 🟠 | テストがあるのはリポジトリ チェックだけ（5 件）です。ドキュメントとその主張は、手作業と 2 つのスクリプトで読み、確認します。 |
-| 地図と機能マトリクス | 🟡 | スイート マップ、アーキテクチャ ノート、機能マトリクスは公開済みの 9 つのリポジトリを扱い、他のプログラムはすべて計画として載せています。手書きなので、リポジトリより遅れることがあります。 |
+| 地図と機能マトリクス | 🟡 | スイート マップ、アーキテクチャ ノート、機能マトリクスは公開済みの 11 件のリポジトリを扱い、他のプログラムはすべて計画として載せています。手書きなので、リポジトリより遅れることがあります。 |
 | 実機 | 🟢 | 該当なし：ドキュメントで、ここにあるものはハードウェア上では動きません。 |
 | ドキュメント | 🟢 | 8 言語の README。変更のたびにマニフェストと変更履歴と照合します。 |
 
@@ -172,6 +172,7 @@ README とテキストは、英語、スペイン語、フランス語、イタ�
 * [EH3D-COMMON](https://github.com/JuanenRac/EH3D-COMMON)：プロジェクト コンテナ、機械の型、ノードのファームウェア基盤
 * [EH3D-CORE-LIBS](https://github.com/JuanenRac/EH3D-CORE-LIBS)：Gerber、Excellon、G コードのリーダー
 * [EH3D-DRILLPRO](https://github.com/JuanenRac/EH3D-DRILLPRO) と [EH3D-ROUTEPRO](https://github.com/JuanenRac/EH3D-ROUTEPRO)：ドリルとルーティングのプログラム
+* [EH3D-BUNGARD-GUI](https://github.com/JuanenRac/EH3D-BUNGARD-GUI) と [EH3D-MOTIONCNC](https://github.com/JuanenRac/EH3D-MOTIONCNC)：Bungard マシンのモダンなインターフェースとマシン制御プログラム
 * [EH3D-SERVER](https://github.com/JuanenRac/EH3D-SERVER) と [EH3D-NODE-BUNGARD](https://github.com/JuanenRac/EH3D-NODE-BUNGARD)：プログラムの中心と、機械に届くノード
 * [EH3D-UPDATER](https://github.com/JuanenRac/EH3D-UPDATER) と [ELECTRO-HOBBY-3D-UPDATER](https://github.com/JuanenRac/ELECTRO-HOBBY-3D-UPDATER)：リポジトリのインストールと更新
 

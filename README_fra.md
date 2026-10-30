@@ -18,7 +18,7 @@
 
 ---
 
-**Vérification d'honnêteté - ce qui tourne aujourd'hui :** des documents et deux petits contrôles. La suite en est à ses premiers pas : neuf dépôts sont publiés (EH3D-COMMON, EH3D-CORE-LIBS, EH3D-DRILLPRO, EH3D-ROUTEPRO, EH3D-SERVER, EH3D-NODE-BUNGARD, EH3D-UPDATER, ELECTRO-HOBBY-3D-UPDATER et celui-ci) et tout autre programme de la suite est un projet. Tout ce qui est publié a été testé sur un ordinateur ; dans toute la suite, seul le protocole série d'EH3D-DRILLPRO a déplacé une vraie machine (la référence et les mouvements de chaque axe sur une Bungard CCD MTC), et aucun travail complet n'a encore tourné sur une machine. 5 tests couvrent le contrôle du dépôt.
+**Vérification d'honnêteté - ce qui tourne aujourd'hui :** des documents et deux petits contrôles. La suite en est à ses premiers pas : onze dépôts sont publiés (EH3D-COMMON, EH3D-CORE-LIBS, EH3D-DRILLPRO, EH3D-ROUTEPRO, EH3D-BUNGARD-GUI, EH3D-MOTIONCNC, EH3D-SERVER, EH3D-NODE-BUNGARD, EH3D-UPDATER, ELECTRO-HOBBY-3D-UPDATER et celui-ci) et tout autre programme de la suite est un projet. Tout ce qui est publié a été testé sur un ordinateur ; dans toute la suite, seul le protocole série d'EH3D-DRILLPRO a déplacé une vraie machine (la référence et les mouvements de chaque axe sur une Bungard CCD MTC), et aucun travail complet n'a encore tourné sur une machine. 5 tests couvrent le contrôle du dépôt.
 
 ---
 
@@ -46,7 +46,7 @@ Chaque ligne est une partie de ce dépôt et le feu dit où elle en est aujourd'
 |---|---|---|
 | Contrôles du dépôt | 🟢 | Le contrôle du dépôt, celui des liens entre les documents et les 5 tests du contrôle du dépôt tournent dans la CI et réussissent. |
 | Tests | 🟠 | Seul le contrôle du dépôt a des tests (5) ; les documents et les affirmations qu'ils contiennent sont lus et vérifiés à la main et par les deux scripts. |
-| Carte et matrice des capacités | 🟡 | La carte de la suite, les notes d'architecture et la matrice des capacités couvrent les neuf dépôts publiés et listent tout autre programme comme prévu ; elles sont écrites à la main et peuvent prendre du retard sur les dépôts. |
+| Carte et matrice des capacités | 🟡 | La carte de la suite, les notes d'architecture et la matrice des capacités couvrent les onze dépôts publiés et listent tout autre programme comme prévu ; elles sont écrites à la main et peuvent prendre du retard sur les dépôts. |
 | Matériel réel | 🟢 | Sans objet : documentation, rien ici ne tourne sur du matériel. |
 | Documentation | 🟢 | README en huit langues, vérifié à chaque changement contre le manifeste et le journal des modifications. |
 
@@ -172,6 +172,7 @@ Le README et les textes existent en anglais, espagnol, français, italien, allem
 * [EH3D-COMMON](https://github.com/JuanenRac/EH3D-COMMON) : le conteneur de projet, les types de machine et la base de firmware des nœuds
 * [EH3D-CORE-LIBS](https://github.com/JuanenRac/EH3D-CORE-LIBS) : les lecteurs de Gerber, Excellon et G-code
 * [EH3D-DRILLPRO](https://github.com/JuanenRac/EH3D-DRILLPRO) et [EH3D-ROUTEPRO](https://github.com/JuanenRac/EH3D-ROUTEPRO) : les programmes de perçage et de défonçage
+* [EH3D-BUNGARD-GUI](https://github.com/JuanenRac/EH3D-BUNGARD-GUI) et [EH3D-MOTIONCNC](https://github.com/JuanenRac/EH3D-MOTIONCNC) : l'interface moderne des machines Bungard et le programme de commande de machine
 * [EH3D-SERVER](https://github.com/JuanenRac/EH3D-SERVER) et [EH3D-NODE-BUNGARD](https://github.com/JuanenRac/EH3D-NODE-BUNGARD) : le centre des programmes et le nœud qui atteint la machine
 * [EH3D-UPDATER](https://github.com/JuanenRac/EH3D-UPDATER) et [ELECTRO-HOBBY-3D-UPDATER](https://github.com/JuanenRac/ELECTRO-HOBBY-3D-UPDATER) : installent et mettent à jour les dépôts
 

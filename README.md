@@ -18,7 +18,7 @@
 
 ---
 
-**Honesty check - what actually runs today:** documents and two small checks. The suite is at its first steps: nine repositories are published (EH3D-COMMON, EH3D-CORE-LIBS, EH3D-DRILLPRO, EH3D-ROUTEPRO, EH3D-SERVER, EH3D-NODE-BUNGARD, EH3D-UPDATER, ELECTRO-HOBBY-3D-UPDATER and this one) and every other program of the suite is a plan. Everything published has been tested on a computer; of the whole suite only the serial protocol of EH3D-DRILLPRO has moved a real machine (the reference run and the moves of each axis on one Bungard CCD MTC), and no whole job has run on a machine yet. 5 tests cover the repository check.
+**Honesty check - what actually runs today:** documents and two small checks. The suite is at its first steps: eleven repositories are published (EH3D-COMMON, EH3D-CORE-LIBS, EH3D-DRILLPRO, EH3D-ROUTEPRO, EH3D-BUNGARD-GUI, EH3D-MOTIONCNC, EH3D-SERVER, EH3D-NODE-BUNGARD, EH3D-UPDATER, ELECTRO-HOBBY-3D-UPDATER and this one) and every other program of the suite is a plan. Everything published has been tested on a computer; of the whole suite only the serial protocol of EH3D-DRILLPRO has moved a real machine (the reference run and the moves of each axis on one Bungard CCD MTC), and no whole job has run on a machine yet. 5 tests cover the repository check.
 
 ---
 
@@ -46,7 +46,7 @@ Each line is one part of this repository and the light says how far it is today.
 |---|---|---|
 | Repository checks | 🟢 | The repository check, the check of the links between the documents and the 5 tests of the repository check run in CI and pass. |
 | Tests | 🟠 | Only the repository check has tests (5); the documents and the claims in them are read and checked by hand and by the two scripts. |
-| Map and capability matrix | 🟡 | The suite map, the architecture notes and the capability matrix cover the nine published repositories and list every other program as planned; they are written by hand and can fall behind the repositories. |
+| Map and capability matrix | 🟡 | The suite map, the architecture notes and the capability matrix cover the eleven published repositories and list every other program as planned; they are written by hand and can fall behind the repositories. |
 | Real hardware | 🟢 | Not applicable: documentation, nothing here runs on hardware. |
 | Documentation | 🟢 | README in eight languages, checked against the manifest and the changelog on every change. |
 
@@ -172,6 +172,7 @@ README and texts exist in English, Spanish, French, Italian, German, Chinese, Ja
 * [EH3D-COMMON](https://github.com/JuanenRac/EH3D-COMMON): the project container, the machine types and the firmware base of the nodes
 * [EH3D-CORE-LIBS](https://github.com/JuanenRac/EH3D-CORE-LIBS): the readers of Gerber, Excellon and G-code
 * [EH3D-DRILLPRO](https://github.com/JuanenRac/EH3D-DRILLPRO) and [EH3D-ROUTEPRO](https://github.com/JuanenRac/EH3D-ROUTEPRO): the drilling and routing programs
+* [EH3D-BUNGARD-GUI](https://github.com/JuanenRac/EH3D-BUNGARD-GUI) and [EH3D-MOTIONCNC](https://github.com/JuanenRac/EH3D-MOTIONCNC): the modern interface of the Bungard machines, and the machine-control program
 * [EH3D-SERVER](https://github.com/JuanenRac/EH3D-SERVER) and [EH3D-NODE-BUNGARD](https://github.com/JuanenRac/EH3D-NODE-BUNGARD): the center of the programs and the node that reaches the machine
 * [EH3D-UPDATER](https://github.com/JuanenRac/EH3D-UPDATER) and [ELECTRO-HOBBY-3D-UPDATER](https://github.com/JuanenRac/ELECTRO-HOBBY-3D-UPDATER): install and update the repositories
 
