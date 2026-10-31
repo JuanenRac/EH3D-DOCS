@@ -4,6 +4,8 @@ All notable changes to this project are documented here.
 
 ## [Unreleased]
 
+- **The new programs are published:** the launcher, the tool crib, the isolation program, the laser program, the Gerber viewer, the stencil program, the levelling utility, the pick and place manager, the vision studio, the G-code debugger and the general purpose touch screen have their first release, so the map lists them as published.
+
 - **The ring of LEDs and the quality check of the drill head:** two rows in the matrix (the ring of LEDs around the camera with its colour signals and the picture on request; the quality check of the holes and of the milled channels with one verdict) and a sentence in the map for each repository that has it. Both say what has not happened: no ring has been driven and no real board has been photographed.
 
 - **The map, the matrix and the architecture for the programs that have started:** the launcher, the tool crib, the isolation program, the laser program, the Gerber viewer, the stencil program, the height-map program, pick and place, the debugger and the vision program have a line in the map as started (a library and a command line with tests, no release yet) and a row each in the matrix; the phone apps for Android and iPhone are listed as published; the catalogue of bits is more than 450 and the node of the drill head, the web panel of the nodes and the recovery of a program in MOTIONCNC are mentioned.
