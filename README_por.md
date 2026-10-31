@@ -18,7 +18,7 @@
 
 ---
 
-**Verificação de honestidade - o que funciona hoje:** documentos e duas pequenas verificações. A suite está nos primeiros passos: estão publicados catorze repositórios (EH3D-COMMON, EH3D-CORE-LIBS, EH3D-DRILLPRO, EH3D-ROUTEPRO, EH3D-BUNGARD-GUI, EH3D-MOTIONCNC, EH3D-SERVER, EH3D-STUDIO, EH3D-NODE-BUNGARD, EH3D-NODE-BUNGARD-HMI, EH3D-NODE-BUNGARD-AUX, EH3D-UPDATER, ELECTRO-HOBBY-3D-UPDATER e este) e qualquer outro programa da suite é um plano. Tudo o que está publicado foi testado num computador; de toda a suite só o protocolo série do EH3D-DRILLPRO moveu uma máquina real (a referência e os movimentos de cada eixo numa Bungard CCD MTC), e nenhum trabalho completo correu ainda numa máquina. 5 testes cobrem a verificação do repositório.
+**Verificação de honestidade - o que funciona hoje:** documentos e duas pequenas verificações. A suite está nos primeiros passos: estão publicados vinte e sete repositórios (as bibliotecas, os programas Bungard, o servidor e o Studio, os nós e os ecrãs táteis, as aplicações de telemóvel, os programas de CAM e de utilidade, os atualizadores e este) e o comando para ecrãs táteis pequenos é o único programa que continua a ser um plano. Tudo o que está publicado foi testado num computador e as interfaces falam 37 idiomas; de toda a suite só o protocolo série do EH3D-DRILLPRO moveu uma máquina real (a referência e os movimentos de cada eixo numa Bungard CCD MTC), e nenhum trabalho completo correu ainda numa máquina. 5 testes cobrem a verificação do repositório.
 
 ---
 
@@ -46,7 +46,7 @@ Cada linha é uma parte deste repositório e a luz diz até onde chega hoje. É 
 |---|---|---|
 | Verificações do repositório | 🟡 | A verificação do repositório, a dos ligações entre os documentos e os 5 testes da verificação do repositório correm na CI e passam. |
 | Testes | 🟠 | Só a verificação do repositório tem testes (5); os documentos e as afirmações que contêm são lidos e verificados à mão e pelos dois scripts. |
-| Mapa e matriz de capacidades | 🟡 | O mapa da suite, as notas de arquitetura e a matriz de capacidades cobrem os dezasseis repositórios publicados e os dez começados, e listam qualquer outro programa como previsto; são escritos à mão e podem ficar atrás dos repositórios. |
+| Mapa e matriz de capacidades | 🟡 | O mapa da suite, as notas de arquitetura e a matriz de capacidades cobrem os vinte e sete repositórios publicados, com a versão de cada um, e listam como previsto o único programa que continua a ser um plano; são escritos à mão e podem ficar atrás dos repositórios. |
 | Hardware real | 🟡 | Não se aplica: documentação, nada aqui corre em hardware. |
 | Documentação | 🟡 | README em oito idiomas, verificado em cada alteração contra o manifesto e o registo de alterações. |
 

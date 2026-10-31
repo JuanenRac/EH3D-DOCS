@@ -18,7 +18,7 @@
 
 ---
 
-**Ehrlichkeitscheck - was heute tatsächlich läuft:** Dokumente und zwei kleine Prüfungen. Die Suite steht am Anfang: vierzehn Repositories sind veröffentlicht (EH3D-COMMON, EH3D-CORE-LIBS, EH3D-DRILLPRO, EH3D-ROUTEPRO, EH3D-BUNGARD-GUI, EH3D-MOTIONCNC, EH3D-SERVER, EH3D-STUDIO, EH3D-NODE-BUNGARD, EH3D-NODE-BUNGARD-HMI, EH3D-NODE-BUNGARD-AUX, EH3D-UPDATER, ELECTRO-HOBBY-3D-UPDATER und dieses), und jedes andere Programm der Suite ist ein Plan. Alles Veröffentlichte wurde auf einem Computer getestet; von der ganzen Suite hat nur das serielle Protokoll von EH3D-DRILLPRO eine echte Maschine bewegt (die Referenzfahrt und die Bewegungen jeder Achse an einer Bungard CCD MTC), und noch kein ganzer Auftrag lief auf einer Maschine. 5 Tests decken die Repository-Prüfung ab.
+**Ehrlichkeitscheck - was heute tatsächlich läuft:** Dokumente und zwei kleine Prüfungen. Die Suite steht am Anfang: siebenundzwanzig Repositories sind veröffentlicht (die Bibliotheken, die Bungard-Programme, der Server und Studio, die Knoten und Touchscreens, die Handy-Apps, die CAM- und Hilfsprogramme, die Updater und dieses), und das Handbediengerät für kleine Touchscreens ist das einzige Programm, das noch ein Plan ist. Alles Veröffentlichte wurde auf einem Computer getestet, und die Oberflächen sprechen 37 Sprachen; von der ganzen Suite hat nur das serielle Protokoll von EH3D-DRILLPRO eine echte Maschine bewegt (die Referenzfahrt und die Bewegungen jeder Achse an einer Bungard CCD MTC), und noch kein ganzer Auftrag lief auf einer Maschine. 5 Tests decken die Repository-Prüfung ab.
 
 ---
 
@@ -46,7 +46,7 @@ Jede Zeile ist ein Teil dieses Repositorys, und die Ampel sagt, wie weit er heut
 |---|---|---|
 | Repository-Prüfungen | 🟡 | Die Repository-Prüfung, die Prüfung der Links zwischen den Dokumenten und die 5 Tests der Repository-Prüfung laufen in der CI und bestehen. |
 | Tests | 🟠 | Nur die Repository-Prüfung hat Tests (5); die Dokumente und ihre Aussagen werden von Hand und mit den beiden Skripten gelesen und geprüft. |
-| Karte und Fähigkeitsmatrix | 🟡 | Die Karte der Suite, die Architekturnotizen und die Fähigkeitsmatrix decken die sechzehn veröffentlichten Repositories und die zehn begonnenen ab und führen jedes andere Programm als geplant; sie werden von Hand geschrieben und können hinter den Repositories zurückbleiben. |
+| Karte und Fähigkeitsmatrix | 🟡 | Die Karte der Suite, die Architekturnotizen und die Fähigkeitsmatrix decken die siebenundzwanzig veröffentlichten Repositories mit der Version jedes einzelnen ab und führen das eine Programm, das noch ein Plan ist, als geplant; sie werden von Hand geschrieben und können hinter den Repositories zurückbleiben. |
 | Echte Hardware | 🟡 | Nicht zutreffend: Dokumentation, nichts hier läuft auf Hardware. |
 | Dokumentation | 🟡 | README in acht Sprachen, bei jeder Änderung gegen Manifest und Änderungsprotokoll geprüft. |
 

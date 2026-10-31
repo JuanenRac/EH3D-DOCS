@@ -4,6 +4,8 @@ All notable changes to this project are documented here.
 
 ## [Unreleased]
 
+- **The map with the release of each repository, and the newest work:** the map has a Release column; the map and the matrix say that the interfaces of the programs, the touch screens and the panel of the nodes speak 37 languages, that a Bungard machine has two spindles (60000 rpm the original one, 24000 rpm the one with a drive) with limits that the server enforces, that a job can be the drilling, the routing or both with any tool switched off, and what the sensors of the node of the drill head do (laser, several temperature sensors, a reflective speed sensor with a filter and the settings of the camera picture), each with what has not been tried on a real machine. The general purpose touch screen is described with its kind of machine, and the README in eight languages counts the twenty-seven published repositories.
+
 - **The new programs are published:** the launcher, the tool crib, the isolation program, the laser program, the Gerber viewer, the stencil program, the levelling utility, the pick and place manager, the vision studio, the G-code debugger and the general purpose touch screen have their first release, so the map lists them as published.
 
 - **The ring of LEDs and the quality check of the drill head:** two rows in the matrix (the ring of LEDs around the camera with its colour signals and the picture on request; the quality check of the holes and of the milled channels with one verdict) and a sentence in the map for each repository that has it. Both say what has not happened: no ring has been driven and no real board has been photographed.

@@ -18,7 +18,7 @@
 
 ---
 
-**Verifica di onestà - cosa funziona oggi:** documenti e due piccoli controlli. La suite è ai primi passi: sono pubblicati quattordici repository (EH3D-COMMON, EH3D-CORE-LIBS, EH3D-DRILLPRO, EH3D-ROUTEPRO, EH3D-BUNGARD-GUI, EH3D-MOTIONCNC, EH3D-SERVER, EH3D-STUDIO, EH3D-NODE-BUNGARD, EH3D-NODE-BUNGARD-HMI, EH3D-NODE-BUNGARD-AUX, EH3D-UPDATER, ELECTRO-HOBBY-3D-UPDATER e questo) e ogni altro programma della suite è un progetto. Tutto ciò che è pubblicato è stato provato su un computer; di tutta la suite solo il protocollo seriale di EH3D-DRILLPRO ha mosso una macchina reale (il riferimento e i movimenti di ogni asse su una Bungard CCD MTC), e nessun lavoro completo è ancora stato eseguito su una macchina. 5 test coprono il controllo del repository.
+**Verifica di onestà - cosa funziona oggi:** documenti e due piccoli controlli. La suite è ai primi passi: sono pubblicati ventisette repository (le librerie, i programmi Bungard, il server e Studio, i nodi e gli schermi tattili, le app per telefono, i programmi CAM e di utilità, gli aggiornatori e questo) e il comando per piccoli schermi tattili è l'unico programma che è ancora un progetto. Tutto ciò che è pubblicato è stato provato su un computer e le interfacce parlano 37 lingue; di tutta la suite solo il protocollo seriale di EH3D-DRILLPRO ha mosso una macchina reale (il riferimento e i movimenti di ogni asse su una Bungard CCD MTC), e nessun lavoro completo è ancora stato eseguito su una macchina. 5 test coprono il controllo del repository.
 
 ---
 
@@ -46,7 +46,7 @@ Ogni riga è una parte di questo repository e il semaforo dice a che punto è og
 |---|---|---|
 | Controlli del repository | 🟡 | Il controllo del repository, quello dei link tra i documenti e i 5 test del controllo del repository girano nella CI e passano. |
 | Test | 🟠 | Solo il controllo del repository ha test (5); i documenti e le affermazioni che contengono sono letti e verificati a mano e dai due script. |
-| Mappa e matrice delle capacità | 🟡 | La mappa della suite, le note di architettura e la matrice delle capacità coprono i sedici repository pubblicati e i dieci iniziati, ed elencano ogni altro programma come previsto; sono scritte a mano e possono restare indietro rispetto ai repository. |
+| Mappa e matrice delle capacità | 🟡 | La mappa della suite, le note di architettura e la matrice delle capacità coprono i ventisette repository pubblicati, con la versione di ciascuno, ed elencano come previsto l'unico programma che è ancora un progetto; sono scritte a mano e possono restare indietro rispetto ai repository. |
 | Hardware reale | 🟡 | Non applicabile: documentazione, nulla qui gira su hardware. |
 | Documentazione | 🟡 | README in otto lingue, verificato a ogni modifica contro il manifesto e il registro delle modifiche. |
 

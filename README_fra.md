@@ -18,7 +18,7 @@
 
 ---
 
-**Vérification d'honnêteté - ce qui tourne aujourd'hui :** des documents et deux petits contrôles. La suite en est à ses premiers pas : quatorze dépôts sont publiés (EH3D-COMMON, EH3D-CORE-LIBS, EH3D-DRILLPRO, EH3D-ROUTEPRO, EH3D-BUNGARD-GUI, EH3D-MOTIONCNC, EH3D-SERVER, EH3D-STUDIO, EH3D-NODE-BUNGARD, EH3D-NODE-BUNGARD-HMI, EH3D-NODE-BUNGARD-AUX, EH3D-UPDATER, ELECTRO-HOBBY-3D-UPDATER et celui-ci) et tout autre programme de la suite est un projet. Tout ce qui est publié a été testé sur un ordinateur ; dans toute la suite, seul le protocole série d'EH3D-DRILLPRO a déplacé une vraie machine (la référence et les mouvements de chaque axe sur une Bungard CCD MTC), et aucun travail complet n'a encore tourné sur une machine. 5 tests couvrent le contrôle du dépôt.
+**Vérification d'honnêteté - ce qui tourne aujourd'hui :** des documents et deux petits contrôles. La suite en est à ses premiers pas : vingt-sept dépôts sont publiés (les bibliothèques, les programmes Bungard, le serveur et Studio, les nœuds et écrans tactiles, les applications mobiles, les programmes de FAO et utilitaires, les mises à jour et celui-ci) et la télécommande pour petits écrans tactiles est le seul programme qui reste un projet. Tout ce qui est publié a été testé sur un ordinateur et les interfaces parlent 37 langues ; dans toute la suite, seul le protocole série d'EH3D-DRILLPRO a déplacé une vraie machine (la référence et les mouvements de chaque axe sur une Bungard CCD MTC), et aucun travail complet n'a encore tourné sur une machine. 5 tests couvrent le contrôle du dépôt.
 
 ---
 
@@ -46,7 +46,7 @@ Chaque ligne est une partie de ce dépôt et le feu dit où elle en est aujourd'
 |---|---|---|
 | Contrôles du dépôt | 🟡 | Le contrôle du dépôt, celui des liens entre les documents et les 5 tests du contrôle du dépôt tournent dans la CI et réussissent. |
 | Tests | 🟠 | Seul le contrôle du dépôt a des tests (5) ; les documents et les affirmations qu'ils contiennent sont lus et vérifiés à la main et par les deux scripts. |
-| Carte et matrice des capacités | 🟡 | La carte de la suite, les notes d'architecture et la matrice des capacités couvrent les seize dépôts publiés et les dix commencés, et listent tout autre programme comme prévu ; elles sont écrites à la main et peuvent prendre du retard sur les dépôts. |
+| Carte et matrice des capacités | 🟡 | La carte de la suite, les notes d'architecture et la matrice des capacités couvrent les vingt-sept dépôts publiés, avec la version de chacun, et listent comme prévu le seul programme qui reste un projet ; elles sont écrites à la main et peuvent prendre du retard sur les dépôts. |
 | Matériel réel | 🟡 | Sans objet : documentation, rien ici ne tourne sur du matériel. |
 | Documentation | 🟡 | README en huit langues, vérifié à chaque changement contre le manifeste et le journal des modifications. |
 

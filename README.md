@@ -18,7 +18,7 @@
 
 ---
 
-**Honesty check - what actually runs today:** documents and two small checks. The suite is at its first steps: fourteen repositories are published (EH3D-COMMON, EH3D-CORE-LIBS, EH3D-DRILLPRO, EH3D-ROUTEPRO, EH3D-BUNGARD-GUI, EH3D-MOTIONCNC, EH3D-SERVER, EH3D-STUDIO, EH3D-NODE-BUNGARD, EH3D-NODE-BUNGARD-HMI, EH3D-NODE-BUNGARD-AUX, EH3D-UPDATER, ELECTRO-HOBBY-3D-UPDATER and this one) and every other program of the suite is a plan. Everything published has been tested on a computer; of the whole suite only the serial protocol of EH3D-DRILLPRO has moved a real machine (the reference run and the moves of each axis on one Bungard CCD MTC), and no whole job has run on a machine yet. 5 tests cover the repository check.
+**Honesty check - what actually runs today:** documents and two small checks. The suite is at its first steps: twenty-seven repositories are published (the libraries, the Bungard programs, the server and Studio, the nodes and touch screens, the phone apps, the CAM and utility programs, the updaters and this one) and the pendant for small touch screens is the only program that is still a plan. Everything published has been tested on a computer, and the interfaces speak 37 languages; of the whole suite only the serial protocol of EH3D-DRILLPRO has moved a real machine (the reference run and the moves of each axis on one Bungard CCD MTC), and no whole job has run on a machine yet. 5 tests cover the repository check.
 
 ---
 
@@ -46,7 +46,7 @@ Each line is one part of this repository and the light says how far it is today.
 |---|---|---|
 | Repository checks | 🟡 | The repository check, the check of the links between the documents and the 5 tests of the repository check run in CI and pass. |
 | Tests | 🟠 | Only the repository check has tests (5); the documents and the claims in them are read and checked by hand and by the two scripts. |
-| Map and capability matrix | 🟡 | The suite map, the architecture notes and the capability matrix cover the sixteen published repositories and the ten that have started, and list every other program as planned; they are written by hand and can fall behind the repositories. |
+| Map and capability matrix | 🟡 | The suite map, the architecture notes and the capability matrix cover the twenty-seven published repositories, with the release of each, and list the one program that is still a plan as planned; they are written by hand and can fall behind the repositories. |
 | Real hardware | 🟡 | Not applicable: documentation, nothing here runs on hardware. |
 | Documentation | 🟡 | README in eight languages, checked against the manifest and the changelog on every change. |
 

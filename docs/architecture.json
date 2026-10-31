@@ -78,7 +78,7 @@
       "level": "external",
       "title": "Published repositories",
       "lines": [
-        "nine, tested on a computer;",
+        "27, tested on a computer;",
         "only the DRILLPRO protocol",
         "has moved a real machine"
       ]
@@ -89,8 +89,8 @@
       "level": "config",
       "title": "The planned programs",
       "lines": [
-        "a name and a purpose on the map,",
-        "no code anybody can run"
+        "the pendant for small screens:",
+        "a name on the map, no code"
       ]
     }
   ],
