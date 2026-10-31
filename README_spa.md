@@ -46,13 +46,13 @@ Cada línea es una parte de este repositorio y la luz dice hasta dónde llega ho
 |---|---|---|
 | Comprobaciones del repositorio | 🟡 | La comprobación del repositorio, la de los enlaces entre los documentos y las 5 pruebas de la comprobación del repositorio se ejecutan en el CI y pasan. |
 | Pruebas | 🟠 | Solo la comprobación del repositorio tiene pruebas (5); los documentos y las afirmaciones que contienen se leen y comprueban a mano y con los dos scripts. |
-| Mapa y matriz de capacidades | 🟡 | El mapa de la suite, las notas de arquitectura y la matriz de capacidades cubren los once repositorios publicados y listan cualquier otro programa como previsto; se escriben a mano y pueden quedar por detrás de los repositorios. |
+| Mapa y matriz de capacidades | 🟡 | El mapa de la suite, las notas de arquitectura y la matriz de capacidades cubren los dieciséis repositorios publicados y los diez que han empezado, y listan cualquier otro programa como previsto; se escriben a mano y pueden quedar por detrás de los repositorios. |
 | Hardware real | 🟡 | No aplica: documentación, nada aquí se ejecuta en hardware. |
 | Documentación | 🟡 | README en ocho idiomas, comprobado contra el manifiesto y el registro de cambios en cada cambio. |
 
 ## 🎯 Resumen
 
-* **El mapa de la suite:** cada repositorio, para qué sirve y si está publicado o solo previsto.
+* **El mapa de la suite:** cada repositorio, para qué sirve y si está publicado, empezado (código con pruebas y sin versión todavía) o solo previsto.
 * **La arquitectura:** las dos bibliotecas compartidas, los programas que deben depender de ellas y nunca entre sí, el nodo y el servidor que llegan a la máquina, y las reglas que sigue cada repositorio.
 * **La matriz de capacidades:** qué se ha probado en un ordenador y qué se ha ejecutado en una máquina (solo el protocolo de EH3D-DRILLPRO, en una máquina), para que nadie tenga que adivinar.
 * **Las convenciones:** el manifiesto que lleva cada repositorio, la comprobación del repositorio y los ficheros README en ocho idiomas.
@@ -155,7 +155,7 @@ EH3D-DOCS/
 **Límites conocidos hoy**
 
 * El mapa, las notas de arquitectura y la matriz de capacidades se escriben a mano; nada los comprueba contra los manifiestos de los repositorios, así que pueden quedar por detrás.
-* Solo los repositorios publicados se describen con detalle; cualquier otro programa es una línea del mapa marcada como prevista.
+* Solo los repositorios publicados se describen con detalle; los programas empezados y los previstos son una línea del mapa cada uno, marcada como tal.
 * Los documentos no tienen más pruebas propias que la comprobación del repositorio y la de los enlaces.
 
 **Siguiente**

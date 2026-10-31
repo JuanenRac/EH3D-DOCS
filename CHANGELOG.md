@@ -4,6 +4,8 @@ All notable changes to this project are documented here.
 
 ## [Unreleased]
 
+- **The map, the matrix and the architecture for the programs that have started:** the launcher, the tool crib, the isolation program, the laser program, the Gerber viewer, the stencil program, the height-map program, pick and place, the debugger and the vision program have a line in the map as started (a library and a command line with tests, no release yet) and a row each in the matrix; the phone apps for Android and iPhone are listed as published; the catalogue of bits is more than 450 and the node of the drill head, the web panel of the nodes and the recovery of a program in MOTIONCNC are mentioned.
+
 - **The node of the drill head through the server and in Studio:** the matrix and the architecture say that the server relays the node (`/api/v1/machines/:id/head/...`), that Studio shows it on the page of a machine, that the cameras are the OV2640 and the OV5640 and that the drivers of the sensors are written but have never run.
 
 ## [0.0.2] - The drill head node, the height map of the table and the updates of the services in the map, the matrix and the architecture

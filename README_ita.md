@@ -46,13 +46,13 @@ Ogni riga è una parte di questo repository e il semaforo dice a che punto è og
 |---|---|---|
 | Controlli del repository | 🟡 | Il controllo del repository, quello dei link tra i documenti e i 5 test del controllo del repository girano nella CI e passano. |
 | Test | 🟠 | Solo il controllo del repository ha test (5); i documenti e le affermazioni che contengono sono letti e verificati a mano e dai due script. |
-| Mappa e matrice delle capacità | 🟡 | La mappa della suite, le note di architettura e la matrice delle capacità coprono i undici repository pubblicati ed elencano ogni altro programma come previsto; sono scritte a mano e possono restare indietro rispetto ai repository. |
+| Mappa e matrice delle capacità | 🟡 | La mappa della suite, le note di architettura e la matrice delle capacità coprono i sedici repository pubblicati e i dieci iniziati, ed elencano ogni altro programma come previsto; sono scritte a mano e possono restare indietro rispetto ai repository. |
 | Hardware reale | 🟡 | Non applicabile: documentazione, nulla qui gira su hardware. |
 | Documentazione | 🟡 | README in otto lingue, verificato a ogni modifica contro il manifesto e il registro delle modifiche. |
 
 ## 🎯 Panoramica
 
-* **La mappa della suite:** ogni repository, a cosa serve e se è pubblicato o solo previsto.
+* **La mappa della suite:** ogni repository, a cosa serve e se è pubblicato, iniziato (codice con test e ancora senza versione) o solo previsto.
 * **L'architettura:** le due librerie condivise, i programmi che dovranno dipenderne e mai l'uno dall'altro, il nodo e il server che raggiungono la macchina, e le regole che ogni repository segue.
 * **La matrice delle capacità:** cosa è provato su un computer e cosa è stato eseguito su una macchina (solo il protocollo di EH3D-DRILLPRO, su una macchina), così nessuno deve indovinare.
 * **Le convenzioni:** il manifesto che ogni repository porta, il controllo del repository e i file README in otto lingue.
@@ -155,7 +155,7 @@ EH3D-DOCS/
 **Limiti noti oggi**
 
 * La mappa, le note di architettura e la matrice delle capacità sono scritte a mano; nulla le confronta con i manifesti dei repository, quindi possono restare indietro.
-* Solo i repository pubblicati sono descritti in dettaglio; ogni altro programma è una riga della mappa segnata come prevista.
+* Solo i repository pubblicati sono descritti in dettaglio; i programmi iniziati e quelli previsti sono una riga della mappa ciascuno, segnata come tale.
 * I documenti non hanno test propri oltre al controllo del repository e a quello dei link.
 
 **Prossimi passi**

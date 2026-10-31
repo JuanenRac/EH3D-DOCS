@@ -46,13 +46,13 @@ Each line is one part of this repository and the light says how far it is today.
 |---|---|---|
 | Repository checks | 🟡 | The repository check, the check of the links between the documents and the 5 tests of the repository check run in CI and pass. |
 | Tests | 🟠 | Only the repository check has tests (5); the documents and the claims in them are read and checked by hand and by the two scripts. |
-| Map and capability matrix | 🟡 | The suite map, the architecture notes and the capability matrix cover the eleven published repositories and list every other program as planned; they are written by hand and can fall behind the repositories. |
+| Map and capability matrix | 🟡 | The suite map, the architecture notes and the capability matrix cover the sixteen published repositories and the ten that have started, and list every other program as planned; they are written by hand and can fall behind the repositories. |
 | Real hardware | 🟡 | Not applicable: documentation, nothing here runs on hardware. |
 | Documentation | 🟡 | README in eight languages, checked against the manifest and the changelog on every change. |
 
 ## 🎯 Overview
 
-* **The map of the suite:** every repository, what it is for, and whether it is published or only planned.
+* **The map of the suite:** every repository, what it is for, and whether it is published, started (code with tests and no release yet) or only planned.
 * **The architecture:** the two shared libraries, the programs that are meant to depend on them and never on each other, the node and the server that reach the machine, and the rules every repository follows.
 * **The capability matrix:** what is tested on a computer and what has been run on a machine (only the protocol of EH3D-DRILLPRO, on one machine), so nobody has to guess.
 * **The conventions:** the manifest every repository carries, the repository check and the eight-language README files.
@@ -155,7 +155,7 @@ EH3D-DOCS/
 **Known limits today**
 
 * The map, the architecture notes and the capability matrix are written by hand; nothing checks them against the manifests of the repositories, so they can fall behind.
-* Only the published repositories are described in detail; every other program is a line of the map marked as planned.
+* Only the published repositories are described in detail; the programs that have started and the planned ones are a line of the map each, marked as such.
 * The documents have no test of their own beyond the repository check and the link check.
 
 **Next**

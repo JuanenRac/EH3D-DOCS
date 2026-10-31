@@ -46,13 +46,13 @@ Cada linha é uma parte deste repositório e a luz diz até onde chega hoje. É 
 |---|---|---|
 | Verificações do repositório | 🟡 | A verificação do repositório, a dos ligações entre os documentos e os 5 testes da verificação do repositório correm na CI e passam. |
 | Testes | 🟠 | Só a verificação do repositório tem testes (5); os documentos e as afirmações que contêm são lidos e verificados à mão e pelos dois scripts. |
-| Mapa e matriz de capacidades | 🟡 | O mapa da suite, as notas de arquitetura e a matriz de capacidades cobrem os onze repositórios publicados e listam qualquer outro programa como previsto; são escritos à mão e podem ficar atrás dos repositórios. |
+| Mapa e matriz de capacidades | 🟡 | O mapa da suite, as notas de arquitetura e a matriz de capacidades cobrem os dezasseis repositórios publicados e os dez começados, e listam qualquer outro programa como previsto; são escritos à mão e podem ficar atrás dos repositórios. |
 | Hardware real | 🟡 | Não se aplica: documentação, nada aqui corre em hardware. |
 | Documentação | 🟡 | README em oito idiomas, verificado em cada alteração contra o manifesto e o registo de alterações. |
 
 ## 🎯 Visão geral
 
-* **O mapa da suite:** cada repositório, para que serve e se está publicado ou só previsto.
+* **O mapa da suite:** cada repositório, para que serve e se está publicado, começado (código com testes e ainda sem versão) ou só previsto.
 * **A arquitetura:** as duas bibliotecas partilhadas, os programas que deverão depender delas e nunca uns dos outros, o nó e o servidor que chegam à máquina, e as regras que cada repositório segue.
 * **A matriz de capacidades:** o que está testado num computador e o que foi executado numa máquina (só o protocolo do EH3D-DRILLPRO, numa máquina), para que ninguém tenha de adivinhar.
 * **As convenções:** o manifesto que cada repositório leva, a verificação do repositório e os ficheiros README em oito idiomas.
@@ -155,7 +155,7 @@ EH3D-DOCS/
 **Limites conhecidos hoje**
 
 * O mapa, as notas de arquitetura e a matriz de capacidades são escritos à mão; nada os verifica contra os manifestos dos repositórios, por isso podem ficar atrás.
-* Só os repositórios publicados são descritos em pormenor; qualquer outro programa é uma linha do mapa marcada como prevista.
+* Só os repositórios publicados são descritos em pormenor; os programas começados e os previstos são uma linha do mapa cada um, marcada como tal.
 * Os documentos não têm testes próprios além da verificação do repositório e da das ligações.
 
 **A seguir**

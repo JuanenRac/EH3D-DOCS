@@ -46,13 +46,13 @@ Jede Zeile ist ein Teil dieses Repositorys, und die Ampel sagt, wie weit er heut
 |---|---|---|
 | Repository-Prüfungen | 🟡 | Die Repository-Prüfung, die Prüfung der Links zwischen den Dokumenten und die 5 Tests der Repository-Prüfung laufen in der CI und bestehen. |
 | Tests | 🟠 | Nur die Repository-Prüfung hat Tests (5); die Dokumente und ihre Aussagen werden von Hand und mit den beiden Skripten gelesen und geprüft. |
-| Karte und Fähigkeitsmatrix | 🟡 | Die Karte der Suite, die Architekturnotizen und die Fähigkeitsmatrix decken die elf veröffentlichten Repositories ab und führen jedes andere Programm als geplant; sie werden von Hand geschrieben und können hinter den Repositories zurückbleiben. |
+| Karte und Fähigkeitsmatrix | 🟡 | Die Karte der Suite, die Architekturnotizen und die Fähigkeitsmatrix decken die sechzehn veröffentlichten Repositories und die zehn begonnenen ab und führen jedes andere Programm als geplant; sie werden von Hand geschrieben und können hinter den Repositories zurückbleiben. |
 | Echte Hardware | 🟡 | Nicht zutreffend: Dokumentation, nichts hier läuft auf Hardware. |
 | Dokumentation | 🟡 | README in acht Sprachen, bei jeder Änderung gegen Manifest und Änderungsprotokoll geprüft. |
 
 ## 🎯 Überblick
 
-* **Die Karte der Suite:** jedes Repository, wofür es da ist und ob es veröffentlicht oder nur geplant ist.
+* **Die Karte der Suite:** jedes Repository, wofür es da ist und ob es veröffentlicht, begonnen (Code mit Tests und noch ohne Release) oder nur geplant ist.
 * **Die Architektur:** die zwei gemeinsamen Bibliotheken, die Programme, die davon abhängen sollen und nie voneinander, der Knoten und der Server, die die Maschine erreichen, und die Regeln jedes Repositorys.
 * **Die Fähigkeitsmatrix:** was auf einem Computer getestet ist und was auf einer Maschine lief (nur das Protokoll von EH3D-DRILLPRO, an einer Maschine), damit niemand raten muss.
 * **Die Konventionen:** das Manifest, das jedes Repository trägt, die Repository-Prüfung und die README-Dateien in acht Sprachen.
@@ -155,7 +155,7 @@ EH3D-DOCS/
 **Bekannte Grenzen heute**
 
 * Die Karte, die Architekturnotizen und die Fähigkeitsmatrix werden von Hand geschrieben; nichts prüft sie gegen die Manifeste der Repositories, sie können also zurückbleiben.
-* Nur die veröffentlichten Repositories sind ausführlich beschrieben; jedes andere Programm ist eine als geplant markierte Zeile der Karte.
+* Nur die veröffentlichten Repositories sind ausführlich beschrieben; die begonnenen und die geplanten Programme sind je eine entsprechend markierte Zeile der Karte.
 * Die Dokumente haben keinen eigenen Test außer der Repository-Prüfung und der Link-Prüfung.
 
 **Als Nächstes**

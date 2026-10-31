@@ -46,13 +46,13 @@ Chaque ligne est une partie de ce dépôt et le feu dit où elle en est aujourd'
 |---|---|---|
 | Contrôles du dépôt | 🟡 | Le contrôle du dépôt, celui des liens entre les documents et les 5 tests du contrôle du dépôt tournent dans la CI et réussissent. |
 | Tests | 🟠 | Seul le contrôle du dépôt a des tests (5) ; les documents et les affirmations qu'ils contiennent sont lus et vérifiés à la main et par les deux scripts. |
-| Carte et matrice des capacités | 🟡 | La carte de la suite, les notes d'architecture et la matrice des capacités couvrent les onze dépôts publiés et listent tout autre programme comme prévu ; elles sont écrites à la main et peuvent prendre du retard sur les dépôts. |
+| Carte et matrice des capacités | 🟡 | La carte de la suite, les notes d'architecture et la matrice des capacités couvrent les seize dépôts publiés et les dix commencés, et listent tout autre programme comme prévu ; elles sont écrites à la main et peuvent prendre du retard sur les dépôts. |
 | Matériel réel | 🟡 | Sans objet : documentation, rien ici ne tourne sur du matériel. |
 | Documentation | 🟡 | README en huit langues, vérifié à chaque changement contre le manifeste et le journal des modifications. |
 
 ## 🎯 Présentation
 
-* **La carte de la suite :** chaque dépôt, à quoi il sert, et s'il est publié ou seulement prévu.
+* **La carte de la suite :** chaque dépôt, à quoi il sert, et s'il est publié, commencé (du code avec des tests et pas encore de version) ou seulement prévu.
 * **L'architecture :** les deux bibliothèques partagées, les programmes qui sont censés en dépendre et jamais les uns des autres, le nœud et le serveur qui atteignent la machine, et les règles que suit chaque dépôt.
 * **La matrice des capacités :** ce qui est testé sur un ordinateur et ce qui a tourné sur une machine (seulement le protocole d'EH3D-DRILLPRO, sur une machine), pour que personne n'ait à deviner.
 * **Les conventions :** le manifeste que porte chaque dépôt, le contrôle du dépôt et les fichiers README en huit langues.
@@ -155,7 +155,7 @@ EH3D-DOCS/
 **Limites connues aujourd'hui**
 
 * La carte, les notes d'architecture et la matrice des capacités sont écrites à la main ; rien ne les compare aux manifestes des dépôts, elles peuvent donc prendre du retard.
-* Seuls les dépôts publiés sont décrits en détail ; tout autre programme est une ligne de la carte marquée comme prévue.
+* Seuls les dépôts publiés sont décrits en détail ; les programmes commencés et les programmes prévus sont chacun une ligne de la carte, marquée comme telle.
 * Les documents n'ont pas de test propre au-delà du contrôle du dépôt et du contrôle des liens.
 
 **Ensuite**
