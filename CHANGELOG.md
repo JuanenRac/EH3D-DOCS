@@ -4,6 +4,8 @@ All notable changes to this project are documented here.
 
 ## [Unreleased]
 
+## [0.0.3] - The map, the matrix and the architecture with G-code, GRBL and the new releases
+
 - **Free G-code jobs, the GRBL connection and the programs that send their work to the server:** the map, the matrix and the architecture say that the server runs a program of G-code line by line on the simulator or on a GRBL controller, that it can be held, resumed and gone on from the line where it stopped, that the spindle and the coolant start again only when asked, that a node, a GRBL controller and the simulator take different kinds of job, and that the drilling, routing and machine control programs, Studio and the phone apps work with the server; the matrix has two new rows.
 
 - **The Release column and the rows of the newest releases:** the map lists the release that is on GitHub for each repository (the Android and iPhone apps 0.0.3, the touch screens 0.0.4 and 0.0.2, the drill head node 0.0.5, the programs 0.0.9, the modern interface 0.1.5), what a release now holds is no longer said to be on the main branch, and the Android APK of 0.0.3 is said to have been tried on a phone.
