@@ -140,7 +140,7 @@ EH3D-DOCS/
 │   └── architecture.json structure.json         los datos de las dos imágenes
 ├── tools/                                       la comprobación del repositorio, la de enlaces, sus pruebas y las herramientas de imágenes
 ├── images/                                      banner y las imágenes de Arquitectura y Estructura del repositorio
-├── .github/                                     flujos de CI y de publicación, plantillas de issues y pull requests
+├── .github/                                     flujos de CI y del panel, plantillas de issues y pull requests
 ├── eh3d.project.json                            manifiesto: versión, rol, madurez y comando de compilación
 ├── VERSION                                      la versión de los documentos
 ├── CHANGELOG.md                                 qué cambió en cada versión

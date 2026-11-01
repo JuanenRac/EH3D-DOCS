@@ -140,7 +140,7 @@ EH3D-DOCS/
 │   └── architecture.json structure.json         两张图的数据
 ├── tools/                                       仓库检查、链接检查、它们的测试和绘图工具
 ├── images/                                      横幅图以及架构和仓库结构图片
-├── .github/                                     CI 与发布工作流、Issue 和 PR 模板
+├── .github/                                     CI 与仪表板工作流、Issue 和 PR 模板
 ├── eh3d.project.json                            清单：版本、角色、成熟度和构建命令
 ├── VERSION                                      文档的版本
 ├── CHANGELOG.md                                 每个版本的变更

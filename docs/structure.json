@@ -141,14 +141,14 @@
         {
           "name": ".github/",
           "desc": {
-            "en": "CI and release workflows, issue and pull-request templates",
-            "es": "flujos de CI y de publicación, plantillas de issues y pull requests",
-            "de": "CI- und Release-Workflows, Vorlagen für Issues und Pull Requests",
-            "fr": "workflows de CI et de publication, modèles d'issues et de pull requests",
-            "it": "workflow di CI e di rilascio, modelli di issue e pull request",
-            "ja": "CI とリリースのワークフロー、Issue と PR のテンプレート",
-            "zh": "CI 与发布工作流、Issue 和 PR 模板",
-            "pt": "fluxos de CI e de publicação, modelos de issues e pull requests"
+            "en": "CI and dashboard workflows, issue and pull-request templates",
+            "es": "flujos de CI y del panel, plantillas de issues y pull requests",
+            "de": "CI- und Dashboard-Workflows, Vorlagen für Issues und Pull Requests",
+            "fr": "workflows de CI et du tableau de bord, modèles d'issues et de pull requests",
+            "it": "workflow di CI e della dashboard, modelli di issue e pull request",
+            "ja": "CI とダッシュボードのワークフロー、Issue と PR のテンプレート",
+            "zh": "CI 与仪表板工作流、Issue 和 PR 模板",
+            "pt": "fluxos de CI e do painel, modelos de issues e pull requests"
           }
         },
         {

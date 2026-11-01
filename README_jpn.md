@@ -140,7 +140,7 @@ EH3D-DOCS/
 │   └── architecture.json structure.json         2 つの図のデータ
 ├── tools/                                       リポジトリ チェック、リンク チェック、そのテストと図のツール
 ├── images/                                      バナーとアーキテクチャ・リポジトリ構成の図
-├── .github/                                     CI とリリースのワークフロー、Issue と PR のテンプレート
+├── .github/                                     CI とダッシュボードのワークフロー、Issue と PR のテンプレート
 ├── eh3d.project.json                            マニフェスト：バージョン、役割、成熟度、ビルドコマンド
 ├── VERSION                                      ドキュメントのバージョン
 ├── CHANGELOG.md                                 各バージョンの変更点
