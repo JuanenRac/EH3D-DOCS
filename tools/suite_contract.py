@@ -106,6 +106,38 @@ def check_versions(workspace: Path) -> list[Finding]:
     return out
 
 
+# the cells of a row of the map: the repository (with its link), the kind, the state, the release and what it is for
+CELLS = re.compile(r"^(\|\s*\[(EH3D-[A-Z0-9-]+)\]\([^)]*\)\s*\|[^|]*\|[^|]*\|)(\s*)([^|]*?)(\s*)(\|.*)$")
+
+
+def write_map(workspace: Path, write: bool = True) -> list[str]:
+    """Puts in the Release column of SUITE_MAP.md the version of the manifest of each repository that is in the workspace, and nothing else: the words of the map are a person's.
+    Returns what changed, as `<repository>: <old> -> <new>`; with `write` false it changes nothing."""
+    here = workspace / "EH3D-DOCS" / "docs" / "SUITE_MAP.md"
+    if not here.is_file():
+        return []
+    raw = here.read_bytes().decode("utf-8")
+    crlf = "\r\n" in raw
+    lines = raw.replace("\r\n", "\n").split("\n")
+    changed: list[str] = []
+    for i, line in enumerate(lines):
+        m = CELLS.match(line)
+        if not m:
+            continue
+        name, shown = m.group(2), m.group(4)
+        repo = workspace / name
+        manifest = manifest_of(repo) if repo.is_dir() else None
+        version = manifest.get("version") if manifest else None
+        if not isinstance(version, str) or not VERSION.match(version) or version == shown:
+            continue
+        lines[i] = f"{m.group(1)}{m.group(3)}{version}{m.group(5)}{m.group(6)}"
+        changed.append(f"{name}: {shown} -> {version}")
+    if changed and write:
+        text = "\n".join(lines)
+        here.write_bytes((text.replace("\n", "\r\n") if crlf else text).encode("utf-8"))
+    return changed
+
+
 def check_ports(workspace: Path) -> list[Finding]:
     out: list[Finding] = []
     server = workspace / "EH3D-SERVER" / "src" / "config.rs"
@@ -154,7 +186,14 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--workspace", type=Path, default=HERE.parents[1], help="the folder that holds the repositories (default: the one that holds this one)")
     parser.add_argument("--only", choices=sorted(CHECKS), help="run a single check")
     parser.add_argument("--strict", action="store_true", help="warnings fail too")
+    parser.add_argument("--write-map", action="store_true", help="put the versions of the manifests in the Release column of SUITE_MAP.md and stop (nothing else of the map changes)")
     args = parser.parse_args(argv)
+    if args.write_map:
+        changed = write_map(args.workspace)
+        for line in changed:
+            print(line)
+        print(f"SUITE_MAP=WRITTEN rows={len(changed)}")
+        return 0
     ok, found = run(args.workspace, args.only, args.strict)
     for f in found:
         print(f)

@@ -4,6 +4,7 @@ All notable changes to this project are documented here.
 
 ## [Unreleased]
 
+- **The Release column of the map is written, not copied:** `python tools/suite_contract.py --write-map` puts the version of the manifest of each repository that is in the workspace in the Release column of `docs/SUITE_MAP.md` and changes nothing else of the map (the words are a person's), with a test; the check of the versions of the daily job tells which rows are behind.
 - **The suite contract:** `tools/suite_contract.py` checks the relations between the repositories that none can check by itself (readable manifests that carry the name of their folder, a version next to every dependency by path, the versions of the map of the suite, the port of the server in the screens), with its tests; a daily workflow (`suite-contract.yml`) clones the repositories and lists what drifted. It only warns for now; the known exceptions are in `docs/suite_contract_allow.txt`.
 ## [0.0.4] - The matrix and the architecture with resuming and the GRBL switch
 

@@ -88,6 +88,32 @@ class SuiteContractTests(unittest.TestCase):
             self.assertIn("0.0.8", found[0].text)
             self.assertIn("0.1.0", found[0].text)
 
+    def test_the_release_column_is_written_from_the_manifests_and_nothing_else_changes(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            make(root, "EH3D-COMMON", version="0.1.0")
+            make(root, "EH3D-DOCS", version="0.0.4")
+            docs = root / "EH3D-DOCS" / "docs"
+            docs.mkdir()
+            table = (
+                "# The map\n\nWords that are a person's | with a bar.\n\n| Repository | Kind | State | Release | What |\n|---|---|---|---|---|\n"
+                "| [EH3D-COMMON](https://example.invalid/EH3D-COMMON) | Library | Published | 0.0.8 | what it is `x` |\n"
+                "| [EH3D-DOCS](https://example.invalid/EH3D-DOCS) | Documentation | Published | 0.0.4 | This hub. |\n"
+                "| [EH3D-NOTHERE](https://example.invalid/EH3D-NOTHERE) | Library | Started | - | x |\n"
+            )
+            (docs / "SUITE_MAP.md").write_bytes(table.replace("\n", "\r\n").encode("utf-8"))
+            # asking changes nothing
+            self.assertEqual(CONTRACT.write_map(root, write=False), ["EH3D-COMMON: 0.0.8 -> 0.1.0"])
+            self.assertIn(b"0.0.8", (docs / "SUITE_MAP.md").read_bytes())
+            # writing changes the one cell, keeps the line ends and the rest of the words
+            self.assertEqual(CONTRACT.write_map(root), ["EH3D-COMMON: 0.0.8 -> 0.1.0"])
+            after = (docs / "SUITE_MAP.md").read_bytes().decode("utf-8")
+            self.assertEqual(after, table.replace("0.0.8", "0.1.0").replace("\n", "\r\n"))
+            # it is then in step
+            self.assertEqual(CONTRACT.write_map(root), [])
+            _, found = self.run_in(root, only="versions")
+            self.assertEqual(found, [])
+
     def test_the_screens_and_the_server_agree_on_the_port(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
