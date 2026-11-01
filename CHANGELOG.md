@@ -4,6 +4,8 @@ All notable changes to this project are documented here.
 
 ## [Unreleased]
 
+- **Going on from a stopped job, and the `$` lines of GRBL per machine:** the matrix and the architecture say that the server keeps the request of every job and makes a new, never started job from a stopped one with the work done left out, that the three clients use it, and that an administrator can allow the `$` lines of GRBL on one machine with a safety switch that is off by default.
+
 ## [0.0.3] - The map, the matrix and the architecture with G-code, GRBL and the new releases
 
 - **Free G-code jobs, the GRBL connection and the programs that send their work to the server:** the map, the matrix and the architecture say that the server runs a program of G-code line by line on the simulator or on a GRBL controller, that it can be held, resumed and gone on from the line where it stopped, that the spindle and the coolant start again only when asked, that a node, a GRBL controller and the simulator take different kinds of job, and that the drilling, routing and machine control programs, Studio and the phone apps work with the server; the matrix has two new rows.
