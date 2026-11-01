@@ -57,6 +57,7 @@ Ogni riga è una parte di questo repository e il semaforo dice a che punto è og
 * **La matrice delle capacità:** cosa è provato su un computer e cosa è stato eseguito su una macchina (solo il protocollo di EH3D-DRILLPRO, su una macchina), così nessuno deve indovinare.
 * **Le convenzioni:** il manifesto che ogni repository porta, il controllo del repository e i file README in otto lingue.
 * **Due controlli:** il controllo del repository e uno dei link tra i documenti, entrambi nella CI.
+* **Il contratto della suite:** `tools/suite_contract.py` controlla le relazioni che nessun repository può controllare da solo: ogni manifesto è leggibile e porta il nome della sua cartella, una dipendenza da un fratello per percorso dice quale versione serve, la versione nella mappa della suite è quella del manifesto, e gli schermi cercano il server sulla porta su cui ascolta. Un workflow giornaliero clona i repository ed elenca ciò che è derivato; per ora avvisa soltanto, con un elenco di eccezioni note che si svuota man mano che ogni causa è corretta.
 * **Come si aggiorna:** la CM5 dell'officina si aggiorna **con le release** (`deploy/eh3d-update.py` di EH3D-SERVER scarica la release di GitHub in `/opt`); EH3D-UPDATER è per i **PC di sviluppo, con git** ([docs/UPDATING.md](docs/UPDATING.md)).
 
 ## 🧩 Ruolo in EH3D

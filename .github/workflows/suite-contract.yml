@@ -1,0 +1,36 @@
+name: EH3D suite contract
+
+# Checks the relations between the repositories that no repository can check alone (tools/suite_contract.py). It starts as a warning: the job does not stop the
+# repository; the list of what is wrong is in the summary of the run. Once the known exceptions (docs/suite_contract_allow.txt) are gone it can be made blocking.
+on:
+  schedule:
+    - cron: "41 5 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  contract:
+    name: The repositories fit each other
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - name: Check out this repository next to the others
+        uses: actions/checkout@v5
+        with:
+          path: EH3D-DOCS
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - name: Bring the repositories of the suite
+        run: |
+          # the repositories named in the map of the suite; one that is not published yet is skipped
+          for name in $(grep -o '^| \[EH3D-[A-Z0-9-]*\]' EH3D-DOCS/docs/SUITE_MAP.md | grep -o 'EH3D-[A-Z0-9-]*' | sort -u); do
+            [ "$name" = "EH3D-DOCS" ] && continue
+            git clone --depth 1 --quiet "https://github.com/JuanenRac/$name.git" "$name" || echo "not published: $name"
+          done
+      - name: Run the checks
+        run: |
+          python -I EH3D-DOCS/tools/suite_contract.py --workspace . | tee contract.txt
+          { echo "### The repositories of the suite"; echo; echo '```'; cat contract.txt; echo '```'; } >> "$GITHUB_STEP_SUMMARY"

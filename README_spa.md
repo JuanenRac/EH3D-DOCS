@@ -57,6 +57,7 @@ Cada línea es una parte de este repositorio y la luz dice hasta dónde llega ho
 * **La matriz de capacidades:** qué se ha probado en un ordenador y qué se ha ejecutado en una máquina (solo el protocolo de EH3D-DRILLPRO, en una máquina), para que nadie tenga que adivinar.
 * **Las convenciones:** el manifiesto que lleva cada repositorio, la comprobación del repositorio y los ficheros README en ocho idiomas.
 * **Dos comprobaciones:** la comprobación del repositorio y una de los enlaces entre los documentos, ambas en el CI.
+* **El contrato de la suite:** `tools/suite_contract.py` comprueba las relaciones que ningún repositorio puede comprobar por sí solo: cada manifiesto se lee y lleva el nombre de su carpeta, una dependencia de un hermano por ruta dice qué versión necesita, la versión del mapa de la suite es la del manifiesto, y las pantallas buscan el servidor en el puerto en que escucha. Un flujo diario clona los repositorios y lista lo que se ha desviado; por ahora solo avisa, con una lista de excepciones conocidas que se vacía al corregir cada causa.
 * **Cómo se actualiza:** la CM5 del taller se actualiza **por releases** (`deploy/eh3d-update.py` de EH3D-SERVER descarga la release de GitHub a `/opt`); EH3D-UPDATER es para los **PC de desarrollo, por git** ([docs/UPDATING.md](docs/UPDATING.md)).
 
 ## 🧩 Papel en EH3D

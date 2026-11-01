@@ -4,6 +4,7 @@ All notable changes to this project are documented here.
 
 ## [Unreleased]
 
+- **The suite contract:** `tools/suite_contract.py` checks the relations between the repositories that none can check by itself (readable manifests that carry the name of their folder, a version next to every dependency by path, the versions of the map of the suite, the port of the server in the screens), with its tests; a daily workflow (`suite-contract.yml`) clones the repositories and lists what drifted. It only warns for now; the known exceptions are in `docs/suite_contract_allow.txt`.
 ## [0.0.4] - The matrix and the architecture with resuming and the GRBL switch
 
 - **Going on from a stopped job, and the `$` lines of GRBL per machine:** the matrix and the architecture say that the server keeps the request of every job and makes a new, never started job from a stopped one with the work done left out, that the three clients use it, and that an administrator can allow the `$` lines of GRBL on one machine with a safety switch that is off by default.

@@ -57,6 +57,7 @@ Each line is one part of this repository and the light says how far it is today.
 * **The capability matrix:** what is tested on a computer and what has been run on a machine (only the protocol of EH3D-DRILLPRO, on one machine), so nobody has to guess.
 * **The conventions:** the manifest every repository carries, the repository check and the eight-language README files.
 * **Two checks:** the repository check and a check of the links between the documents, both run in CI.
+* **The suite contract:** `tools/suite_contract.py` checks the relations that no repository can check by itself - every manifest is readable and carries the name of its folder, a dependency on a sibling by path says which version it needs, the version in the map of the suite is the one in the manifest, and the screens look for the server on the port it listens on. A daily workflow clones the repositories and lists what drifted; for now it only warns, with a list of known exceptions that is emptied as each cause is fixed.
 * **How it is updated:** the CM5 of the workshop is updated **by releases** (`deploy/eh3d-update.py` of EH3D-SERVER downloads the release of GitHub into `/opt`); EH3D-UPDATER is for **development PCs, by git** ([docs/UPDATING.md](docs/UPDATING.md)).
 
 ## 🧩 Role in EH3D

@@ -57,6 +57,7 @@ Chaque ligne est une partie de ce dépôt et le feu dit où elle en est aujourd'
 * **La matrice des capacités :** ce qui est testé sur un ordinateur et ce qui a tourné sur une machine (seulement le protocole d'EH3D-DRILLPRO, sur une machine), pour que personne n'ait à deviner.
 * **Les conventions :** le manifeste que porte chaque dépôt, le contrôle du dépôt et les fichiers README en huit langues.
 * **Deux contrôles :** le contrôle du dépôt et un contrôle des liens entre les documents, tous deux dans la CI.
+* **Le contrat de la suite :** `tools/suite_contract.py` vérifie les relations qu'aucun dépôt ne peut vérifier seul : chaque manifeste est lisible et porte le nom de son dossier, une dépendance d'un frère par chemin dit quelle version il lui faut, la version de la carte de la suite est celle du manifeste, et les écrans cherchent le serveur sur le port où il écoute. Un workflow quotidien clone les dépôts et liste ce qui a dérivé ; pour l'instant il ne fait qu'avertir, avec une liste d'exceptions connues qui se vide à mesure que chaque cause est corrigée.
 * **Comment on met à jour :** la CM5 de l'atelier est mise à jour **par releases** (`deploy/eh3d-update.py` d'EH3D-SERVER télécharge la release de GitHub dans `/opt`) ; EH3D-UPDATER est pour les **PC de développement, par git** ([docs/UPDATING.md](docs/UPDATING.md)).
 
 ## 🧩 Rôle dans EH3D

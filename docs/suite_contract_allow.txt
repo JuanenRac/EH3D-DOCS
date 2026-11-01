@@ -1,0 +1,1 @@
+# known exceptions of tools/suite_contract.py: one "check repository" per line, removed when the cause is fixed

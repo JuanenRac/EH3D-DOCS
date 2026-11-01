@@ -57,6 +57,7 @@ Jede Zeile ist ein Teil dieses Repositorys, und die Ampel sagt, wie weit er heut
 * **Die Fähigkeitsmatrix:** was auf einem Computer getestet ist und was auf einer Maschine lief (nur das Protokoll von EH3D-DRILLPRO, an einer Maschine), damit niemand raten muss.
 * **Die Konventionen:** das Manifest, das jedes Repository trägt, die Repository-Prüfung und die README-Dateien in acht Sprachen.
 * **Zwei Prüfungen:** die Repository-Prüfung und eine Prüfung der Links zwischen den Dokumenten, beide in der CI.
+* **Der Suite-Vertrag:** `tools/suite_contract.py` prüft die Beziehungen, die kein Repository allein prüfen kann: Jedes Manifest ist lesbar und trägt den Namen seines Ordners, eine Abhängigkeit von einem Geschwister per Pfad nennt die nötige Version, die Version in der Karte der Suite ist die des Manifests, und die Bildschirme suchen den Server auf dem Port, auf dem er lauscht. Ein täglicher Workflow klont die Repositorys und listet, was abgewichen ist; vorerst warnt er nur, mit einer Liste bekannter Ausnahmen, die geleert wird, wenn jede Ursache behoben ist.
 * **Wie aktualisiert wird:** Die CM5 der Werkstatt wird **per Releases** aktualisiert (`deploy/eh3d-update.py` von EH3D-SERVER lädt das Release von GitHub nach `/opt`); EH3D-UPDATER ist für **Entwicklungs-PCs, per Git** ([docs/UPDATING.md](docs/UPDATING.md)).
 
 ## 🧩 Rolle in EH3D
