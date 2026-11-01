@@ -57,6 +57,25 @@ class SyncSharedToolsTests(unittest.TestCase):
             self.assertTrue(text.endswith("print(1)\n"))
             self.assertEqual(SYNC.differing(root), {})
 
+    def test_the_canonical_line_of_the_header_goes_with_the_code_and_a_stale_one_is_told(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            docs = make(root, "EH3D-DOCS", "print(1)\n")
+            docs.write_text(docs.read_text(encoding="utf-8").replace("# ====\nprint", "# ====\n# canonical: EH3D-DOCS tools 4\nprint"), encoding="utf-8")
+            other = make(root, "EH3D-SERVER", "print(2)\n")
+            self.assertEqual(len(SYNC.canonical_problems(root)), 1)
+            SYNC.write_copy(root, "ci_validate.py", "EH3D-SERVER")
+            text = other.read_text(encoding="utf-8")
+            self.assertEqual(text.count("# canonical:"), 1)
+            self.assertIn("# canonical: EH3D-DOCS tools 4\nprint(1)", text)
+            self.assertEqual(SYNC.canonical_problems(root), [])
+            # raising the version in EH3D-DOCS replaces the line, it does not add another
+            docs.write_text(docs.read_text(encoding="utf-8").replace("tools 4", "tools 5"), encoding="utf-8")
+            self.assertEqual(len(SYNC.canonical_problems(root)), 1)
+            SYNC.write_copy(root, "ci_validate.py", "EH3D-SERVER")
+            self.assertEqual(other.read_text(encoding="utf-8").count("# canonical:"), 1)
+            self.assertEqual(SYNC.canonical_problems(root), [])
+
     def test_folders_that_are_not_of_the_suite_are_left_alone(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)

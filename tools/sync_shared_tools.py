@@ -82,6 +82,35 @@ def differing(workspace: Path, only: str | None = None) -> dict[str, list[str]]:
     return result
 
 
+CANONICAL_LINE = "# canonical: "
+
+
+def canonical_line(head: str) -> str | None:
+    """The `# canonical: EH3D-DOCS tools N` line of a header, or None."""
+    return next((line for line in head.replace("\r\n", "\n").split("\n") if line.startswith(CANONICAL_LINE)), None)
+
+
+def with_canonical_line(head: str, line: str | None) -> str:
+    """The header with its `# canonical:` line replaced by `line` (added at the end of the header when it had none); unchanged when `line` is None."""
+    if line is None:
+        return head
+    lines = [item for item in head.replace("\r\n", "\n").split("\n") if not item.startswith(CANONICAL_LINE)]
+    return "\n".join(lines + [line])
+
+
+def canonical_problems(workspace: Path) -> list[str]:
+    """The copies of ci_validate.py whose header does not state the tools version of EH3D-DOCS (a repository that has not been synchronised yet)."""
+    wanted = canonical_line(split_header((workspace / CANONICAL / "tools" / "ci_validate.py").read_text(encoding="utf-8"))[0])
+    out = []
+    for repo in repos(workspace):
+        path = repo / "tools" / "ci_validate.py"
+        if path.is_file() and repo.name != CANONICAL:
+            stated = canonical_line(split_header(path.read_text(encoding="utf-8"))[0])
+            if stated != wanted:
+                out.append(f"{repo.name}: ci_validate.py declares {stated.split('tools ')[-1] if stated else 'no canonical version'}, the suite is at {wanted.split('tools ')[-1] if wanted else '?'}")
+    return out
+
+
 def write_copy(workspace: Path, tool: str, repo: str) -> None:
     """Puts the body of the canonical copy in the file of a repository, whose header (its own name) stays."""
     src = workspace / CANONICAL / "tools" / tool
@@ -91,7 +120,8 @@ def write_copy(workspace: Path, tool: str, repo: str) -> None:
     raw = dst.read_bytes().decode("utf-8")
     crlf = "\r\n" in raw
     head, _ = split_header(raw)
-    _, body = split_header(src.read_text(encoding="utf-8"))
+    src_head, body = split_header(src.read_text(encoding="utf-8"))
+    head = with_canonical_line(head, canonical_line(src_head))
     text = head + "\n" + body
     dst.write_bytes((text.replace("\n", "\r\n") if crlf else text).encode("utf-8"))
 

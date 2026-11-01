@@ -128,6 +128,45 @@ class SuiteContractTests(unittest.TestCase):
             self.assertFalse(ok)
             self.assertEqual([f.repo for f in found], ["EH3D-NODE-HMI-GUI"])
 
+    def test_the_manifest_has_to_be_accepted_by_the_parser_of_the_updater(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            parser = root / "EH3D-UPDATER" / "src" / "eh3d_updater"
+            parser.mkdir(parents=True)
+            (parser / "project_manifest.py").write_text(
+                "def parse_manifest(text, *, expected_name=None):\n"
+                "    import json\n"
+                "    if 'role' not in json.loads(text):\n"
+                "        raise ValueError('missing field(s): role')\n",
+                encoding="utf-8",
+            )
+            repo = make(root, "EH3D-COMMON")
+            _, found = self.run_in(root, only="manifests")
+            self.assertEqual([f.level for f in found], ["ERROR"])
+            self.assertIn("rejects the manifest", found[0].text)
+            (repo / "eh3d.project.json").write_text(json.dumps({"name": "EH3D-COMMON", "version": "0.0.1", "role": "library"}), encoding="utf-8")
+            self.assertEqual(self.run_in(root, only="manifests")[1], [])
+
+    def test_without_the_updater_the_parser_check_is_skipped(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            make(root, "EH3D-COMMON")
+            self.assertEqual(self.run_in(root, only="manifests")[1], [])
+
+    def test_a_repository_with_another_validator_is_a_warning_and_never_an_error(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            for name, body, tools_version in (("EH3D-DOCS", "print(1)\n", "1"), ("EH3D-SERVER", "print(2)\n", "0")):
+                repo = make(root, name)
+                (repo / "tools").mkdir()
+                (repo / "tools" / "ci_validate.py").write_text(f"# ====\n# canonical: EH3D-DOCS tools {tools_version}\n{body}", encoding="utf-8")
+            ok, found = self.run_in(root, only="tools")
+            self.assertTrue(ok)
+            self.assertEqual({f.repo for f in found}, {"EH3D-SERVER"})
+            self.assertEqual({f.level for f in found}, {"WARNING"})
+            ok, _ = self.run_in(root, only="tools", strict=True)
+            self.assertFalse(ok)
+
     def test_a_known_exception_is_left_out(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)

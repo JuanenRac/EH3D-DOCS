@@ -70,5 +70,75 @@ class TreeTests(unittest.TestCase):
                 VALIDATE.ROOT = original
 
 
+class CanonicalTests(unittest.TestCase):
+    def test_the_version_is_read_where_the_manifest_says(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            (root / "Cargo.toml").write_text('[package]\nname = "x"\nversion = "1.2.3"\n', encoding="utf-8")
+            (root / "build.gradle").write_text('versionName = "0.0.7"\n', encoding="utf-8")
+            (root / "version.h").write_text("#define MAJOR 0\n#define MINOR 8\n#define PATCH 1\n#define BUILD 2\n", encoding="utf-8")
+            self.assertEqual(VALIDATE.native_version(root, {"file": "Cargo.toml", "pattern": r'^version\s*=\s*"(\d+\.\d+\.\d+)"'}), ("1.2.3", "Cargo.toml"))
+            self.assertEqual(VALIDATE.native_version(root, {"file": "build.gradle", "pattern": r'versionName\s*=\s*"([^"]+)"'}), ("0.0.7", "build.gradle"))
+            three = {"file": "Cargo.toml", "pattern": r'^version\s*=\s*"(\d+)\.(\d+)\.(\d+)"'}
+            self.assertEqual(VALIDATE.native_version(root, three)[0], "1.2.3")
+            parts = {"file": "version.h", "pattern": {k: rf"#define {k.upper()} (\d+)" for k in ("major", "minor", "patch", "build")}}
+            self.assertEqual(VALIDATE.native_version(root, parts)[0], "0.8.1.2")
+
+    def test_a_missing_or_wrong_native_file_gives_a_question_mark_not_a_crash(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            self.assertEqual(VALIDATE.native_version(root, {"file": "nothing.toml"}), ("?", "nothing.toml"))
+            (root / "Cargo.toml").write_text("[package]\n", encoding="utf-8")
+            self.assertEqual(VALIDATE.native_version(root, {"file": "Cargo.toml", "pattern": r'^version = "(.+)"'})[0], "?")
+
+    def test_the_data_of_a_repository_comes_from_ci_config_json(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            self.assertEqual(VALIDATE.load_config(root), ({}, []))
+            self.assertEqual(VALIDATE.skip_dirs({}), {"target", ".git"})
+            (root / "tools").mkdir()
+            (root / "tools" / "ci_config.json").write_text('{"skip_dirs": ["local-data", "re"]}', encoding="utf-8")
+            config, problems = VALIDATE.load_config(root)
+            self.assertEqual(problems, [])
+            self.assertEqual(VALIDATE.skip_dirs(config), {"target", ".git", "local-data", "re"})
+
+    def test_a_damaged_ci_config_is_a_problem(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            (root / "tools").mkdir()
+            for text in ("{ not json", "[1]", '{"skip_dirs": "re"}', '{"skip_dirs": [1]}'):
+                (root / "tools" / "ci_config.json").write_text(text, encoding="utf-8")
+                config, problems = VALIDATE.load_config(root)
+                self.assertEqual(config, {})
+                self.assertEqual(len(problems), 1, text)
+
+    def test_the_header_states_the_tools_version_of_the_code(self):
+        with tempfile.TemporaryDirectory() as folder:
+            copy = Path(folder) / "ci_validate.py"
+            copy.write_text(f"#!/usr/bin/env python3\n# EH3D-X\n# canonical: EH3D-DOCS tools {VALIDATE.TOOLS_VERSION}\n\"\"\"x\"\"\"\n", encoding="utf-8")
+            self.assertEqual(VALIDATE.header_problems(copy), [])
+            copy.write_text("# EH3D-X\n# canonical: EH3D-DOCS tools 0\n\"\"\"x\"\"\"\n", encoding="utf-8")
+            self.assertIn("header says canonical tools 0", VALIDATE.header_problems(copy)[0])
+            copy.write_text("# EH3D-X\n\"\"\"x\"\"\"\n", encoding="utf-8")
+            self.assertIn("header says canonical tools None", VALIDATE.header_problems(copy)[0])
+        self.assertEqual(VALIDATE.header_problems(), [])  # this very file
+
+    def test_an_ios_project_shows_the_version_of_the_manifest(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            self.assertEqual(VALIDATE.project_yml_problems(root, "0.0.6"), [])
+            (root / "project.yml").write_text('MARKETING_VERSION: "0.0.5"\nCFBundleShortVersionString: "0.0.5"\n', encoding="utf-8")
+            self.assertEqual(len(VALIDATE.project_yml_problems(root, "0.0.6")), 2)
+            (root / "project.yml").write_text('MARKETING_VERSION: "0.0.6"\nCFBundleShortVersionString: "$(MARKETING_VERSION)"\n', encoding="utf-8")
+            self.assertEqual(VALIDATE.project_yml_problems(root, "0.0.6"), [])
+
+    def test_the_last_line_keeps_its_format_and_adds_the_tools_version(self):
+        import subprocess
+        import sys
+
+        out = subprocess.run([sys.executable, "-I", str(TOOLS / "ci_validate.py")], capture_output=True, text=True, cwd=TOOLS.parent).stdout.strip().splitlines()[-1]
+        self.assertRegex(out, r"^CI_VALIDATION=PASS project=EH3D-DOCS version=\d+(\.\d+){2,3} tools=" + VALIDATE.TOOLS_VERSION + "$")
+
+
 if __name__ == "__main__":
     unittest.main()

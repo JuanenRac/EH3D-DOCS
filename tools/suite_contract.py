@@ -12,7 +12,8 @@
 
 The checks:
 
-    manifests   every eh3d.project.json is JSON with a name that is the folder and a version of dotted numbers
+    manifests   every eh3d.project.json is JSON with a name that is the folder and a version of dotted numbers, and the parser of EH3D-UPDATER (when it is there) accepts it
+    tools       every repository holds the shared ci_validate.py of this one (same tools version in the header, same code)
     paths       a dependency of a Cargo.toml on a sibling by path says which version of it the program needs (`version = ">=0.0.1", path = "../EH3D-X"`)
     versions    the version that SUITE_MAP.md gives for a repository is the one in its manifest
     ports       the screens and the server agree on the port of the server
@@ -52,13 +53,38 @@ def manifest_of(repo: Path) -> dict | None:
     return data if isinstance(data, dict) else None
 
 
+def real_parser(workspace: Path):
+    """The parse_manifest function of the updater (the one that reads the manifests in the field), or None when EH3D-UPDATER is not next to this repository."""
+    path = workspace / "EH3D-UPDATER" / "src" / "eh3d_updater" / "project_manifest.py"
+    if not path.is_file():
+        return None
+    import importlib.util
+
+    spec = importlib.util.spec_from_file_location("eh3d_contract_project_manifest", path)
+    module = importlib.util.module_from_spec(spec)
+    sys.modules[spec.name] = module  # the dataclasses of the module look themselves up here
+    try:
+        spec.loader.exec_module(module)
+    except Exception:  # noqa: BLE001 - a parser that does not load is not a finding about a manifest
+        return None
+    finally:
+        sys.modules.pop(spec.name, None)
+    return getattr(module, "parse_manifest", None)
+
+
 def check_manifests(workspace: Path) -> list[Finding]:
     out: list[Finding] = []
+    parse = real_parser(workspace)
     for repo in repos(workspace):
         m = manifest_of(repo)
         if m is None:
             out.append(Finding("manifests", repo.name, "ERROR", "eh3d.project.json is not a JSON object"))
             continue
+        if parse is not None:
+            try:
+                parse((repo / "eh3d.project.json").read_text(encoding="utf-8"), expected_name=repo.name)
+            except ValueError as error:
+                out.append(Finding("manifests", repo.name, "ERROR", f"the parser of EH3D-UPDATER rejects the manifest: {error}"))
         name, version = m.get("name"), m.get("version")
         if name != repo.name:
             out.append(Finding("manifests", repo.name, "ERROR", f"the name in the manifest is {name!r}"))
@@ -157,7 +183,26 @@ def check_ports(workspace: Path) -> list[Finding]:
     return out
 
 
-CHECKS = {"manifests": check_manifests, "paths": check_paths, "versions": check_versions, "ports": check_ports}
+def check_tools(workspace: Path) -> list[Finding]:
+    """Every repository holds the shared validator of EH3D-DOCS: the same tools version in its header and the same code. A warning, because a repository that is busy is synchronised later."""
+    sync_path = HERE / "sync_shared_tools.py"
+    if not (workspace / "EH3D-DOCS" / "tools" / "ci_validate.py").is_file() or not sync_path.is_file():
+        return []
+    import importlib.util
+
+    spec = importlib.util.spec_from_file_location("eh3d_contract_sync", sync_path)
+    sync = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(sync)
+    out: list[Finding] = []
+    for text in sync.canonical_problems(workspace):
+        repo, _, message = text.partition(": ")
+        out.append(Finding("tools", repo, "WARNING", message))
+    for repo in sync.differing(workspace, "ci_validate.py").get("ci_validate.py", []):
+        out.append(Finding("tools", repo, "WARNING", "ci_validate.py is not the copy of EH3D-DOCS"))
+    return out
+
+
+CHECKS = {"manifests": check_manifests, "paths": check_paths, "versions": check_versions, "ports": check_ports, "tools": check_tools}
 
 
 def allowed(allow_file: Path) -> set[tuple[str, str]]:
