@@ -57,6 +57,7 @@
 * **機能マトリクス：** コンピューターでテスト済みのものと、機械で動かしたもの（EH3D-DRILLPRO のプロトコルだけを 1 台で）。推測が要らないようにします。
 * **規約：** すべてのリポジトリが持つマニフェスト、リポジトリ チェック、8 言語の README。
 * **2 つのチェック：** リポジトリ チェックとドキュメント間のリンク チェック。どちらも CI で実行されます。
+* **更新の方法：** 作業場の CM5 は**リリース経由**で更新されます（EH3D-SERVER の `deploy/eh3d-update.py` が GitHub のリリースを `/opt` にダウンロードします）。EH3D-UPDATER は**開発用 PC 向けで、git 経由**です（[docs/UPDATING.md](docs/UPDATING.md)）。
 
 ## 🧩 EH3D での役割
 
@@ -137,6 +138,7 @@ EH3D-DOCS/
 │   ├── ARCHITECTURE.md                          レイヤーと規則
 │   ├── CAPABILITY_MATRIX.md                     テスト済みのものと機械で動かしたもの
 │   ├── CONVENTIONS.md                           マニフェスト、チェック、README
+│   ├── UPDATING.md                              CM5 と PC の更新方法
 │   └── architecture.json structure.json         2 つの図のデータ
 ├── tools/                                       リポジトリ チェック、リンク チェック、そのテストと図のツール
 ├── images/                                      バナーとアーキテクチャ・リポジトリ構成の図

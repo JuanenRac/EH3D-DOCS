@@ -57,6 +57,7 @@ Cada linha é uma parte deste repositório e a luz diz até onde chega hoje. É 
 * **A matriz de capacidades:** o que está testado num computador e o que foi executado numa máquina (só o protocolo do EH3D-DRILLPRO, numa máquina), para que ninguém tenha de adivinhar.
 * **As convenções:** o manifesto que cada repositório leva, a verificação do repositório e os ficheiros README em oito idiomas.
 * **Duas verificações:** a verificação do repositório e uma das ligações entre os documentos, ambas na CI.
+* **Como se atualiza:** a CM5 da oficina atualiza-se **por releases** (`deploy/eh3d-update.py` do EH3D-SERVER descarrega a release do GitHub para `/opt`); o EH3D-UPDATER é para os **PC de desenvolvimento, por git** ([docs/UPDATING.md](docs/UPDATING.md)).
 
 ## 🧩 Papel no EH3D
 
@@ -137,6 +138,7 @@ EH3D-DOCS/
 │   ├── ARCHITECTURE.md                          as camadas e as regras
 │   ├── CAPABILITY_MATRIX.md                     o que foi testado e o que foi executado numa máquina
 │   ├── CONVENTIONS.md                           o manifesto, a verificação, os README
+│   ├── UPDATING.md                              como se atualizam a CM5 e um PC
 │   └── architecture.json structure.json         os dados das duas imagens
 ├── tools/                                       a verificação do repositório, a das ligações, os seus testes e as ferramentas de imagens
 ├── images/                                      banner e as imagens de Arquitetura e Estrutura do repositório

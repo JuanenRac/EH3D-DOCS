@@ -57,6 +57,7 @@ Chaque ligne est une partie de ce dépôt et le feu dit où elle en est aujourd'
 * **La matrice des capacités :** ce qui est testé sur un ordinateur et ce qui a tourné sur une machine (seulement le protocole d'EH3D-DRILLPRO, sur une machine), pour que personne n'ait à deviner.
 * **Les conventions :** le manifeste que porte chaque dépôt, le contrôle du dépôt et les fichiers README en huit langues.
 * **Deux contrôles :** le contrôle du dépôt et un contrôle des liens entre les documents, tous deux dans la CI.
+* **Comment on met à jour :** la CM5 de l'atelier est mise à jour **par releases** (`deploy/eh3d-update.py` d'EH3D-SERVER télécharge la release de GitHub dans `/opt`) ; EH3D-UPDATER est pour les **PC de développement, par git** ([docs/UPDATING.md](docs/UPDATING.md)).
 
 ## 🧩 Rôle dans EH3D
 
@@ -137,6 +138,7 @@ EH3D-DOCS/
 │   ├── ARCHITECTURE.md                          les couches et les règles
 │   ├── CAPABILITY_MATRIX.md                     ce qui a été testé et ce qui a tourné sur une machine
 │   ├── CONVENTIONS.md                           le manifeste, le contrôle, les README
+│   ├── UPDATING.md                              mise à jour de la CM5 et d'un PC
 │   └── architecture.json structure.json         les données des deux images
 ├── tools/                                       le contrôle du dépôt, celui des liens, leurs tests et les outils d'images
 ├── images/                                      bannière et images d'Architecture et de Structure du dépôt

@@ -57,6 +57,7 @@ Jede Zeile ist ein Teil dieses Repositorys, und die Ampel sagt, wie weit er heut
 * **Die Fähigkeitsmatrix:** was auf einem Computer getestet ist und was auf einer Maschine lief (nur das Protokoll von EH3D-DRILLPRO, an einer Maschine), damit niemand raten muss.
 * **Die Konventionen:** das Manifest, das jedes Repository trägt, die Repository-Prüfung und die README-Dateien in acht Sprachen.
 * **Zwei Prüfungen:** die Repository-Prüfung und eine Prüfung der Links zwischen den Dokumenten, beide in der CI.
+* **Wie aktualisiert wird:** Die CM5 der Werkstatt wird **per Releases** aktualisiert (`deploy/eh3d-update.py` von EH3D-SERVER lädt das Release von GitHub nach `/opt`); EH3D-UPDATER ist für **Entwicklungs-PCs, per Git** ([docs/UPDATING.md](docs/UPDATING.md)).
 
 ## 🧩 Rolle in EH3D
 
@@ -137,6 +138,7 @@ EH3D-DOCS/
 │   ├── ARCHITECTURE.md                          die Schichten und die Regeln
 │   ├── CAPABILITY_MATRIX.md                     was getestet wurde und was auf einer Maschine lief
 │   ├── CONVENTIONS.md                           das Manifest, die Prüfung, die README-Dateien
+│   ├── UPDATING.md                              wie CM5 und PC aktualisiert werden
 │   └── architecture.json structure.json         die Daten der beiden Bilder
 ├── tools/                                       die Repository-Prüfung, die Link-Prüfung, ihre Tests und die Bildwerkzeuge
 ├── images/                                      Banner und die Bilder von Architektur und Repository-Struktur

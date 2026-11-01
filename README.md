@@ -57,6 +57,7 @@ Each line is one part of this repository and the light says how far it is today.
 * **The capability matrix:** what is tested on a computer and what has been run on a machine (only the protocol of EH3D-DRILLPRO, on one machine), so nobody has to guess.
 * **The conventions:** the manifest every repository carries, the repository check and the eight-language README files.
 * **Two checks:** the repository check and a check of the links between the documents, both run in CI.
+* **How it is updated:** the CM5 of the workshop is updated **by releases** (`deploy/eh3d-update.py` of EH3D-SERVER downloads the release of GitHub into `/opt`); EH3D-UPDATER is for **development PCs, by git** ([docs/UPDATING.md](docs/UPDATING.md)).
 
 ## 🧩 Role in EH3D
 
@@ -137,6 +138,7 @@ EH3D-DOCS/
 │   ├── ARCHITECTURE.md                          the layers and the rules
 │   ├── CAPABILITY_MATRIX.md                     what has been tested and what has been run on a machine
 │   ├── CONVENTIONS.md                           the manifest, the check, the README files
+│   ├── UPDATING.md                              how the CM5 and a PC are updated
 │   └── architecture.json structure.json         the data of the two pictures
 ├── tools/                                       the repository check, the link check, their tests and the picture tools
 ├── images/                                      banner and the Architecture and Repository Structure pictures

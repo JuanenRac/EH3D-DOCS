@@ -73,6 +73,19 @@
         },
         {
           "desc": {
+            "en": "how the CM5 and a PC are updated",
+            "es": "cómo se actualizan la CM5 y un PC",
+            "de": "wie CM5 und PC aktualisiert werden",
+            "fr": "mise à jour de la CM5 et d'un PC",
+            "it": "come si aggiornano CM5 e PC",
+            "ja": "CM5 と PC の更新方法",
+            "zh": "CM5 与电脑的更新方式",
+            "pt": "como se atualizam a CM5 e um PC"
+          },
+          "name": "UPDATING.md"
+        },
+        {
+          "desc": {
             "en": "the data of the two pictures",
             "es": "los datos de las dos imágenes",
             "de": "die Daten der beiden Bilder",

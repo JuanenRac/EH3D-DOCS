@@ -57,6 +57,7 @@
 * **能力矩阵：** 哪些已在计算机上测试，哪些在机床上运行过（只有 EH3D-DRILLPRO 的协议，在一台机床上），让人无需猜测。
 * **约定：** 每个仓库携带的清单、仓库检查和八种语言的 README 文件。
 * **两个检查：** 仓库检查和文档之间的链接检查，都在 CI 中运行。
+* **如何更新：** 车间的 CM5 **通过发布版本**更新（EH3D-SERVER 的 `deploy/eh3d-update.py` 把 GitHub 的发布版本下载到 `/opt`）；EH3D-UPDATER 供**开发电脑使用，通过 git**（[docs/UPDATING.md](docs/UPDATING.md)）。
 
 ## 🧩 在 EH3D 中的角色
 
@@ -137,6 +138,7 @@ EH3D-DOCS/
 │   ├── ARCHITECTURE.md                          分层和规则
 │   ├── CAPABILITY_MATRIX.md                     已测试的内容和在机床上运行过的内容
 │   ├── CONVENTIONS.md                           清单、检查和 README
+│   ├── UPDATING.md                              CM5 与电脑的更新方式
 │   └── architecture.json structure.json         两张图的数据
 ├── tools/                                       仓库检查、链接检查、它们的测试和绘图工具
 ├── images/                                      横幅图以及架构和仓库结构图片
