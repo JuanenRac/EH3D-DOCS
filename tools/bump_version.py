@@ -34,7 +34,7 @@ HUB = Path(__file__).resolve().parents[1]
 
 def resolve(repository: str, workspace: Path | None) -> Path:
     candidate = Path(repository)
-    if (candidate / vp.MANIFEST).is_file():
+    if (candidate / vp.manifest_name(candidate)).is_file():
         return candidate.resolve()
     base = workspace or HUB.parent
     return (base / repository).resolve()
@@ -104,8 +104,8 @@ def main(argv: list[str] | None = None) -> int:
     if hasattr(sys.stdout, "reconfigure"):
         sys.stdout.reconfigure(encoding="utf-8", errors="replace")
     root = resolve(args.repository, args.workspace)
-    if not (root / vp.MANIFEST).is_file():
-        print(f"FAIL {root} has no {vp.MANIFEST}")
+    if not (root / vp.manifest_name(root)).is_file():
+        print(f"FAIL {root} has no {vp.MANIFEST} or electro-hobby-3d.project.json")
         return 1
     code, lines = bump(root, args.new, args.title, args.explicit, args.dry_run, args.fix_drift)
     for line in lines:

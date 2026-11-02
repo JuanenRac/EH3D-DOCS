@@ -20,6 +20,8 @@ from pathlib import Path
 import changelog_tools
 
 MANIFEST = "eh3d.project.json"
+# The manifest of the updater of the whole family has its own name: it belongs to no ecosystem, so it keeps its own file.
+MANIFESTS = (MANIFEST, "electro-hobby-3d.project.json")
 READMES = ("README.md", "README_spa.md", "README_deu.md", "README_fra.md", "README_ita.md", "README_jpn.md", "README_zho.md", "README_por.md")
 SKIP_DIRS = {".git", "target", "node_modules", "build", "dist", ".gradle", ".venv", "venv", "__pycache__", ".cxx", ".idea", ".compile", "managed_components"}
 VERSION_RE = re.compile(r"^\d+\.\d+\.\d+(\.\d+)?$")
@@ -30,6 +32,14 @@ class VersionError(Exception):
 
 
 # --------------------------------------------------------------------------- the odometer
+def manifest_name(root: Path | str) -> str:
+    """The file name of the manifest of the repository in `root`: eh3d.project.json, or electro-hobby-3d.project.json for the updater of the family."""
+    for name in MANIFESTS:
+        if (Path(root) / name).is_file():
+            return name
+    return MANIFEST
+
+
 def parse(version: str) -> tuple[int, ...]:
     if not VERSION_RE.match(version):
         raise VersionError(f"'{version}' is not a version of three or four numbers")
@@ -77,6 +87,7 @@ class Repo:
 
     def __init__(self, root: Path | str):
         self.root = Path(root)
+        self.manifest = manifest_name(self.root)
         self.overlay: dict[str, str] = {}
         self._crlf: dict[str, bool] = {}
         self._disk: dict[str, str] = {}
@@ -157,6 +168,7 @@ def _cargo(scan: Scan, repo: Repo, rel: str, text: str) -> list[str]:
     section, names = "", []
     offset = 0
     versions = 0
+    inherits = False
     for line in text.split("\n"):
         header = re.match(r"\s*\[([^\]]+)\]\s*$", line)
         if header:
@@ -169,27 +181,45 @@ def _cargo(scan: Scan, repo: Repo, rel: str, text: str) -> list[str]:
             n = re.match(r'\s*name\s*=\s*"(?P<n>[^"]+)"', line)
             if n and section == "package":
                 names.append(n.group("n"))
+            if section == "package" and re.match(r"\s*version(\.workspace\s*=\s*true|\s*=\s*\{\s*workspace\s*=\s*true)", line):
+                inherits = True
         offset += len(line) + 1
     if rel == "Cargo.toml" and versions == 0 and not re.search(r"(?m)^version\.workspace\s*=\s*true", text) and re.search(r"(?m)^\[(package|workspace\.package)\]", text):
         scan.missing.append("Cargo.toml has no version in [package]")
-    return names if versions else []
+    return names if (versions or inherits) else []
+
+
+_DEPENDENCY = re.compile(r'(?m)^[ \t]*(?P<name>[A-Za-z0-9_-]+)[ \t]*=[ \t]*\{[^}\n]*\bversion[ \t]*=[ \t]*"[ \t]*(?:>=|\^|=|~)?[ \t]*(?P<v>\d+(?:\.\d+)+)"')
+
+
+def _internal_dependencies(scan: Scan, rel: str, text: str, own: set[str]) -> None:
+    """A dependency on a package of this same repository that asks for a minimum version (`version = ">=0.1.0"`): it follows the version when it holds the old one.
+
+    The sign (`>=`, `^`, `=`, `~`) stays; a dependency on another repository, or one that already asks for something older, is left alone."""
+    for match in _DEPENDENCY.finditer(text):
+        if match.group("name") in own:
+            scan.found.append(Found(rel, f"dependency on {match.group('name')}", match.group("v"), match.start("v"), match.end("v"), soft=True))
 
 
 def scan(repo: Repo) -> Scan:
     """Every place that holds the version in the repository; `missing` lists the places that should exist and do not."""
     out = Scan()
-    manifest = repo.read(MANIFEST)
+    name = repo.manifest
+    manifest = repo.read(name)
     if manifest is None:
-        raise VersionError(f"{MANIFEST} is missing")
-    _add(out, MANIFEST, "version", manifest, r'(?m)^[ \t]{0,4}"version"[ \t]*:[ \t]*"(?P<v>[^"]*)"', limit=1)
-    _add(out, MANIFEST, "version in notes", manifest, r'"notes"\s*:\s*"[A-Za-z]+ v(?P<v>\d+(?:\.\d+)+):', soft=True, required=False)
-    handled = {MANIFEST}
+        raise VersionError(f"{name} is missing")
+    _add(out, name, "version", manifest, r'(?m)^[ \t]{0,4}"version"[ \t]*:[ \t]*"(?P<v>[^"]*)"', limit=1)
+    _add(out, name, "version in notes", manifest, r'"notes"\s*:\s*"[A-Za-z]+ v(?P<v>\d+(?:\.\d+)+):', soft=True, required=False)
+    handled = {name}
 
     names: list[tuple[str, bool]] = []  # (package name, is the root package)
     for rel in repo.files("Cargo.toml"):
         text = repo.read(rel) or ""
         names += [(name, rel == "Cargo.toml") for name in _cargo(out, repo, rel, text)]
         handled.add(rel)
+    own = {name for name, _ in names}
+    for rel in repo.files("Cargo.toml"):
+        _internal_dependencies(out, rel, repo.read(rel) or "", own)
     lock = repo.read("Cargo.lock")
     if lock is not None and names:
         handled.add("Cargo.lock")
@@ -262,7 +292,7 @@ def _native(out: Scan, repo: Repo, native: dict) -> None:
     try:
         match = re.search(native.get("pattern", r"(\d+\.\d+\.\d+)"), text, re.M)
     except re.error as error:
-        out.missing.append(f"native_version pattern of {MANIFEST} is not a regular expression: {error}")
+        out.missing.append(f"native_version pattern of the manifest is not a regular expression: {error}")
         return
     if not match or not match.groups():
         out.missing.append(f"{rel} (native_version) has no version that its pattern finds")
@@ -277,13 +307,13 @@ def _native(out: Scan, repo: Repo, native: dict) -> None:
 
 # --------------------------------------------------------------------------- the check of coherence
 def manifest_version(repo: Repo) -> str:
-    text = repo.read(MANIFEST)
+    text = repo.read(repo.manifest)
     if text is None:
-        raise VersionError(f"{MANIFEST} is missing")
+        raise VersionError(f"{repo.manifest} is missing")
     try:
         return json.loads(text)["version"]
     except (ValueError, KeyError) as error:
-        raise VersionError(f"{MANIFEST} has no readable version: {error}") from error
+        raise VersionError(f"{repo.manifest} has no readable version: {error}") from error
 
 
 def check(repo: Repo, expected: str | None = None) -> list[str]:
@@ -296,7 +326,7 @@ def check(repo: Repo, expected: str | None = None) -> list[str]:
     for item in scanned.found:
         if not item.soft and item.value != expected:
             problems.append(f"{item.file}: {item.label} is {item.value}, the version is {expected}")
-    for rel in (MANIFEST, "package.json", "package-lock.json"):
+    for rel in (repo.manifest, "package.json", "package-lock.json"):
         text = repo.read(rel)
         if text is not None and not _valid_json(text):
             problems.append(f"{rel} is not valid JSON")

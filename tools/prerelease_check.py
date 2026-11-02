@@ -177,8 +177,8 @@ def main(argv: list[str] | None = None) -> int:
     from bump_version import resolve
 
     root = resolve(args.repository, args.workspace)
-    if not (root / vp.MANIFEST).is_file():
-        print(f"FAIL {root} has no {vp.MANIFEST}")
+    if not (root / vp.manifest_name(root)).is_file():
+        print(f"FAIL {root} has no {vp.MANIFEST} or electro-hobby-3d.project.json")
         return 1
     code, lines = prerelease(root, allow_short=args.allow_short, with_ci=not args.no_ci)
     for line in lines:

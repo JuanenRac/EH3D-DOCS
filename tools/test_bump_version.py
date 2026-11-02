@@ -245,6 +245,47 @@ class BumpTests(unittest.TestCase):
             self.assertIn("0.0.9", json.loads(text(repo, "package.json"))["version"])  # the failure happened before any write
 
 
+class WorkspaceTests(unittest.TestCase):
+    def test_an_internal_dependency_with_a_minimum_version_follows_the_bump(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            repo = toy.make_repo(Path(tmp))
+            toy.write(repo, "Cargo.toml", '[workspace]\nmembers = ["core", "app"]\n\n[workspace.package]\nversion = "0.0.9"\n')
+            toy.write(repo, "core/Cargo.toml", '[package]\nname = "toy-core"\nversion.workspace = true\n')
+            toy.write(repo, "app/Cargo.toml", '[package]\nname = "toy-app"\nversion = { workspace = true }\n\n[dependencies]\ntoy-core = { path = "../core", version = ">=0.0.9" }\nserde = { version = ">=0.0.9" }\n')
+            toy.write(repo, "Cargo.lock", 'version = 3\n\n[[package]]\nname = "serde"\nversion = "0.0.9"\n\n[[package]]\nname = "toy-app"\nversion = "0.0.9"\n\n[[package]]\nname = "toy-core"\nversion = "0.0.9"\n')
+            code, out = run([str(repo), "next", "The second", "--workspace", tmp])
+            self.assertEqual(code, 0, out)
+            self.assertIn('version = "0.1.0"', text(repo, "Cargo.toml"))
+            self.assertIn('toy-core = { path = "../core", version = ">=0.1.0" }', text(repo, "app/Cargo.toml"))
+            self.assertIn('serde = { version = ">=0.0.9" }', text(repo, "app/Cargo.toml"))  # another repository: left alone
+            lock = text(repo, "Cargo.lock")
+            self.assertIn('name = "toy-core"\nversion = "0.1.0"', lock)
+            self.assertIn('name = "toy-app"\nversion = "0.1.0"', lock)
+            self.assertIn('name = "serde"\nversion = "0.0.9"', lock)
+
+    def test_an_older_minimum_is_kept_because_it_is_still_true(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            repo = toy.make_repo(Path(tmp))
+            toy.write(repo, "Cargo.toml", '[workspace]\nmembers = ["core", "app"]\n\n[workspace.package]\nversion = "0.0.9"\n')
+            toy.write(repo, "core/Cargo.toml", '[package]\nname = "toy-core"\nversion.workspace = true\n')
+            toy.write(repo, "app/Cargo.toml", '[package]\nname = "toy-app"\nversion.workspace = true\n\n[dependencies]\ntoy-core = { path = "../core", version = ">=0.0.2" }\n')
+            code, out = run([str(repo), "next", "The second", "--workspace", tmp])
+            self.assertEqual(code, 0, out)
+            self.assertIn('version = ">=0.0.2"', text(repo, "app/Cargo.toml"))
+
+    def test_the_updater_of_the_family_keeps_its_own_manifest_name(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            repo = toy.make_repo(Path(tmp), python=True)
+            (repo / "eh3d.project.json").rename(repo / "electro-hobby-3d.project.json")
+            self.assertEqual(vp.manifest_name(repo), "electro-hobby-3d.project.json")
+            code, out = run([str(repo), "next", "The second", "--workspace", tmp])
+            self.assertEqual(code, 0, out)
+            self.assertEqual(json.loads(text(repo, "electro-hobby-3d.project.json"))["version"], "0.1.0")
+            self.assertFalse((repo / "eh3d.project.json").exists())
+            self.assertIn('version = "0.1.0"', text(repo, "pyproject.toml"))
+            self.assertEqual(vp.check(vp.Repo(repo)), [])
+
+
 class ShapeTests(unittest.TestCase):
     def test_no_private_names_in_the_tools_of_this_family(self) -> None:
         words = ["son" + "net", "scratch" + "pad", "c:" + "\\users", "cla" + "ude", "anthro" + "pic"]
