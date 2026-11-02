@@ -139,6 +139,38 @@ class CanonicalTests(unittest.TestCase):
         out = subprocess.run([sys.executable, "-I", str(TOOLS / "ci_validate.py")], capture_output=True, text=True, cwd=TOOLS.parent).stdout.strip().splitlines()[-1]
         self.assertRegex(out, r"^CI_VALIDATION=PASS project=EH3D-DOCS version=\d+(\.\d+){2,3} tools=" + VALIDATE.TOOLS_VERSION + "$")
 
+    def test_the_scan_for_forbidden_words_reads_only_the_files_git_tracks(self):
+        import subprocess
+
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            subprocess.run(["git", "init", "-q"], cwd=root, check=True)
+            (root / "kept.md").write_text("x", encoding="utf-8")
+            (root / ".venv").mkdir()
+            (root / ".venv" / "package.md").write_text("cl" + "aude", encoding="utf-8")
+            subprocess.run(["git", "add", "kept.md"], cwd=root, check=True)
+            old = VALIDATE.ROOT
+            VALIDATE.ROOT = root
+            try:
+                self.assertEqual([p.name for p in VALIDATE.scan_files()], ["kept.md"])
+                subprocess.run(["git", "rm", "-q", "--cached", "kept.md"], cwd=root, check=True)
+                self.assertEqual(VALIDATE.scan_files(), [])
+            finally:
+                VALIDATE.ROOT = old
+
+    def test_the_scan_falls_back_to_every_file_outside_a_git_checkout(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            (root / "a.md").write_text("x", encoding="utf-8")
+            old = VALIDATE.ROOT
+            VALIDATE.ROOT = root
+            try:
+                import unittest.mock as mock
+                with mock.patch("subprocess.run", side_effect=OSError):
+                    self.assertEqual([p.name for p in VALIDATE.scan_files()], ["a.md"])
+            finally:
+                VALIDATE.ROOT = old
+
 
 if __name__ == "__main__":
     unittest.main()
