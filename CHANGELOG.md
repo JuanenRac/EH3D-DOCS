@@ -4,6 +4,8 @@ All notable changes to this project are documented here.
 
 ## [Unreleased]
 
+## [0.0.5] - The suite map and the guides up to the published versions
+
 - **The README files in the eight languages are up to date with the tools:** the tools, the suite contract with its checks, the version and release scripts, the reusable workflow, `bootstrap_workspace.py`, `new_repo.py` and `docs/suite.json` are in the overview, the status table (with lights that say the release and workspace scripts have only been tried on toy repositories), the interfaces, the configuration, the quick start, the testing section, the limits and the file tree; the test count is the real one and the Architecture and Repository Structure pictures are drawn again.
 - **The issue forms and the pull-request template are checked:** the new `templates` check of `tools/suite_contract.py` warns about every repository (and the Updater of the whole family) that lacks one of the files that `docs/suite.json` lists in `github_templates`; this repository, EH3D-UPDATER and ELECTRO-HOBBY-3D-UPDATER have all of them.
 - **A script that makes the folder of a new repository:** `python -I tools/new_repo.py EH3D-NAME --dest DIR` writes the base every repository has from the template in `docs/templates/new_repo/` (manifest, the eight README files in the universal layout with honest status lights, changelog, licence, community files, CI workflow, issue forms and pull-request template, the shared tools of this hub, a test of the base and the data and pictures of Architecture and Repository Structure) and runs the checks of the suite on the result; it does not run git and refuses a folder that exists.
