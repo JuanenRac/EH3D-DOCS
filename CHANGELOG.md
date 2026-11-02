@@ -4,6 +4,7 @@ All notable changes to this project are documented here.
 
 ## [Unreleased]
 
+- **The maturity is functional:** the manifest, the badge and the table of the eight README files say it, since it is used and tried with real files; the evidence stays as host tests.
 ## [0.0.5] - The suite map and the guides up to the published versions
 
 - **The README files in the eight languages are up to date with the tools:** the tools, the suite contract with its checks, the version and release scripts, the reusable workflow, `bootstrap_workspace.py`, `new_repo.py` and `docs/suite.json` are in the overview, the status table (with lights that say the release and workspace scripts have only been tried on toy repositories), the interfaces, the configuration, the quick start, the testing section, the limits and the file tree; the test count is the real one and the Architecture and Repository Structure pictures are drawn again.

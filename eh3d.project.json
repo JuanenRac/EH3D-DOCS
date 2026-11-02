@@ -10,7 +10,7 @@
     "Python 3.10+"
   ],
   "deployment_target": "user-pc",
-  "maturity": "scaffolding",
+  "maturity": "functional",
   "evidence": "host-test",
   "hardware_bound": false,
   "family": "Documentation",
