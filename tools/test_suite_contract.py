@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import importlib.util
 import json
+import re
 import tempfile
 import unittest
 from pathlib import Path
@@ -182,6 +183,111 @@ class SuiteContractTests(unittest.TestCase):
             ok, found = self.run_in(Path(tmp))
             self.assertTrue(ok)
             self.assertEqual(found, [])
+
+
+SUITE = {
+    "server": {"port": 18200},
+    "manifest": {"ecosystem": "EH3D", "schema_versions": ["1.0", "1.1"]},
+    "languages": [{"readme": "README.md"}, {"readme": "README_spa.md"}, {"readme": "README_deu.md"}],
+    "spindle_rpm": {"field_min": 0, "field_max": 65535},
+    "version": {"pattern": r"^\d+\.\d+\.\d+(\.\d+)?$"},
+}
+
+
+class ConstantsTests(unittest.TestCase):
+    def workspace(self, root: Path, suite: dict | None = None) -> None:
+        docs = make(root, "EH3D-DOCS")
+        (docs / "docs").mkdir()
+        (docs / "docs" / "suite.json").write_text(json.dumps(suite or SUITE), encoding="utf-8")
+
+    def put(self, root: Path, repo: str, rel: str, text: str) -> None:
+        path = root / repo / rel
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(text, encoding="utf-8")
+
+    def readmes(self, root: Path, repo: str) -> None:
+        self.put(root, repo, "README.md", "[es](README_spa.md) [de](README_deu.md)\n")
+        self.put(root, repo, "README_spa.md", "x")
+        self.put(root, repo, "README_deu.md", "x")
+
+    def run_constants(self, root: Path):
+        return CONTRACT.run(root, only="constants", allow_file=root / "none.txt")
+
+    def test_without_a_suite_json_there_is_nothing_to_compare(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            make(root, "EH3D-DOCS")
+            ok, found = self.run_constants(root)
+            self.assertTrue(ok)
+            self.assertEqual(found, [])
+
+    def test_a_suite_that_agrees_has_no_findings(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            self.workspace(root)
+            self.readmes(root, "EH3D-DOCS")
+            make(root, "EH3D-SERVER")
+            self.readmes(root, "EH3D-SERVER")
+            self.put(root, "EH3D-SERVER", "server.cfg.example", "# c\nlisten = 0.0.0.0:18200\n")
+            self.put(root, "EH3D-STUDIO", "run.sh", 'EH3D_SERVER="${1:-http://127.0.0.1:18200}"\n')
+            self.put(root, "EH3D-COMMON", "firmware_base/core/keyboard.hpp", '{"spindle_max_rpm", FieldKind::Number, 0, 65535, 0},\n')
+            ok, found = self.run_constants(root)
+            self.assertEqual([str(f) for f in found], [])
+
+    def test_a_port_that_differs_is_a_warning_not_an_error(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            self.workspace(root, {**SUITE, "languages": []})
+            self.put(root, "EH3D-STUDIO", "run.sh", 'EH3D_SERVER="${1:-http://127.0.0.1:9999}"\n')
+            self.put(root, "EH3D-DRILLPRO", "config/machine.cfg.example", "server_address = 192.168.0.200:18200\n")
+            ok, found = self.run_constants(root)
+            self.assertTrue(ok)
+            self.assertEqual([(f.repo, f.level) for f in found], [("EH3D-STUDIO", "WARNING")])
+            self.assertIn("9999", found[0].text)
+            ok, _ = CONTRACT.run(root, only="constants", strict=True, allow_file=root / "none.txt")
+            self.assertFalse(ok)
+
+    def test_the_rpm_field_of_the_panel_is_compared(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            self.workspace(root, {**SUITE, "languages": []})
+            self.put(root, "EH3D-COMMON", "firmware_base/core/keyboard.hpp", '{"spindle_max_rpm", FieldKind::Number, 0, 30000, 0},\n')
+            ok, found = self.run_constants(root)
+            self.assertEqual(len(found), 1)
+            self.assertIn("0..30000", found[0].text)
+
+    def test_missing_readme_languages_and_a_missing_link_are_found(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            self.workspace(root)
+            self.readmes(root, "EH3D-DOCS")
+            make(root, "EH3D-SERVER")
+            self.put(root, "EH3D-SERVER", "README.md", "no links here\n")
+            self.put(root, "EH3D-SERVER", "README_spa.md", "x")
+            ok, found = self.run_constants(root)
+            texts = sorted(f.text for f in found)
+            self.assertEqual(len(texts), 2)
+            self.assertTrue(any("README_deu.md is missing" in t for t in texts))
+            self.assertTrue(any("no link to README_spa.md" in t for t in texts))
+
+    def test_a_manifest_that_leaves_the_schema_or_the_version_shape_is_a_warning(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            self.workspace(root, {**SUITE, "languages": []})
+            repo = make(root, "EH3D-ODD", version="v1")
+            (repo / "eh3d.project.json").write_text(json.dumps({"name": "EH3D-ODD", "version": "v1", "ecosystem": "ARMOR", "schema_version": "3.0"}), encoding="utf-8")
+            ok, found = self.run_constants(root)
+            self.assertEqual(len(found), 3)
+            self.assertTrue(all(f.level == "WARNING" for f in found))
+
+    def test_the_suite_json_of_this_repository_is_well_formed(self) -> None:
+        suite = json.loads((TOOLS.parent / "docs" / "suite.json").read_text(encoding="utf-8"))
+        self.assertEqual(suite["server"]["port"], 18200)
+        self.assertEqual([lang["readme"] for lang in suite["languages"]][0], "README.md")
+        self.assertEqual(len(suite["languages"]), 8)
+        self.assertEqual(suite["manifest"]["file"], "eh3d.project.json")
+        self.assertTrue(re.match(suite["version"]["pattern"], "0.8.0.1") and re.match(suite["version"]["pattern"], "0.4.9"))
+        self.assertIsNone(re.match(suite["version"]["pattern"], "1.2"))
 
 
 if __name__ == "__main__":

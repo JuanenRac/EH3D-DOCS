@@ -1,0 +1,35 @@
+{
+  "schema": 1,
+  "about": "The constants that several repositories of the suite repeat. tools/suite_contract.py (check 'constants') compares them with the repositories that are next to this one and only warns; a value is changed here first and then in the repositories.",
+  "server": {
+    "repository": "EH3D-SERVER",
+    "service": "eh3d-server",
+    "port": 18200
+  },
+  "manifest": {
+    "file": "eh3d.project.json",
+    "ecosystem": "EH3D",
+    "schema_versions": ["1.0", "1.1"]
+  },
+  "languages": [
+    {"code": "en", "name": "English", "readme": "README.md"},
+    {"code": "es", "name": "Spanish", "readme": "README_spa.md"},
+    {"code": "fr", "name": "French", "readme": "README_fra.md"},
+    {"code": "it", "name": "Italian", "readme": "README_ita.md"},
+    {"code": "de", "name": "German", "readme": "README_deu.md"},
+    {"code": "pt", "name": "European Portuguese", "locale": "pt-PT", "readme": "README_por.md"},
+    {"code": "zh", "name": "Chinese", "readme": "README_zho.md"},
+    {"code": "ja", "name": "Japanese", "readme": "README_jpn.md"}
+  ],
+  "spindle_rpm": {
+    "field_min": 0,
+    "field_max": 65535,
+    "vfd_max": 24000,
+    "original_max": 63000
+  },
+  "version": {
+    "pattern": "^\\d+\\.\\d+\\.\\d+(\\.\\d+)?$",
+    "components": [3, 4],
+    "digit_max": 9
+  }
+}

@@ -17,6 +17,8 @@ The checks:
     paths       a dependency of a Cargo.toml on a sibling by path says which version of it the program needs (`version = ">=0.0.1", path = "../EH3D-X"`)
     versions    the version that SUITE_MAP.md gives for a repository is the one in its manifest
     ports       the screens and the server agree on the port of the server
+    constants   the values that docs/suite.json holds (port of the server in every place that repeats it, the manifest name and schema, the README languages, the rpm field of the panel,
+                the shape of a version) are the ones the repositories use; only warnings
 
 A finding is an ERROR (the relation is broken) or a WARNING (it is drifting). The last line is SUITE_CONTRACT=PASS or SUITE_CONTRACT=FAIL; a repository that is not
 next to this one is skipped, so the check runs on whatever is there. The known exceptions are in docs/suite_contract_allow.txt, one `check repository` per line.
@@ -202,7 +204,80 @@ def check_tools(workspace: Path) -> list[Finding]:
     return out
 
 
-CHECKS = {"manifests": check_manifests, "paths": check_paths, "versions": check_versions, "ports": check_ports, "tools": check_tools}
+def load_suite(workspace: Path) -> dict | None:
+    """docs/suite.json of the EH3D-DOCS that is in the workspace; None when there is none or it is damaged."""
+    path = workspace / "EH3D-DOCS" / "docs" / "suite.json"
+    if not path.is_file():
+        return None
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return None
+    return data if isinstance(data, dict) else None
+
+
+#: Places that repeat the port of the server: (repository, file, regular expression with the port as its first group). A file that is not there is skipped.
+PORT_SITES = (
+    ("EH3D-SERVER", "eh3d.project.json", r'"port"\s*:\s*(\d+)'),
+    ("EH3D-SERVER", "server.cfg.example", r"^listen\s*=\s*[\d.]+:(\d+)"),
+    ("EH3D-SERVER", "src/config.rs", r'listen:\s*"[\d.]+:(\d+)"'),
+    ("EH3D-STUDIO", "run.sh", r"127\.0\.0\.1:(\d+)"),
+    ("EH3D-STUDIO", "run.bat", r"127\.0\.0\.1:(\d+)"),
+    ("EH3D-STUDIO", "src/pages/Configure.tsx", r'key:\s*"listen",\s*value:\s*"[\d.]+:(\d+)"'),
+    ("EH3D-DRILLPRO", "config/machine.cfg.example", r"^server_address\s*=\s*[\w.-]+:(\d+)"),
+    ("EH3D-ROUTEPRO", "config/machine.cfg.example", r"^server_address\s*=\s*[\w.-]+:(\d+)"),
+    ("EH3D-BUNGARD-GUI", "src/gui/head.rs", r"Some\(\(h, _\)\) => \(h, (\d+)\)"),
+)
+RPM_FIELD = ("EH3D-COMMON", "firmware_base/core/keyboard.hpp", r'\{"spindle_max_rpm",\s*FieldKind::Number,\s*(\d+),\s*(\d+)')
+
+
+def check_constants(workspace: Path) -> list[Finding]:
+    """The values of docs/suite.json against the repositories that repeat them. Warnings only: a repository that is behind is carried later."""
+    suite = load_suite(workspace)
+    out: list[Finding] = []
+    if suite is None:
+        return out
+    port = str((suite.get("server") or {}).get("port", ""))
+    for repo_name, rel, pattern in PORT_SITES:
+        path = workspace / repo_name / rel
+        if not port or not path.is_file():
+            continue
+        for found in re.finditer(pattern, path.read_text(encoding="utf-8", errors="replace"), re.M):
+            if found.group(1) != port:
+                out.append(Finding("constants", repo_name, "WARNING", f"{rel} uses the server port {found.group(1)} and docs/suite.json says {port}"))
+    rpm = suite.get("spindle_rpm") or {}
+    path = workspace / RPM_FIELD[0] / RPM_FIELD[1]
+    if path.is_file() and "field_min" in rpm and "field_max" in rpm:
+        found = re.search(RPM_FIELD[2], path.read_text(encoding="utf-8", errors="replace"))
+        if found and (found.group(1), found.group(2)) != (str(rpm["field_min"]), str(rpm["field_max"])):
+            out.append(Finding("constants", RPM_FIELD[0], "WARNING", f"{RPM_FIELD[1]} bounds the rpm field to {found.group(1)}..{found.group(2)} and docs/suite.json says {rpm['field_min']}..{rpm['field_max']}"))
+    manifest_rules = suite.get("manifest") or {}
+    version_rule = re.compile((suite.get("version") or {}).get("pattern") or VERSION.pattern)
+    languages = suite.get("languages") or []
+    for repo in repos(workspace):
+        m = manifest_of(repo) or {}
+        if manifest_rules.get("ecosystem") and m.get("ecosystem") not in (None, manifest_rules["ecosystem"]):
+            out.append(Finding("constants", repo.name, "WARNING", f"the manifest says ecosystem {m.get('ecosystem')!r} and docs/suite.json says {manifest_rules['ecosystem']!r}"))
+        if manifest_rules.get("schema_versions") and m.get("schema_version") not in (None, *manifest_rules["schema_versions"]):
+            out.append(Finding("constants", repo.name, "WARNING", f"the manifest has schema_version {m.get('schema_version')!r}, not one of {manifest_rules['schema_versions']}"))
+        if isinstance(m.get("version"), str) and not version_rule.match(m["version"]):
+            out.append(Finding("constants", repo.name, "WARNING", f"the version {m['version']!r} does not have the shape docs/suite.json gives"))
+        if not languages:
+            continue
+        files = [lang.get("readme") for lang in languages if lang.get("readme")]
+        for name in files:
+            if not (repo / name).is_file():
+                out.append(Finding("constants", repo.name, "WARNING", f"{name} is missing (docs/suite.json lists {len(files)} README languages)"))
+        main = repo / files[0] if files else None
+        if main is not None and main.is_file():
+            text = main.read_text(encoding="utf-8", errors="replace")
+            for name in files[1:]:
+                if (repo / name).is_file() and f"({name})" not in text and f'"{name}"' not in text:
+                    out.append(Finding("constants", repo.name, "WARNING", f"{files[0]} has no link to {name} in its language line"))
+    return out
+
+
+CHECKS = {"manifests": check_manifests, "paths": check_paths, "versions": check_versions, "ports": check_ports, "tools": check_tools, "constants": check_constants}
 
 
 def allowed(allow_file: Path) -> set[tuple[str, str]]:
