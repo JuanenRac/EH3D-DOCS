@@ -290,5 +290,59 @@ class ConstantsTests(unittest.TestCase):
         self.assertIsNone(re.match(suite["version"]["pattern"], "1.2"))
 
 
+class TemplatesTests(unittest.TestCase):
+    SUITE = {"github_templates": [".github/PULL_REQUEST_TEMPLATE.md", ".github/ISSUE_TEMPLATE/bug-report.yml"]}
+
+    def workspace(self, root: Path) -> None:
+        docs = make(root, "EH3D-DOCS")
+        (docs / "docs").mkdir()
+        (docs / "docs" / "suite.json").write_text(json.dumps(self.SUITE), encoding="utf-8")
+
+    def fill(self, repo: Path, *names: str) -> None:
+        for rel in names:
+            (repo / rel).parent.mkdir(parents=True, exist_ok=True)
+            (repo / rel).write_text("name: x\n", encoding="utf-8")
+
+    def test_a_repository_with_the_templates_has_no_finding(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            self.workspace(root)
+            for name in ("EH3D-DOCS", "EH3D-SERVER"):
+                self.fill(root / name if (root / name).exists() else make(root, name), *self.SUITE["github_templates"])
+            ok, found = CONTRACT.run(root, only="templates", allow_file=root / "none.txt")
+            self.assertTrue(ok)
+            self.assertEqual(found, [])
+
+    def test_a_missing_or_empty_template_is_a_warning_that_names_it(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            self.workspace(root)
+            self.fill(root / "EH3D-DOCS", *self.SUITE["github_templates"])
+            server = make(root, "EH3D-SERVER")
+            self.fill(server, ".github/PULL_REQUEST_TEMPLATE.md")
+            (server / ".github" / "ISSUE_TEMPLATE").mkdir()
+            (server / ".github" / "ISSUE_TEMPLATE" / "bug-report.yml").write_text("  \n", encoding="utf-8")
+            ok, found = CONTRACT.run(root, only="templates", allow_file=root / "none.txt")
+            self.assertTrue(ok)
+            self.assertEqual([(f.repo, f.level) for f in found], [("EH3D-SERVER", "WARNING")])
+            self.assertIn("bug-report.yml", found[0].text)
+            self.assertNotIn("PULL_REQUEST", found[0].text)
+
+    def test_the_updater_of_the_family_is_looked_at_too(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            self.workspace(root)
+            self.fill(root / "EH3D-DOCS", *self.SUITE["github_templates"])
+            (root / "ELECTRO-HOBBY-3D-UPDATER").mkdir()
+            ok, found = CONTRACT.run(root, only="templates", allow_file=root / "none.txt")
+            self.assertEqual([f.repo for f in found], ["ELECTRO-HOBBY-3D-UPDATER"])
+
+    def test_the_repository_itself_has_every_template_it_asks_for(self) -> None:
+        suite = json.loads((TOOLS.parent / "docs" / "suite.json").read_text(encoding="utf-8"))
+        self.assertEqual(len(suite["github_templates"]), 6)
+        for rel in suite["github_templates"]:
+            self.assertTrue((TOOLS.parent / rel).read_text(encoding="utf-8").strip(), rel)
+
+
 if __name__ == "__main__":
     unittest.main()

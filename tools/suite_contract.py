@@ -17,6 +17,7 @@ The checks:
     paths       a dependency of a Cargo.toml on a sibling by path says which version of it the program needs (`version = ">=0.0.1", path = "../EH3D-X"`)
     versions    the version that SUITE_MAP.md gives for a repository is the one in its manifest
     ports       the screens and the server agree on the port of the server
+    templates   every repository has the issue forms and the pull-request template that docs/suite.json lists (github_templates); only warnings
     constants   the values that docs/suite.json holds (port of the server in every place that repeats it, the manifest name and schema, the README languages, the rpm field of the panel,
                 the shape of a version) are the ones the repositories use; only warnings
 
@@ -277,7 +278,23 @@ def check_constants(workspace: Path) -> list[Finding]:
     return out
 
 
-CHECKS = {"manifests": check_manifests, "paths": check_paths, "versions": check_versions, "ports": check_ports, "tools": check_tools, "constants": check_constants}
+def check_templates(workspace: Path) -> list[Finding]:
+    """Each repository (and the Updater of the whole family) has the issue forms and the pull-request template listed in docs/suite.json. A warning: it is a courtesy to the people who report."""
+    suite = load_suite(workspace)
+    wanted = (suite or {}).get("github_templates") or []
+    out: list[Finding] = []
+    folders = list(repos(workspace))
+    family = workspace / "ELECTRO-HOBBY-3D-UPDATER"
+    if family.is_dir():
+        folders.append(family)
+    for repo in folders:
+        missing = [rel for rel in wanted if not (repo / rel).is_file() or not (repo / rel).read_text(encoding="utf-8", errors="replace").strip()]
+        if missing:
+            out.append(Finding("templates", repo.name, "WARNING", "missing or empty: " + ", ".join(missing)))
+    return out
+
+
+CHECKS = {"manifests": check_manifests, "paths": check_paths, "versions": check_versions, "ports": check_ports, "tools": check_tools, "constants": check_constants, "templates": check_templates}
 
 
 def allowed(allow_file: Path) -> set[tuple[str, str]]:
