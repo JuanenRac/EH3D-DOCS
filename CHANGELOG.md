@@ -4,6 +4,8 @@ All notable changes to this project are documented here.
 
 ## [Unreleased]
 
+## [0.0.6] - Banner check, lock of vendored tools and a bump that follows internal dependencies
+
 - **The text of the banner is checked against the manifest:** `tools/banner_check.py` (called by `ci_validate.py`) compares the tag, the title, the line of technologies, the pills and the badge of `images/*BANNER*.svg` with the role, the name and the technologies of the manifest, so a banner copied from another repository is found; the plain banner of a new repository is checked for its name.
 - **The scan for forbidden words reads what git tracks:** `ci_validate.py` (tools version 2) takes the file list from `git ls-files`, so `.venv`, `node_modules` or `dist` never give a false alarm and a local run says what CI says; outside a git checkout it reads every file.
 - **Where the shared tools come from:** `docs/vendored.lock` records the origin and the digest of every shared tool, `sync_shared_tools.py --lock` writes it and `--check` fails when a canonical copy changed without it.
@@ -11,6 +13,7 @@ All notable changes to this project are documented here.
 - **Exit codes of the Rust programs, written down:** `docs/CONVENTIONS.md` says what each program ends with today and which code each case takes when the program adopts the table; no program is changed.
 - **The report of vendored tools nobody uses is regenerated:** three checks that nothing ran were removed from three repositories.
 - **The maturity is functional:** the manifest, the badge and the table of the eight README files say it, since it is used and tried with real files; the evidence stays as host tests.
+
 ## [0.0.5] - The suite map and the guides up to the published versions
 
 - **The README files in the eight languages are up to date with the tools:** the tools, the suite contract with its checks, the version and release scripts, the reusable workflow, `bootstrap_workspace.py`, `new_repo.py` and `docs/suite.json` are in the overview, the status table (with lights that say the release and workspace scripts have only been tried on toy repositories), the interfaces, the configuration, the quick start, the testing section, the limits and the file tree; the test count is the real one and the Architecture and Repository Structure pictures are drawn again.
