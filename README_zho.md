@@ -30,7 +30,7 @@
 |---|---|
 | 版本 | `0.0.5` |
 | 成熟度 | 可用 |
-| 测试 | 126 |
+| 测试 | 144 |
 | 技术栈 | Markdown，附带 Python 3.10+ 工具 |
 | 真实硬件 | 不适用：文档 |
 
@@ -45,7 +45,7 @@
 | 领域 | 状态 | 在这里的含义 |
 |---|---|---|
 | 仓库检查 | 🟡 | 仓库检查、文档之间的链接检查以及工具的测试都在 CI 中运行并通过。 |
-| 测试 | 🟠 | 工具的 126 个测试在计算机上通过，其中一些在小型玩具仓库上运行；文档及其中的说法靠手工和脚本阅读与核对。 |
+| 测试 | 🟠 | 工具的 144 个测试在计算机上通过，其中一些在小型玩具仓库上运行；文档及其中的说法靠手工和脚本阅读与核对。 |
 | 套件契约 | 🟡 | 仓库之间的契约用 Updater 的解析器读取每个清单，并对偏差发出警告（端口、README 语言、共享工具、问题表单）；它每天在 CI 中作为警告运行，被点名的仓库会逐个更新。 |
 | 版本与发布工具 | 🟠 | 提升版本、撰写说明和检查发布的脚本，以及可复用的验证工作流，都在玩具仓库上测试过；还没有任何仓库用它们发布过版本。 |
 | 工作区与新仓库 | 🟠 | 列出并克隆仓库所需内容的脚本和创建新仓库的脚本，都在临时文件夹中的玩具仓库上测试过；两者都还没有建立过真实的工作区或创建过真实的仓库。 |
@@ -59,9 +59,9 @@
 * **架构：** 两个共享库、计划依赖它们且彼此从不依赖的程序、通往机床的节点和服务器，以及每个仓库遵循的规则。
 * **能力矩阵：** 哪些已在计算机上测试，哪些在机床上运行过（只有 EH3D-DRILLPRO 的协议，在一台机床上），让人无需猜测。
 * **约定：** 每个仓库携带的清单、仓库检查和八种语言的 README 文件。
-* **检查与工具：** 仓库检查、文档之间的链接检查、两张 README 图片的绘制工具和状态灯，由本仓库复制到每个仓库（`tools/sync_shared_tools.py` 会指出谁落后了），以及退出码约定的检查器。
+* **检查与工具：** 仓库检查、文档之间的链接检查、两张 README 图片的绘制工具和状态灯，由本仓库复制到每个仓库（`tools/sync_shared_tools.py` 会指出谁落后了），以及退出码约定的检查器。`banner_check.py` 检查每个横幅的文字是否与清单一致，`docs/vendored.lock` 记录每个共享工具的来源和版本。
 * **套件契约：** `tools/suite_contract.py` 检查任何单个仓库都无法自行检查的关系：每个清单都能被 Updater 的解析器读取并带有其文件夹的名称，按路径依赖同级仓库时要写明所需版本，地图中的版本与清单一致，屏幕和服务器在端口上一致，共享验证器处处相同，`docs/suite.json` 与重复其取值的位置一致，并且每个仓库都有问题表单。它只发出警告。
-* **版本、发布与新工作：** `bump_version.py`、`release_notes.py`、`prerelease_check.py`、`readme_staleness.py` 和 `vendored_tools_report.py`（[docs/RELEASING.md](docs/RELEASING.md)），可复用的验证工作流（[docs/REUSABLE_VALIDATION.md](docs/REUSABLE_VALIDATION.md)），用于获取仓库所需内容的 `bootstrap_workspace.py`，以及用于创建新仓库的 `new_repo.py`。
+* **版本、发布与新工作：** `bump_version.py`、`release_notes.py`、`prerelease_check.py`、`readme_staleness.py` 和 `vendored_tools_report.py`（[docs/RELEASING.md](docs/RELEASING.md)），可复用的验证工作流（[docs/REUSABLE_VALIDATION.md](docs/REUSABLE_VALIDATION.md)），用于获取仓库所需内容的 `bootstrap_workspace.py`，以及用于创建新仓库的 `new_repo.py`。`bump_version.py` 还会更新要求最低版本的内部依赖、工作区各软件包在 `Cargo.lock` 中的条目，以及整个家族更新器的清单。
 * **如何更新：** 车间的 CM5 **通过发布版本**更新（EH3D-SERVER 的 `deploy/eh3d-update.py` 把 GitHub 的发布版本下载到 `/opt`）；EH3D-UPDATER 供**开发电脑使用，通过 git**（[docs/UPDATING.md](docs/UPDATING.md)）。
 
 ## 🧩 在 EH3D 中的角色
@@ -132,7 +132,7 @@ python -I -m unittest discover -s tools -p "test_*.py"
 
 ## 🧪 测试
 
-工具有 126 个测试（`python -I -m unittest discover -s tools -p "test_*.py"`），并且都通过。CI 运行仓库检查（`tools/ci_validate.py`）、文档之间的链接检查（`tools/check_links.py`）、两张图片的检查和这些测试；每日工作流运行套件契约。文档本身除此之外没有测试：它们的说法靠能力矩阵和人工阅读来保持诚实。
+工具有 144 个测试（`python -I -m unittest discover -s tools -p "test_*.py"`），并且都通过。CI 运行仓库检查（`tools/ci_validate.py`）、文档之间的链接检查（`tools/check_links.py`）、两张图片的检查和这些测试；每日工作流运行套件契约。文档本身除此之外没有测试：它们的说法靠能力矩阵和人工阅读来保持诚实。
 
 ## 🏗️ 构建与发布
 

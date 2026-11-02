@@ -30,7 +30,7 @@
 |---|---|
 | Versión | `0.0.5` |
 | Madurez | Funcional |
-| Pruebas | 126 |
+| Pruebas | 144 |
 | Pila tecnológica | Markdown, con herramientas en Python 3.10+ |
 | En hardware real | No aplica: documentación |
 
@@ -45,7 +45,7 @@ Cada línea es una parte de este repositorio y la luz dice hasta dónde llega ho
 | Área | Estado | Qué significa aquí |
 |---|---|---|
 | Comprobaciones del repositorio | 🟡 | La comprobación del repositorio, la de los enlaces entre los documentos y las pruebas de las herramientas se ejecutan en el CI y pasan. |
-| Pruebas | 🟠 | 126 pruebas de las herramientas pasan en un ordenador, algunas sobre pequeños repositorios de juguete; los documentos y las afirmaciones que contienen se leen y comprueban a mano y con los scripts. |
+| Pruebas | 🟠 | 144 pruebas de las herramientas pasan en un ordenador, algunas sobre pequeños repositorios de juguete; los documentos y las afirmaciones que contienen se leen y comprueban a mano y con los scripts. |
 | Contrato de la suite | 🟡 | El contrato entre los repositorios lee cada manifiesto con el analizador del Updater y avisa de las desviaciones (puertos, idiomas del README, herramientas compartidas, formularios de incidencias); se ejecuta cada día en el CI como aviso, y los repositorios que nombra se ponen al día uno a uno. |
 | Herramientas de versión y publicación | 🟠 | Los scripts que suben una versión, escriben las notas y comprueban una publicación, y el flujo de validación reutilizable, están probados sobre repositorios de juguete; ningún repositorio ha publicado todavía una versión con ellos. |
 | Espacio de trabajo y repositorios nuevos | 🟠 | Los scripts que listan y clonan lo que necesita un repositorio y que crean un repositorio nuevo están probados sobre repositorios de juguete en una carpeta temporal; ninguno ha preparado aún un espacio de trabajo real ni creado un repositorio real. |
@@ -59,9 +59,9 @@ Cada línea es una parte de este repositorio y la luz dice hasta dónde llega ho
 * **La arquitectura:** las dos bibliotecas compartidas, los programas que deben depender de ellas y nunca entre sí, el nodo y el servidor que llegan a la máquina, y las reglas que sigue cada repositorio.
 * **La matriz de capacidades:** qué se ha probado en un ordenador y qué se ha ejecutado en una máquina (solo el protocolo de EH3D-DRILLPRO, en una máquina), para que nadie tenga que adivinar.
 * **Las convenciones:** el manifiesto que lleva cada repositorio, la comprobación del repositorio y los ficheros README en ocho idiomas.
-* **Las comprobaciones y las herramientas:** la comprobación del repositorio, la de los enlaces entre los documentos, los dibujantes de las dos imágenes del README y las luces de estado, copiados en cada repositorio desde este (`tools/sync_shared_tools.py` dice quién va por detrás), y el verificador de la convención de códigos de salida.
+* **Las comprobaciones y las herramientas:** la comprobación del repositorio, la de los enlaces entre los documentos, los dibujantes de las dos imágenes del README y las luces de estado, copiados en cada repositorio desde este (`tools/sync_shared_tools.py` dice quién va por detrás), y el verificador de la convención de códigos de salida; `banner_check.py` comprueba que el texto de cada banner dice lo que dice el manifiesto, y `docs/vendored.lock` anota el origen y la versión de cada herramienta compartida.
 * **El contrato de la suite:** `tools/suite_contract.py` comprueba las relaciones que ningún repositorio puede comprobar por sí solo: cada manifiesto se lee con el analizador del Updater y lleva el nombre de su carpeta, una dependencia de un hermano por ruta dice qué versión necesita, las versiones del mapa son las de los manifiestos, las pantallas y el servidor coinciden en el puerto, el validador compartido es el mismo en todas partes, `docs/suite.json` coincide con los sitios que repiten sus valores y cada repositorio tiene los formularios de incidencias. Solo avisa.
-* **Versiones, publicaciones y trabajo nuevo:** `bump_version.py`, `release_notes.py`, `prerelease_check.py`, `readme_staleness.py` y `vendored_tools_report.py` ([docs/RELEASING.md](docs/RELEASING.md)), un flujo de validación reutilizable ([docs/REUSABLE_VALIDATION.md](docs/REUSABLE_VALIDATION.md)), `bootstrap_workspace.py` para traer lo que necesita un repositorio y `new_repo.py` para crear un repositorio nuevo.
+* **Versiones, publicaciones y trabajo nuevo:** `bump_version.py`, `release_notes.py`, `prerelease_check.py`, `readme_staleness.py` y `vendored_tools_report.py` ([docs/RELEASING.md](docs/RELEASING.md)), un flujo de validación reutilizable ([docs/REUSABLE_VALIDATION.md](docs/REUSABLE_VALIDATION.md)), `bootstrap_workspace.py` para traer lo que necesita un repositorio y `new_repo.py` para crear un repositorio nuevo. `bump_version.py` también sube las dependencias internas que piden una versión mínima, las entradas de `Cargo.lock` de los paquetes de un espacio de trabajo y el manifiesto del actualizador de toda la familia.
 * **Cómo se actualiza:** la CM5 del taller se actualiza **por releases** (`deploy/eh3d-update.py` de EH3D-SERVER descarga la release de GitHub a `/opt`); EH3D-UPDATER es para los **PC de desarrollo, por git** ([docs/UPDATING.md](docs/UPDATING.md)).
 
 ## 🧩 Papel en EH3D
@@ -132,7 +132,7 @@ Para leer los documentos, empieza por [el mapa de la suite](docs/SUITE_MAP.md).
 
 ## 🧪 Pruebas
 
-Las herramientas tienen 126 pruebas (`python -I -m unittest discover -s tools -p "test_*.py"`), y pasan. El CI ejecuta la comprobación del repositorio (`tools/ci_validate.py`), la de los enlaces entre los documentos (`tools/check_links.py`), las comprobaciones de las dos imágenes y esas pruebas; un flujo diario ejecuta el contrato de la suite. Los documentos no tienen más pruebas que esas: lo que afirman se mantiene honesto con la matriz de capacidades y leyéndolos.
+Las herramientas tienen 144 pruebas (`python -I -m unittest discover -s tools -p "test_*.py"`), y pasan. El CI ejecuta la comprobación del repositorio (`tools/ci_validate.py`), la de los enlaces entre los documentos (`tools/check_links.py`), las comprobaciones de las dos imágenes y esas pruebas; un flujo diario ejecuta el contrato de la suite. Los documentos no tienen más pruebas que esas: lo que afirman se mantiene honesto con la matriz de capacidades y leyéndolos.
 
 ## 🏗️ Compilación y publicación
 

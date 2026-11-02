@@ -30,7 +30,7 @@
 |---|---|
 | Version | `0.0.5` |
 | Maturité | Fonctionnel |
-| Tests | 126 |
+| Tests | 144 |
 | Pile technique | Markdown, avec des outils en Python 3.10+ |
 | Sur du matériel réel | Sans objet : documentation |
 
@@ -45,7 +45,7 @@ Chaque ligne est une partie de ce dépôt et le feu dit où elle en est aujourd'
 | Domaine | État | Ce que cela veut dire ici |
 |---|---|---|
 | Contrôles du dépôt | 🟡 | Le contrôle du dépôt, celui des liens entre les documents et les tests des outils tournent dans la CI et réussissent. |
-| Tests | 🟠 | 126 tests des outils réussissent sur un ordinateur, certains sur de petits dépôts jouets ; les documents et les affirmations qu'ils contiennent sont lus et vérifiés à la main et par les scripts. |
+| Tests | 🟠 | 144 tests des outils réussissent sur un ordinateur, certains sur de petits dépôts jouets ; les documents et les affirmations qu'ils contiennent sont lus et vérifiés à la main et par les scripts. |
 | Contrat de la suite | 🟡 | Le contrat entre les dépôts lit chaque manifeste avec l'analyseur de l'Updater et signale les dérives (ports, langues du README, outils partagés, formulaires de tickets) ; il tourne chaque jour dans la CI comme simple avertissement, et les dépôts qu'il nomme sont remis à jour un par un. |
 | Outils de version et de publication | 🟠 | Les scripts qui montent une version, écrivent les notes et vérifient une publication, ainsi que le workflow de validation réutilisable, sont testés sur des dépôts jouets ; aucun dépôt n'a encore publié de version avec eux. |
 | Espace de travail et nouveaux dépôts | 🟠 | Les scripts qui listent et clonent ce dont un dépôt a besoin et qui créent un nouveau dépôt sont testés sur des dépôts jouets dans un dossier temporaire ; aucun n'a encore préparé un vrai espace de travail ni créé un vrai dépôt. |
@@ -59,9 +59,9 @@ Chaque ligne est une partie de ce dépôt et le feu dit où elle en est aujourd'
 * **L'architecture :** les deux bibliothèques partagées, les programmes qui sont censés en dépendre et jamais les uns des autres, le nœud et le serveur qui atteignent la machine, et les règles que suit chaque dépôt.
 * **La matrice des capacités :** ce qui est testé sur un ordinateur et ce qui a tourné sur une machine (seulement le protocole d'EH3D-DRILLPRO, sur une machine), pour que personne n'ait à deviner.
 * **Les conventions :** le manifeste que porte chaque dépôt, le contrôle du dépôt et les fichiers README en huit langues.
-* **Les contrôles et les outils :** le contrôle du dépôt, celui des liens entre les documents, les dessinateurs des deux images du README et les feux d'état, copiés dans chaque dépôt depuis celui-ci (`tools/sync_shared_tools.py` dit qui est en retard), et le vérificateur de la convention des codes de sortie.
+* **Les contrôles et les outils :** le contrôle du dépôt, celui des liens entre les documents, les dessinateurs des deux images du README et les feux d'état, copiés dans chaque dépôt depuis celui-ci (`tools/sync_shared_tools.py` dit qui est en retard), et le vérificateur de la convention des codes de sortie; `banner_check.py` vérifie que le texte de chaque bannière dit ce que dit le manifeste, et `docs/vendored.lock` consigne l'origine et la version de chaque outil partagé.
 * **Le contrat de la suite :** `tools/suite_contract.py` vérifie les relations qu'aucun dépôt ne peut vérifier seul : chaque manifeste est lisible avec l'analyseur de l'Updater et porte le nom de son dossier, une dépendance d'un voisin par chemin dit quelle version il lui faut, les versions de la carte sont celles des manifestes, les écrans et le serveur s'accordent sur le port, le validateur partagé est le même partout, `docs/suite.json` correspond aux endroits qui répètent ses valeurs et chaque dépôt a les formulaires de tickets. Il ne fait qu'avertir.
-* **Versions, publications et nouveau travail :** `bump_version.py`, `release_notes.py`, `prerelease_check.py`, `readme_staleness.py` et `vendored_tools_report.py` ([docs/RELEASING.md](docs/RELEASING.md)), un workflow de validation réutilisable ([docs/REUSABLE_VALIDATION.md](docs/REUSABLE_VALIDATION.md)), `bootstrap_workspace.py` pour récupérer ce dont un dépôt a besoin et `new_repo.py` pour créer un nouveau dépôt.
+* **Versions, publications et nouveau travail :** `bump_version.py`, `release_notes.py`, `prerelease_check.py`, `readme_staleness.py` et `vendored_tools_report.py` ([docs/RELEASING.md](docs/RELEASING.md)), un workflow de validation réutilisable ([docs/REUSABLE_VALIDATION.md](docs/REUSABLE_VALIDATION.md)), `bootstrap_workspace.py` pour récupérer ce dont un dépôt a besoin et `new_repo.py` pour créer un nouveau dépôt. `bump_version.py` monte aussi les dépendances internes qui demandent une version minimale, les entrées `Cargo.lock` des paquets d'un espace de travail et le manifeste de l'actualisateur de toute la famille.
 * **Comment on met à jour :** la CM5 de l'atelier est mise à jour **par releases** (`deploy/eh3d-update.py` d'EH3D-SERVER télécharge la release de GitHub dans `/opt`) ; EH3D-UPDATER est pour les **PC de développement, par git** ([docs/UPDATING.md](docs/UPDATING.md)).
 
 ## 🧩 Rôle dans EH3D
@@ -132,7 +132,7 @@ Pour lire les documents, commence par [la carte de la suite](docs/SUITE_MAP.md).
 
 ## 🧪 Tests
 
-Les outils ont 126 tests (`python -I -m unittest discover -s tools -p "test_*.py"`), et ils réussissent. La CI exécute le contrôle du dépôt (`tools/ci_validate.py`), celui des liens entre les documents (`tools/check_links.py`), les contrôles des deux images et ces tests ; un workflow quotidien exécute le contrat de la suite. Les documents n'ont pas d'autre test : ce qu'ils affirment est tenu honnête par la matrice des capacités et par leur relecture.
+Les outils ont 144 tests (`python -I -m unittest discover -s tools -p "test_*.py"`), et ils réussissent. La CI exécute le contrôle du dépôt (`tools/ci_validate.py`), celui des liens entre les documents (`tools/check_links.py`), les contrôles des deux images et ces tests ; un workflow quotidien exécute le contrat de la suite. Les documents n'ont pas d'autre test : ce qu'ils affirment est tenu honnête par la matrice des capacités et par leur relecture.
 
 ## 🏗️ Compilation et publication
 

@@ -30,7 +30,7 @@
 |---|---|
 | Version | `0.0.5` |
 | Reifegrad | Funktionsfähig |
-| Tests | 126 |
+| Tests | 144 |
 | Technologie-Stack | Markdown, mit Python-3.10+-Werkzeugen |
 | Auf echter Hardware | Nicht zutreffend: Dokumentation |
 
@@ -45,7 +45,7 @@ Jede Zeile ist ein Teil dieses Repositorys, und die Ampel sagt, wie weit er heut
 | Bereich | Stand | Was das hier bedeutet |
 |---|---|---|
 | Repository-Prüfungen | 🟡 | Die Repository-Prüfung, die Prüfung der Links zwischen den Dokumenten und die Tests der Werkzeuge laufen in der CI und bestehen. |
-| Tests | 🟠 | 126 Tests der Werkzeuge bestehen auf einem Rechner, einige davon auf kleinen Spielzeug-Repositories; die Dokumente und ihre Aussagen werden von Hand und mit den Skripten gelesen und geprüft. |
+| Tests | 🟠 | 144 Tests der Werkzeuge bestehen auf einem Rechner, einige davon auf kleinen Spielzeug-Repositories; die Dokumente und ihre Aussagen werden von Hand und mit den Skripten gelesen und geprüft. |
 | Vertrag der Suite | 🟡 | Der Vertrag zwischen den Repositories liest jedes Manifest mit dem Parser des Updaters und meldet Abweichungen (Ports, README-Sprachen, gemeinsame Werkzeuge, Issue-Formulare); er läuft täglich in der CI als Warnung, und die Repositories, die er nennt, werden eines nach dem anderen nachgezogen. |
 | Werkzeuge für Version und Veröffentlichung | 🟠 | Die Skripte, die eine Version erhöhen, die Notizen schreiben und eine Veröffentlichung prüfen, und der wiederverwendbare Validierungs-Workflow sind an Spielzeug-Repositories getestet; noch kein Repository hat damit eine Version veröffentlicht. |
 | Arbeitsbereich und neue Repositories | 🟠 | Die Skripte, die auflisten und klonen, was ein Repository braucht, und die ein neues Repository anlegen, sind an Spielzeug-Repositories in einem temporären Ordner getestet; keines hat bisher einen echten Arbeitsbereich eingerichtet oder ein echtes Repository angelegt. |
@@ -59,9 +59,9 @@ Jede Zeile ist ein Teil dieses Repositorys, und die Ampel sagt, wie weit er heut
 * **Die Architektur:** die zwei gemeinsamen Bibliotheken, die Programme, die davon abhängen sollen und nie voneinander, der Knoten und der Server, die die Maschine erreichen, und die Regeln jedes Repositorys.
 * **Die Fähigkeitsmatrix:** was auf einem Computer getestet ist und was auf einer Maschine lief (nur das Protokoll von EH3D-DRILLPRO, an einer Maschine), damit niemand raten muss.
 * **Die Konventionen:** das Manifest, das jedes Repository trägt, die Repository-Prüfung und die README-Dateien in acht Sprachen.
-* **Die Prüfungen und die Werkzeuge:** die Repository-Prüfung, die Prüfung der Links zwischen den Dokumenten, die Zeichner der beiden README-Bilder und die Statusampeln, von hier in jedes Repository kopiert (`tools/sync_shared_tools.py` sagt, wer zurückliegt), und die Prüfung der Konvention für Exit-Codes.
+* **Die Prüfungen und die Werkzeuge:** die Repository-Prüfung, die Prüfung der Links zwischen den Dokumenten, die Zeichner der beiden README-Bilder und die Statusampeln, von hier in jedes Repository kopiert (`tools/sync_shared_tools.py` sagt, wer zurückliegt), und die Prüfung der Konvention für Exit-Codes; `banner_check.py` prüft, dass der Text jedes Banners sagt, was das Manifest sagt, und `docs/vendored.lock` hält Herkunft und Version jedes gemeinsamen Werkzeugs fest.
 * **Der Vertrag der Suite:** `tools/suite_contract.py` prüft die Beziehungen, die kein Repository allein prüfen kann: Jedes Manifest ist mit dem Parser des Updaters lesbar und trägt den Namen seines Ordners, eine Abhängigkeit von einem Nachbarn über einen Pfad nennt die benötigte Version, die Versionen der Karte sind die der Manifeste, Bildschirme und Server sind sich über den Port einig, der gemeinsame Validator ist überall derselbe, `docs/suite.json` stimmt mit den Stellen überein, die seine Werte wiederholen, und jedes Repository hat die Issue-Formulare. Er warnt nur.
-* **Versionen, Veröffentlichungen und neue Arbeit:** `bump_version.py`, `release_notes.py`, `prerelease_check.py`, `readme_staleness.py` und `vendored_tools_report.py` ([docs/RELEASING.md](docs/RELEASING.md)), ein wiederverwendbarer Validierungs-Workflow ([docs/REUSABLE_VALIDATION.md](docs/REUSABLE_VALIDATION.md)), `bootstrap_workspace.py`, um zu holen, was ein Repository braucht, und `new_repo.py`, um ein neues Repository anzulegen.
+* **Versionen, Veröffentlichungen und neue Arbeit:** `bump_version.py`, `release_notes.py`, `prerelease_check.py`, `readme_staleness.py` und `vendored_tools_report.py` ([docs/RELEASING.md](docs/RELEASING.md)), ein wiederverwendbarer Validierungs-Workflow ([docs/REUSABLE_VALIDATION.md](docs/REUSABLE_VALIDATION.md)), `bootstrap_workspace.py`, um zu holen, was ein Repository braucht, und `new_repo.py`, um ein neues Repository anzulegen. `bump_version.py` erhöht außerdem die internen Abhängigkeiten, die eine Mindestversion verlangen, die `Cargo.lock`-Einträge der Pakete eines Workspace und das Manifest des Aktualisierers der ganzen Familie.
 * **Wie aktualisiert wird:** Die CM5 der Werkstatt wird **per Releases** aktualisiert (`deploy/eh3d-update.py` von EH3D-SERVER lädt das Release von GitHub nach `/opt`); EH3D-UPDATER ist für **Entwicklungs-PCs, per Git** ([docs/UPDATING.md](docs/UPDATING.md)).
 
 ## 🧩 Rolle in EH3D
@@ -132,7 +132,7 @@ Zum Lesen der Dokumente beginne mit [der Karte der Suite](docs/SUITE_MAP.md).
 
 ## 🧪 Tests
 
-Die Werkzeuge haben 126 Tests (`python -I -m unittest discover -s tools -p "test_*.py"`), und sie bestehen. Die CI führt die Repository-Prüfung (`tools/ci_validate.py`), die Prüfung der Links zwischen den Dokumenten (`tools/check_links.py`), die Prüfungen der beiden Bilder und diese Tests aus; ein täglicher Workflow führt den Vertrag der Suite aus. Die Dokumente selbst haben keinen weiteren Test: Was sie behaupten, wird durch die Fähigkeitsmatrix und durch Lesen ehrlich gehalten.
+Die Werkzeuge haben 144 Tests (`python -I -m unittest discover -s tools -p "test_*.py"`), und sie bestehen. Die CI führt die Repository-Prüfung (`tools/ci_validate.py`), die Prüfung der Links zwischen den Dokumenten (`tools/check_links.py`), die Prüfungen der beiden Bilder und diese Tests aus; ein täglicher Workflow führt den Vertrag der Suite aus. Die Dokumente selbst haben keinen weiteren Test: Was sie behaupten, wird durch die Fähigkeitsmatrix und durch Lesen ehrlich gehalten.
 
 ## 🏗️ Build und Veröffentlichung
 

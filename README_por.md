@@ -30,7 +30,7 @@
 |---|---|
 | Versão | `0.0.5` |
 | Maturidade | Funcional |
-| Testes | 126 |
+| Testes | 144 |
 | Tecnologias | Markdown, com ferramentas em Python 3.10+ |
 | Em hardware real | Não se aplica: documentação |
 
@@ -45,7 +45,7 @@ Cada linha é uma parte deste repositório e a luz diz até onde chega hoje. É 
 | Área | Estado | O que significa aqui |
 |---|---|---|
 | Verificações do repositório | 🟡 | A verificação do repositório, a das ligações entre os documentos e os testes das ferramentas correm na CI e passam. |
-| Testes | 🟠 | 126 testes das ferramentas passam num computador, alguns sobre pequenos repositórios de brincar; os documentos e as afirmações que contêm são lidos e verificados à mão e pelos scripts. |
+| Testes | 🟠 | 144 testes das ferramentas passam num computador, alguns sobre pequenos repositórios de brincar; os documentos e as afirmações que contêm são lidos e verificados à mão e pelos scripts. |
 | Contrato da suite | 🟡 | O contrato entre os repositórios lê cada manifesto com o analisador do Updater e avisa dos desvios (portas, idiomas do README, ferramentas partilhadas, formulários de problemas); corre todos os dias na CI como simples aviso, e os repositórios que nomeia são postos em dia um a um. |
 | Ferramentas de versão e publicação | 🟠 | Os scripts que sobem uma versão, escrevem as notas e verificam uma publicação, e o fluxo de validação reutilizável, estão testados em repositórios de brincar; nenhum repositório publicou ainda uma versão com eles. |
 | Espaço de trabalho e repositórios novos | 🟠 | Os scripts que listam e clonam o que um repositório precisa e que criam um repositório novo estão testados em repositórios de brincar numa pasta temporária; nenhum preparou ainda um espaço de trabalho real nem criou um repositório real. |
@@ -59,9 +59,9 @@ Cada linha é uma parte deste repositório e a luz diz até onde chega hoje. É 
 * **A arquitetura:** as duas bibliotecas partilhadas, os programas que deverão depender delas e nunca uns dos outros, o nó e o servidor que chegam à máquina, e as regras que cada repositório segue.
 * **A matriz de capacidades:** o que está testado num computador e o que foi executado numa máquina (só o protocolo do EH3D-DRILLPRO, numa máquina), para que ninguém tenha de adivinhar.
 * **As convenções:** o manifesto que cada repositório leva, a verificação do repositório e os ficheiros README em oito idiomas.
-* **As verificações e as ferramentas:** a verificação do repositório, a das ligações entre os documentos, os desenhadores das duas imagens do README e as luzes de estado, copiados para cada repositório a partir deste (`tools/sync_shared_tools.py` diz quem está atrasado), e o verificador da convenção dos códigos de saída.
+* **As verificações e as ferramentas:** a verificação do repositório, a das ligações entre os documentos, os desenhadores das duas imagens do README e as luzes de estado, copiados para cada repositório a partir deste (`tools/sync_shared_tools.py` diz quem está atrasado), e o verificador da convenção dos códigos de saída; `banner_check.py` verifica que o texto de cada banner diz o que diz o manifesto, e `docs/vendored.lock` regista a origem e a versão de cada ferramenta partilhada.
 * **O contrato da suite:** `tools/suite_contract.py` verifica as relações que nenhum repositório consegue verificar sozinho: cada manifesto é lido com o analisador do Updater e leva o nome da sua pasta, uma dependência de um irmão por caminho diz que versão precisa, as versões do mapa são as dos manifestos, os ecrãs e o servidor concordam na porta, o validador partilhado é o mesmo em todo o lado, `docs/suite.json` coincide com os sítios que repetem os seus valores e cada repositório tem os formulários de problemas. Só avisa.
-* **Versões, publicações e trabalho novo:** `bump_version.py`, `release_notes.py`, `prerelease_check.py`, `readme_staleness.py` e `vendored_tools_report.py` ([docs/RELEASING.md](docs/RELEASING.md)), um fluxo de validação reutilizável ([docs/REUSABLE_VALIDATION.md](docs/REUSABLE_VALIDATION.md)), `bootstrap_workspace.py` para trazer o que um repositório precisa e `new_repo.py` para criar um repositório novo.
+* **Versões, publicações e trabalho novo:** `bump_version.py`, `release_notes.py`, `prerelease_check.py`, `readme_staleness.py` e `vendored_tools_report.py` ([docs/RELEASING.md](docs/RELEASING.md)), um fluxo de validação reutilizável ([docs/REUSABLE_VALIDATION.md](docs/REUSABLE_VALIDATION.md)), `bootstrap_workspace.py` para trazer o que um repositório precisa e `new_repo.py` para criar um repositório novo. `bump_version.py` sobe também as dependências internas que pedem uma versão mínima, as entradas do `Cargo.lock` dos pacotes de um espaço de trabalho e o manifesto do atualizador de toda a família.
 * **Como se atualiza:** a CM5 da oficina atualiza-se **por releases** (`deploy/eh3d-update.py` do EH3D-SERVER descarrega a release do GitHub para `/opt`); o EH3D-UPDATER é para os **PC de desenvolvimento, por git** ([docs/UPDATING.md](docs/UPDATING.md)).
 
 ## 🧩 Papel no EH3D
@@ -132,7 +132,7 @@ Para ler os documentos, comece pelo [mapa da suite](docs/SUITE_MAP.md).
 
 ## 🧪 Testes
 
-As ferramentas têm 126 testes (`python -I -m unittest discover -s tools -p "test_*.py"`), e passam. A CI executa a verificação do repositório (`tools/ci_validate.py`), a das ligações entre os documentos (`tools/check_links.py`), as verificações das duas imagens e esses testes; um fluxo diário executa o contrato da suite. Os documentos não têm mais testes do que esses: o que afirmam é mantido honesto pela matriz de capacidades e pela leitura.
+As ferramentas têm 144 testes (`python -I -m unittest discover -s tools -p "test_*.py"`), e passam. A CI executa a verificação do repositório (`tools/ci_validate.py`), a das ligações entre os documentos (`tools/check_links.py`), as verificações das duas imagens e esses testes; um fluxo diário executa o contrato da suite. Os documentos não têm mais testes do que esses: o que afirmam é mantido honesto pela matriz de capacidades e pela leitura.
 
 ## 🏗️ Compilação e publicação
 

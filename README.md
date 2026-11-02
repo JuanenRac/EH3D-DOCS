@@ -30,7 +30,7 @@
 |---|---|
 | Version | `0.0.5` |
 | Maturity | Functional |
-| Tests | 126 |
+| Tests | 144 |
 | Stack | Markdown, with Python 3.10+ tools |
 | On real hardware | Not applicable: documentation |
 
@@ -45,7 +45,7 @@ Each line is one part of this repository and the light says how far it is today.
 | Area | State | What it means here |
 |---|---|---|
 | Repository checks | 🟡 | The repository check, the check of the links between the documents and the tests of the tools run in CI and pass. |
-| Tests | 🟠 | 126 tests of the tools pass on a computer, some of them on small toy repositories; the documents and the claims in them are read and checked by hand and by the scripts. |
+| Tests | 🟠 | 144 tests of the tools pass on a computer, some of them on small toy repositories; the documents and the claims in them are read and checked by hand and by the scripts. |
 | Suite contract | 🟡 | The contract between the repositories reads every manifest with the parser of the Updater and warns about drift (ports, README languages, shared tools, issue forms); it runs every day in CI as a warning, and the repositories it names are brought up to date one by one. |
 | Version and release tools | 🟠 | The scripts that raise a version, write the notes and check a release, and the reusable validation workflow, are tested on toy repositories; no repository has published a release with them yet. |
 | Workspace and new repositories | 🟠 | The scripts that list and clone what a repository needs and that make a new repository are tested on toy repositories in a temporary folder; neither has set up a real workspace or created a real repository yet. |
@@ -59,9 +59,9 @@ Each line is one part of this repository and the light says how far it is today.
 * **The architecture:** the two shared libraries, the programs that are meant to depend on them and never on each other, the node and the server that reach the machine, and the rules every repository follows.
 * **The capability matrix:** what is tested on a computer and what has been run on a machine (only the protocol of EH3D-DRILLPRO, on one machine), so nobody has to guess.
 * **The conventions:** the manifest every repository carries, the repository check and the eight-language README files.
-* **The checks and the tools:** the repository check, the check of the links between the documents, the drawers of the two README pictures and the status lights, copied into every repository from this one (`tools/sync_shared_tools.py` says who is behind), and the checker of the exit-code convention.
+* **The checks and the tools:** the repository check, the check of the links between the documents, the drawers of the two README pictures and the status lights, copied into every repository from this one (`tools/sync_shared_tools.py` says who is behind), and the checker of the exit-code convention; `banner_check.py` checks that the text of each banner says what the manifest says, and `docs/vendored.lock` records the origin and the version of every shared tool.
 * **The suite contract:** `tools/suite_contract.py` checks the relations that no repository can check by itself: every manifest is readable with the parser of the Updater and carries the name of its folder, a dependency on a sibling by path says which version it needs, the versions of the map are the manifests', the screens and the server agree on the port, the shared validator is the same everywhere, `docs/suite.json` matches the places that repeat its values, and every repository has the issue forms. It only warns.
-* **Versions, releases and new work:** `bump_version.py`, `release_notes.py`, `prerelease_check.py`, `readme_staleness.py` and `vendored_tools_report.py` ([docs/RELEASING.md](docs/RELEASING.md)), a reusable validation workflow ([docs/REUSABLE_VALIDATION.md](docs/REUSABLE_VALIDATION.md)), `bootstrap_workspace.py` to fetch what a repository needs and `new_repo.py` to make a new repository.
+* **Versions, releases and new work:** `bump_version.py`, `release_notes.py`, `prerelease_check.py`, `readme_staleness.py` and `vendored_tools_report.py` ([docs/RELEASING.md](docs/RELEASING.md)), a reusable validation workflow ([docs/REUSABLE_VALIDATION.md](docs/REUSABLE_VALIDATION.md)), `bootstrap_workspace.py` to fetch what a repository needs and `new_repo.py` to make a new repository. `bump_version.py` also raises the internal dependencies that ask for a minimum version, the `Cargo.lock` entries of the packages of a workspace and the manifest of the updater of the whole family.
 * **How it is updated:** the CM5 of the workshop is updated **by releases** (`deploy/eh3d-update.py` of EH3D-SERVER downloads the release of GitHub into `/opt`); EH3D-UPDATER is for **development PCs, by git** ([docs/UPDATING.md](docs/UPDATING.md)).
 
 ## 🧩 Role in EH3D
@@ -132,7 +132,7 @@ To read the documents, start with [the map of the suite](docs/SUITE_MAP.md).
 
 ## 🧪 Testing
 
-The tools have 126 tests (`python -I -m unittest discover -s tools -p "test_*.py"`), and they pass. The CI runs the repository check (`tools/ci_validate.py`), the check of the links between the documents (`tools/check_links.py`), the checks of the two pictures and those tests; a daily workflow runs the suite contract. The documents themselves have no test beyond that: what they claim is kept honest by the capability matrix and by reading them.
+The tools have 144 tests (`python -I -m unittest discover -s tools -p "test_*.py"`), and they pass. The CI runs the repository check (`tools/ci_validate.py`), the check of the links between the documents (`tools/check_links.py`), the checks of the two pictures and those tests; a daily workflow runs the suite contract. The documents themselves have no test beyond that: what they claim is kept honest by the capability matrix and by reading them.
 
 ## 🏗️ Build & Release
 
