@@ -6,7 +6,7 @@ A script counts as used when a workflow file, a script of the root of the reposi
 
 ## Summary
 
-25 repositories were read; 40 scripts are not reached.
+25 repositories were read; 41 scripts are not reached.
 
 | Repository | Scripts in `tools/` | Used | Not reached |
 |---|---|---|---|
@@ -16,19 +16,19 @@ A script counts as used when a workflow file, a script of the root of the reposi
 | EH3D-CAM-DEBUGGER | 7 | 7 | 0 |
 | EH3D-COMMON | 7 | 7 | 0 |
 | EH3D-CORE-LIBS | 6 | 6 | 0 |
-| EH3D-DRILLPRO | 11 | 7 | 4 |
+| EH3D-DRILLPRO | 12 | 7 | 5 |
 | EH3D-GERBERVIEWER | 7 | 7 | 0 |
-| EH3D-IOS-CONTROL | 7 | 6 | 1 |
+| EH3D-IOS-CONTROL | 8 | 7 | 1 |
 | EH3D-ISOCAM | 7 | 7 | 0 |
 | EH3D-LASER-CAM | 7 | 7 | 0 |
 | EH3D-MOTIONCNC | 10 | 7 | 3 |
-| EH3D-NODE-BUNGARD | 12 | 8 | 4 |
-| EH3D-NODE-BUNGARD-AUX | 14 | 7 | 7 |
+| EH3D-NODE-BUNGARD | 13 | 8 | 5 |
+| EH3D-NODE-BUNGARD-AUX | 12 | 7 | 5 |
 | EH3D-NODE-BUNGARD-HMI | 13 | 9 | 4 |
 | EH3D-NODE-HMI-GUI | 13 | 9 | 4 |
 | EH3D-PNP-MANAGER | 7 | 7 | 0 |
 | EH3D-ROUTEPRO | 10 | 7 | 3 |
-| EH3D-SERVER | 7 | 7 | 0 |
+| EH3D-SERVER | 9 | 8 | 1 |
 | EH3D-STENCILCAM | 7 | 7 | 0 |
 | EH3D-STUDIO | 12 | 7 | 5 |
 | EH3D-SUITE-LAUNCHER | 7 | 7 | 0 |
@@ -56,6 +56,7 @@ A script counts as used when a workflow file, a script of the root of the reposi
 
 | Script | Still named by |
 |---|---|
+| `machine_selftest.py` | tests, documents |
 | `make_config.py` | nothing |
 | `make_config_guides.py` | nothing |
 | `make_examples.py` | nothing |
@@ -83,36 +84,35 @@ A script counts as used when a workflow file, a script of the root of the reposi
 | `pack_panel.py` | tool panel_mock.mjs, documents |
 | `panel_mock.mjs` | tool panel_shots.mjs, documents |
 | `panel_shots.mjs` | documents |
+| `selftest.py` | tests, documents |
 
 ### EH3D-NODE-BUNGARD-AUX
 
 | Script | Still named by |
 |---|---|
-| `_doc_policy.py` | nothing |
-| `_readme_parity.py` | nothing |
-| `_tracked_names.py` | nothing |
 | `pack_panel.py` | tool panel_mock.mjs |
 | `panel_mock.mjs` | tool panel_shots.mjs |
 | `panel_shots.mjs` | nothing |
 | `render_answers.py` | nothing |
+| `selftest.py` | tests, documents |
 
 ### EH3D-NODE-BUNGARD-HMI
 
 | Script | Still named by |
 |---|---|
-| `_doc_policy.py` | nothing |
-| `_readme_parity.py` | nothing |
-| `_tracked_names.py` | nothing |
+| `check_firmware_defaults.py` | tests, tool task_needs.py, documents |
 | `render_preview.py` | nothing |
+| `selftest.py` | tests, documents |
+| `task_needs.py` | tests, tool check_firmware_defaults.py, documents |
 
 ### EH3D-NODE-HMI-GUI
 
 | Script | Still named by |
 |---|---|
-| `_doc_policy.py` | nothing |
-| `_readme_parity.py` | nothing |
-| `_tracked_names.py` | nothing |
+| `check_firmware_defaults.py` | tests, tool task_needs.py, documents |
 | `render_preview.py` | nothing |
+| `selftest.py` | tests, documents |
+| `task_needs.py` | tests, tool check_firmware_defaults.py, documents |
 
 ### EH3D-ROUTEPRO
 
@@ -121,6 +121,12 @@ A script counts as used when a workflow file, a script of the root of the reposi
 | `make_config.py` | nothing |
 | `make_examples.py` | nothing |
 | `make_hotkeys.py` | documents |
+
+### EH3D-SERVER
+
+| Script | Still named by |
+|---|---|
+| `sync_api_examples.py` | documents |
 
 ### EH3D-STUDIO
 
