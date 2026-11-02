@@ -1,6 +1,6 @@
 # Conventions of the repositories
 
-* **The manifest.** Each repository has an `eh3d.project.json` with the fields the validators require (`schema_version`, `ecosystem`, `name`, `version`, `role`, `stack`, `technologies`, `deployment_target`, `maturity`, `family`, `parent`, `build`, `notes` and `native_version`). `native_version` says in which file and with which pattern the repository keeps its own version, and the check fails when it differs from the manifest.
+* **The manifest.** Each repository has an `eh3d.project.json` with the fields the validators require (`schema_version`, `ecosystem`, `name`, `version`, `role`, `stack`, `technologies`, `deployment_target`, `maturity`, `family`, `parent`, `build`, `notes` and `native_version`). `native_version` says in which file and with which pattern the repository keeps its own version, and the check fails when it differs from the manifest. Optional fields are `service`, `components`, `evidence`, `hardware_bound`, `depends_on` (schema 1.1) and `binary`: the file name of the executable the repository builds (for example `"binary": "eh3d-server"`; letters, digits, dot, dash and underscore, no folder and no path, and without a platform suffix such as `.exe` unless the program is only built for that platform). A program with several executables names the main one; the others are not listed. The parser of EH3D-UPDATER accepts the field and keeps it, so a tool can find the program of a repository without guessing from its `Cargo.toml`.
 * **The check.** `python -I tools/ci_validate.py` verifies the manifest, the versions, the changelog, the licence, the eight README files and that no private reference is in a public file. The same check runs in CI.
 * **The README files.** Eight languages (English, Spanish, French, Italian, German, Chinese, Japanese and European Portuguese), with the same structure, so a heading appears in the same order in all of them.
 * **Honesty about maturity.** A repository says what runs and what has only been tested on a computer; `scaffolding` means the first steps.
@@ -24,3 +24,22 @@ Any other code is not part of the convention; a tool that must tell more says it
 `python -I tools/exit_conventions.py` reads every command of `tools/` and reports the ones that differ (a literal code outside the table; a `--help` that does not end with 0; a wrong option that does not end with 64), and the unit tests run it. The tools that are copied into every repository (`ci_validate.py`, `status_lights.py`, `make_structure.py`, `make_architecture.py`, `universal_readme_check.py`) are changed only with a new tools version, so their differences are listed in the tool as known and not changed here.
 
 **What differs today in other repositories** (written down, not changed): the validator copies and the drawers of the pictures end a wrong option with `2`; `ELECTRO-HOBBY-3D-UPDATER` passes on the code of the updater it runs, ends `versions` and `pins` with `2` when something is behind and a `--preview` that the chosen ecosystem lacks with `64`, but its parser ends a wrong option with `2`; `EH3D-UPDATER` ends with `1` on every error, `10` for `check` and `0` otherwise, and its parser ends a wrong option with `2`.
+
+## Names
+
+These are the names the suite uses today. Nothing is renamed to make them fit: a name that differs is written here as it is, and a new repository follows the first column.
+
+| What | Convention | Examples |
+|---|---|---|
+| Repository | `EH3D-` and the name in capitals, words separated by `-`. A board of the suite is `EH3D-NODE-<NAME>`. The updater of the whole family is the exception, `ELECTRO-HOBBY-3D-UPDATER`. | `EH3D-SERVER`, `EH3D-NODE-BUNGARD-HMI` |
+| Manifest `name` | The name of the repository, exactly (the validators and the Updater compare it with the folder). | `EH3D-DRILLPRO` |
+| Rust package | The repository in lower case; a repository that is only a set of libraries names each crate `eh3d-<what it does>`. | `eh3d-server`, `eh3d-common` |
+| Executable | Lower case, words separated by `-`; new ones start with `eh3d-`. Today several programs have a shorter name that people know (`drillpro`, `routepro`, `motioncnc`, `bungard-gui`) and some abbreviate (`eh3d-camdebug`, `eh3d-gerberview`, `eh3d-lasercam`, `eh3d-pnp`, `eh3d-tools`, `eh3d-vision`, `eh3d-launcher`). The manifest field `binary` says which one a repository builds. | `eh3d-server`, `drillpro` |
+| npm package | Lower case with the same prefix; the folder and the package are not required to match the repository. | `eh3d-studio` |
+| Python package | Lower case with `-` on PyPI-style names and `_` for the import. | `eh3d-updater`, `eh3d_updater` |
+| System service | The executable name. | `eh3d-server` |
+| Tag and release | `v` and the version of the manifest, with three or four numbers; the tag is made on the commit that carries that version. | `v0.0.7`, `v0.8.0.1` |
+| Branch | `main` is the only long-lived branch; a working branch says what it does, in lower case with `-`. | `main`, `fix-port-parsing` |
+| Configuration file | Lower case, one concern per file, the extension `.cfg` for `key = value` files and `.json` for structured data; the repository keeps an `.example` copy and the real file is not committed. | `server.cfg`, `machine.cfg`, `hmi.cfg`, `head.cfg` |
+| Names the system reserves | On Windows a file cannot be called `aux`, `con`, `nul`, `prn`, `com1` and the like, with or without extension; a node that would be called `aux` uses `head.cfg` for its configuration. | `head.cfg` |
+| README | `README.md` in English and `README_<code>.md` with the three letters `spa`, `fra`, `ita`, `deu`, `zho`, `jpn`, `por`; the codes of the languages are in `docs/suite.json`. | `README_por.md` |
