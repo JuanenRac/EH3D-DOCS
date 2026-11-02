@@ -92,8 +92,16 @@ def repositories(args: argparse.Namespace) -> list[Path]:
     return [Path(r) if (Path(r) / vp.MANIFEST).is_file() else base / r for r in args.repository]
 
 
+class UsageParser(argparse.ArgumentParser):
+    """An argument parser that ends a wrong use with exit code 64, as docs/CONVENTIONS.md says for the command-line tools of the suite (argparse alone uses 2)."""
+
+    def error(self, message: str):
+        self.print_usage(sys.stderr)
+        self.exit(64, f"{self.prog}: error: {message}\n")
+
+
 def main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(description="Sections of the translated README files that are older than the English ones (informative).")
+    parser = UsageParser(description="Sections of the translated README files that are older than the English ones (informative).")
     parser.add_argument("repository", nargs="*")
     parser.add_argument("--workspace", type=Path)
     parser.add_argument("--all", action="store_true", help="every EH3D repository of the workspace")

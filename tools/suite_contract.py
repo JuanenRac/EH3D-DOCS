@@ -301,8 +301,16 @@ def run(workspace: Path, only: str | None = None, strict: bool = False, allow_fi
     return not failed, found
 
 
+class UsageParser(argparse.ArgumentParser):
+    """An argument parser that ends a wrong use with exit code 64, as docs/CONVENTIONS.md says for the command-line tools of the suite (argparse alone uses 2)."""
+
+    def error(self, message: str):
+        self.print_usage(sys.stderr)
+        self.exit(64, f"{self.prog}: error: {message}\n")
+
+
 def main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(description="Checks that the repositories of the suite fit each other.")
+    parser = UsageParser(description="Checks that the repositories of the suite fit each other.")
     parser.add_argument("--workspace", type=Path, default=HERE.parents[1], help="the folder that holds the repositories (default: the one that holds this one)")
     parser.add_argument("--only", choices=sorted(CHECKS), help="run a single check")
     parser.add_argument("--strict", action="store_true", help="warnings fail too")

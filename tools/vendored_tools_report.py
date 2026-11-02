@@ -114,8 +114,16 @@ def report(workspace: Path) -> tuple[str, int]:
     return "\n".join(lines).rstrip("\n") + "\n", total
 
 
+class UsageParser(argparse.ArgumentParser):
+    """An argument parser that ends a wrong use with exit code 64, as docs/CONVENTIONS.md says for the command-line tools of the suite (argparse alone uses 2)."""
+
+    def error(self, message: str):
+        self.print_usage(sys.stderr)
+        self.exit(64, f"{self.prog}: error: {message}\n")
+
+
 def main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(description="The scripts of tools/ that nothing in the repository uses (a report; nothing is deleted).")
+    parser = UsageParser(description="The scripts of tools/ that nothing in the repository uses (a report; nothing is deleted).")
     parser.add_argument("--workspace", type=Path, help="the folder that holds the repositories (default: the parent of this repository)")
     parser.add_argument("--write", type=Path, help="write the report as a Markdown file instead of printing it")
     args = parser.parse_args(argv)

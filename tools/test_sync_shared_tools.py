@@ -50,7 +50,7 @@ class SyncSharedToolsTests(unittest.TestCase):
             root = Path(tmp)
             make(root, "EH3D-DOCS", "print(1)\n")
             other = make(root, "EH3D-SERVER", "print(2)\n")
-            self.assertEqual(SYNC.main(["--workspace", str(root), "--write"]), 2)
+            self.assertEqual(SYNC.main(["--workspace", str(root), "--write"]), 64)
             self.assertEqual(SYNC.main(["--workspace", str(root), "--write", "--only", "ci_validate.py", "--repo", "EH3D-SERVER"]), 0)
             text = other.read_text(encoding="utf-8")
             self.assertIn("# EH3D-SERVER - tools/ci_validate.py", text)

@@ -83,8 +83,16 @@ def bump(root: Path, new: str, title: str, explicit: bool = False, dry_run: bool
     return 0, out
 
 
+class UsageParser(argparse.ArgumentParser):
+    """An argument parser that ends a wrong use with exit code 64, as docs/CONVENTIONS.md says for the command-line tools of the suite (argparse alone uses 2)."""
+
+    def error(self, message: str):
+        self.print_usage(sys.stderr)
+        self.exit(64, f"{self.prog}: error: {message}\n")
+
+
 def main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(description="Raise the version of a repository in every place that holds it.")
+    parser = UsageParser(description="Raise the version of a repository in every place that holds it.")
     parser.add_argument("repository")
     parser.add_argument("new", help="the new version, or `next` for the one the odometer gives")
     parser.add_argument("title", help="the title of the version, for the CHANGELOG heading")

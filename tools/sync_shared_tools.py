@@ -126,8 +126,16 @@ def write_copy(workspace: Path, tool: str, repo: str) -> None:
     dst.write_bytes((text.replace("\n", "\r\n") if crlf else text).encode("utf-8"))
 
 
+class UsageParser(argparse.ArgumentParser):
+    """An argument parser that ends a wrong use with exit code 64, as docs/CONVENTIONS.md says for the command-line tools of the suite (argparse alone uses 2)."""
+
+    def error(self, message: str):
+        self.print_usage(sys.stderr)
+        self.exit(64, f"{self.prog}: error: {message}\n")
+
+
 def main(argv: list[str] | None = None) -> int:
-    p = argparse.ArgumentParser(description="Compares the copies of the shared tools of the repositories.")
+    p = UsageParser(description="Compares the copies of the shared tools of the repositories.")
     p.add_argument("--workspace", type=Path, default=HERE.parents[1], help="the folder that holds the repositories (default: the one that holds this one)")
     p.add_argument("--only", choices=SHARED, help="one tool")
     p.add_argument("--check", action="store_true", help="exit 1 when any copy differs from the one of EH3D-DOCS")
@@ -137,7 +145,7 @@ def main(argv: list[str] | None = None) -> int:
     if a.write:
         if not (a.only and a.repo):
             print("--write needs --only TOOL and --repo REPOSITORY: it never rewrites the whole suite at once", file=sys.stderr)
-            return 2
+            return 64
         write_copy(a.workspace, a.only, a.repo)
         print(f"{a.only}: written in {a.repo}")
         return 0

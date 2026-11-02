@@ -157,8 +157,16 @@ def prerelease(root: Path, runner: Runner = run, allow_short: bool = False, with
     return (1 if failed else 0), lines
 
 
+class UsageParser(argparse.ArgumentParser):
+    """An argument parser that ends a wrong use with exit code 64, as docs/CONVENTIONS.md says for the command-line tools of the suite (argparse alone uses 2)."""
+
+    def error(self, message: str):
+        self.print_usage(sys.stderr)
+        self.exit(64, f"{self.prog}: error: {message}\n")
+
+
 def main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(description="What has to be up to date before a release is published.")
+    parser = UsageParser(description="What has to be up to date before a release is published.")
     parser.add_argument("repository")
     parser.add_argument("--workspace", type=Path)
     parser.add_argument("--no-ci", action="store_true", help="do not ask GitHub for the runs of the commit")

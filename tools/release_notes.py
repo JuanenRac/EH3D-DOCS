@@ -68,8 +68,16 @@ def check(root: Path) -> tuple[int, list[str]]:
     return 0, [f"OK the section {version} has {count} entries and [Unreleased] is empty"]
 
 
+class UsageParser(argparse.ArgumentParser):
+    """An argument parser that ends a wrong use with exit code 64, as docs/CONVENTIONS.md says for the command-line tools of the suite (argparse alone uses 2)."""
+
+    def error(self, message: str):
+        self.print_usage(sys.stderr)
+        self.exit(64, f"{self.prog}: error: {message}\n")
+
+
 def main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(description="The notes and the title of a release from the CHANGELOG.")
+    parser = UsageParser(description="The notes and the title of a release from the CHANGELOG.")
     parser.add_argument("repository")
     parser.add_argument("version", nargs="?")
     parser.add_argument("--workspace", type=Path)
