@@ -1,0 +1,24 @@
+{
+  "schema_version": "1.0",
+  "ecosystem": "EH3D",
+  "name": "@@name@@",
+  "version": "@@version@@",
+  "role": "@@role@@",
+  "stack": "@@stack@@",
+  "technologies": [
+    "Markdown",
+    "Python 3.10+"
+  ],
+  "deployment_target": "user-pc",
+  "maturity": "scaffolding",
+  "evidence": "host-test",
+  "hardware_bound": false,
+  "family": "@@family@@",
+  "parent": null,
+  "build": "python -I tools/ci_validate.py",
+  "notes": "Scaffolding v@@version@@: a new repository of the EH3D Fabrication Suite with the base every repository has (manifest, README files in eight languages, changelog, CI and the shared checks) and no code yet.",
+  "native_version": {
+    "file": "VERSION",
+    "pattern": "^(\\d+\\.\\d+\\.\\d+)"
+  }
+}

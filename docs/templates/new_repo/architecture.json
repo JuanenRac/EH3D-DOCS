@@ -1,0 +1,83 @@
+{
+  "repo": "@@name@@",
+  "ecosystem": "eh3d",
+  "tagline": "A new repository of the suite: the base every repository has, and nothing else yet.",
+  "description": "@@name@@ starts from the base of every repository of the EH3D Fabrication Suite: the manifest, the README files in eight languages, the changelog, the CI workflow and the shared checks of EH3D-DOCS. The code that will give it a purpose is still to be written and tested; nothing here has been run on a machine.",
+  "columns": [
+    "WHO USES IT",
+    "THIS REPOSITORY",
+    "WHAT IT FOLLOWS"
+  ],
+  "nodes": [
+    {
+      "id": "reader",
+      "column": 0,
+      "level": "external",
+      "title": "A developer",
+      "lines": [
+        "someone who is going to give",
+        "this repository its purpose"
+      ]
+    },
+    {
+      "id": "base",
+      "column": 1,
+      "level": "tested",
+      "title": "The base",
+      "lines": [
+        "manifest, README files, changelog",
+        "and CI, with their checks"
+      ],
+      "code": [
+        "tools/ci_validate.py",
+        "tools/test_repository.py"
+      ]
+    },
+    {
+      "id": "code",
+      "column": 1,
+      "level": "config",
+      "title": "The code",
+      "lines": [
+        "what the repository is for:",
+        "planned, not written yet"
+      ]
+    },
+    {
+      "id": "suite",
+      "column": 2,
+      "level": "external",
+      "title": "EH3D-DOCS",
+      "lines": [
+        "the map of the suite, the",
+        "conventions and the shared checks"
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "from": "reader",
+      "to": "base",
+      "label": "starts from",
+      "level": "tested"
+    },
+    {
+      "from": "base",
+      "to": "suite",
+      "label": "follows",
+      "level": "tested"
+    },
+    {
+      "from": "reader",
+      "to": "code",
+      "label": "writes",
+      "level": "config"
+    }
+  ],
+  "legend": {
+    "tested": "covered by the checks of this repository",
+    "config": "planned, not built",
+    "external": "a person or other repositories"
+  },
+  "footer": "Nothing here has been run on a machine."
+}
