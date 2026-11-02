@@ -1,0 +1,56 @@
+name: Validate (reusable)
+
+# The validation every repository of the suite runs: the manifest, versions, documentation and
+# language parity (tools/ci_validate.py) and the pictures of the README. A repository calls it with
+#
+#   jobs:
+#     validate:
+#       uses: JuanenRac/EH3D-DOCS/.github/workflows/validate.yml@<tag>
+#
+# and adds its own jobs (cargo, npm, gradle) next to it. See docs/REUSABLE_VALIDATION.md.
+
+on:
+  workflow_call:
+    inputs:
+      python-version:
+        description: "Python version used for the checks"
+        type: string
+        default: "3.12"
+      check-pictures:
+        description: "Check that the Architecture and Repository Structure pictures of the README match docs/architecture.json and docs/structure.json"
+        type: boolean
+        default: true
+      check-links:
+        description: "Run tools/check_links.py (the links between the documents); needs that script in the repository"
+        type: boolean
+        default: false
+      run-tool-tests:
+        description: "Run the unit tests of tools/ (python -I -m unittest discover -s tools -p test_*.py)"
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Validate the repository
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: ${{ inputs.python-version }}
+      - name: Manifest, documentation and language parity
+        run: python -I tools/ci_validate.py
+      - name: Pictures of the README
+        if: ${{ inputs.check-pictures }}
+        run: |
+          python -I tools/make_architecture.py --check
+          python -I tools/make_structure.py --check --readmes
+      - name: Links between the documents
+        if: ${{ inputs.check-links }}
+        run: python -I tools/check_links.py
+      - name: Tests of the repository checks
+        if: ${{ inputs.run-tool-tests }}
+        run: python -I -m unittest discover -s tools -p "test_*.py"
