@@ -7,6 +7,7 @@
 from __future__ import annotations
 
 import importlib.util
+import json
 import tempfile
 import unittest
 from pathlib import Path
@@ -32,6 +33,7 @@ class SyncSharedToolsTests(unittest.TestCase):
             make(root, "EH3D-DOCS", "print(1)\n")
             make(root, "EH3D-ISOCAM", "print(1)\n")
             self.assertEqual(SYNC.differing(root), {})
+            self.assertEqual(SYNC.main(["--workspace", str(root), "--lock"]), 0)
             self.assertEqual(SYNC.main(["--workspace", str(root), "--check"]), 0)
 
     def test_a_copy_that_was_changed_is_told_and_fails_the_check(self) -> None:
@@ -40,6 +42,7 @@ class SyncSharedToolsTests(unittest.TestCase):
             make(root, "EH3D-DOCS", "print(1)\n")
             make(root, "EH3D-ISOCAM", "print(1)\n")
             make(root, "EH3D-SERVER", "print(2)\n")
+            SYNC.main(["--workspace", str(root), "--lock"])
             self.assertEqual(SYNC.differing(root), {"ci_validate.py": ["EH3D-SERVER"]})
             self.assertEqual(len(SYNC.report(root)["ci_validate.py"]), 2)
             self.assertEqual(SYNC.main(["--workspace", str(root)]), 0)  # the report alone never fails
@@ -75,6 +78,36 @@ class SyncSharedToolsTests(unittest.TestCase):
             SYNC.write_copy(root, "ci_validate.py", "EH3D-SERVER")
             self.assertEqual(other.read_text(encoding="utf-8").count("# canonical:"), 1)
             self.assertEqual(SYNC.canonical_problems(root), [])
+
+    def test_the_lock_names_the_origin_and_notices_a_tool_changed_after_it(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            docs = make(root, "EH3D-DOCS", "print(1)\n")
+            self.assertEqual(len(SYNC.lock_problems(root)), 1)  # no lock yet
+            SYNC.write_lock(root)
+            self.assertEqual(SYNC.lock_problems(root), [])
+            self.assertEqual(json.loads(SYNC.lock_path(root).read_text(encoding="utf-8"))["origin"], "EH3D-DOCS")
+            docs.write_text(docs.read_text(encoding="utf-8").replace("print(1)", "print(3)"), encoding="utf-8")
+            self.assertEqual(len(SYNC.lock_problems(root)), 1)
+            self.assertEqual(SYNC.main(["--workspace", str(root), "--check"]), 1)
+            SYNC.write_lock(root)
+            self.assertEqual(SYNC.main(["--workspace", str(root), "--check"]), 0)
+
+    def test_a_header_change_alone_does_not_make_the_lock_stale(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            docs = make(root, "EH3D-DOCS", "print(1)\n")
+            SYNC.write_lock(root)
+            docs.write_text(docs.read_text(encoding="utf-8").replace("# GPL", "# GPL-3.0-or-later"), encoding="utf-8")
+            self.assertEqual(SYNC.lock_problems(root), [])
+
+    def test_a_broken_lock_is_told(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            make(root, "EH3D-DOCS", "print(1)\n")
+            SYNC.write_lock(root)
+            SYNC.lock_path(root).write_text("{", encoding="utf-8")
+            self.assertEqual(SYNC.lock_problems(root), ["docs/vendored.lock is not valid JSON"])
 
     def test_folders_that_are_not_of_the_suite_are_left_alone(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:

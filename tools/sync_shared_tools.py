@@ -14,11 +14,14 @@ says how many different versions there are and who holds which.
     python tools/sync_shared_tools.py --check          # the same, and exit 1 when any copy differs
     python tools/sync_shared_tools.py --write --only ci_validate.py --repo EH3D-ISOCAM
                                                        # puts the canonical copy in that repository (its own header stays); never done without --repo
+    python tools/sync_shared_tools.py --lock           # writes docs/vendored.lock: the origin and the digest of every shared tool, as this hub holds them
+    python tools/sync_shared_tools.py --check          # also fails when docs/vendored.lock does not describe the canonical copies
 """
 from __future__ import annotations
 
 import argparse
 import hashlib
+import json
 import sys
 from pathlib import Path
 
@@ -31,6 +34,7 @@ SHARED = (
     "make_architecture.py",
     "_readme_svg.py",
     "universal_readme_check.py",
+    "banner_check.py",
     "pretty_run.py",
     "_manifest_contract.py",
 )
@@ -80,6 +84,51 @@ def differing(workspace: Path, only: str | None = None) -> dict[str, list[str]]:
         if others:
             result[tool] = others
     return result
+
+
+LOCK_NAME = "vendored.lock"
+
+
+def lock_path(workspace: Path) -> Path:
+    return workspace / CANONICAL / "docs" / LOCK_NAME
+
+
+def lock_data(workspace: Path) -> dict:
+    """What docs/vendored.lock must say: where the shared tools come from and the digest of the body of each canonical copy."""
+    tools = {}
+    for tool in SHARED:
+        f = workspace / CANONICAL / "tools" / tool
+        if f.is_file():
+            tools[tool] = digest(f)
+    return {"origin": CANONICAL, "tools": tools}
+
+
+def lock_problems(workspace: Path) -> list[str]:
+    """The reasons the lock does not describe the canonical copies: missing, unreadable, another origin, or a tool changed without writing the lock again."""
+    path = lock_path(workspace)
+    if not path.is_file():
+        return [f"docs/{LOCK_NAME} is missing: run tools/sync_shared_tools.py --lock"]
+    try:
+        stored = json.loads(path.read_text(encoding="utf-8"))
+    except ValueError:
+        return [f"docs/{LOCK_NAME} is not valid JSON"]
+    wanted = lock_data(workspace)
+    out = []
+    if stored.get("origin") != wanted["origin"]:
+        out.append(f"docs/{LOCK_NAME} names the origin {stored.get('origin')!r}, the origin is {wanted['origin']!r}")
+    have = stored.get("tools", {})
+    for tool, value in wanted["tools"].items():
+        if have.get(tool) != value:
+            out.append(f"{tool} changed since docs/{LOCK_NAME} was written: run tools/sync_shared_tools.py --lock")
+    for tool in have:
+        if tool not in wanted["tools"]:
+            out.append(f"docs/{LOCK_NAME} lists {tool}, which this hub does not hold")
+    return out
+
+
+def write_lock(workspace: Path) -> None:
+    lock_path(workspace).parent.mkdir(parents=True, exist_ok=True)
+    lock_path(workspace).write_text(json.dumps(lock_data(workspace), indent=2, sort_keys=True) + "\n", encoding="utf-8")
 
 
 CANONICAL_LINE = "# canonical: "
@@ -140,6 +189,7 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument("--only", choices=SHARED, help="one tool")
     p.add_argument("--check", action="store_true", help="exit 1 when any copy differs from the one of EH3D-DOCS")
     p.add_argument("--write", action="store_true", help="put the canonical copy in the repository given with --repo")
+    p.add_argument("--lock", action="store_true", help="write docs/vendored.lock from the canonical copies")
     p.add_argument("--repo", help="with --write: the repository to write")
     a = p.parse_args(argv)
     if a.write:
@@ -149,7 +199,14 @@ def main(argv: list[str] | None = None) -> int:
         write_copy(a.workspace, a.only, a.repo)
         print(f"{a.only}: written in {a.repo}")
         return 0
+    if a.lock:
+        write_lock(a.workspace)
+        print(f"docs/{LOCK_NAME}: written")
+        return 0
     diff = differing(a.workspace, a.only)
+    lock = lock_problems(a.workspace) if not a.only else []
+    for line in lock:
+        print("  LOCK", line)
     for tool, variants in report(a.workspace, a.only).items():
         print(f"{tool}: {len(variants)} version(s) in {sum(len(v) for v in variants.values())} repositories")
         for names in sorted(variants.values(), key=len, reverse=True):
@@ -157,8 +214,9 @@ def main(argv: list[str] | None = None) -> int:
             shown = ", ".join(names[:6]) + (f" (+{len(names) - 6})" if len(names) > 6 else "")
             print(f"    {mark:<9} {shown}")
     total = sum(len(v) for v in diff.values())
-    print(f"SHARED_TOOLS={'FAIL' if diff and a.check else 'REPORT'} tools={len(report(a.workspace, a.only))} differing_copies={total}")
-    return 1 if diff and a.check else 0
+    failing = bool(diff or lock) and a.check
+    print(f"SHARED_TOOLS={'FAIL' if failing else 'REPORT'} tools={len(report(a.workspace, a.only))} differing_copies={total} lock={'STALE' if lock else 'OK'}")
+    return 1 if failing else 0
 
 
 if __name__ == "__main__":

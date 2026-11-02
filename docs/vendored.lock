@@ -1,0 +1,12 @@
+{
+  "origin": "EH3D-DOCS",
+  "tools": {
+    "_readme_svg.py": "8f30473f26",
+    "banner_check.py": "1cd625fd99",
+    "ci_validate.py": "281eb651c0",
+    "make_architecture.py": "94ec775963",
+    "make_structure.py": "c77580d2a5",
+    "status_lights.py": "146eb0ea53",
+    "universal_readme_check.py": "27b5d13d42"
+  }
+}
