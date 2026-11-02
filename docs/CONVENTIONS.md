@@ -25,6 +25,18 @@ Any other code is not part of the convention; a tool that must tell more says it
 
 **What differs today in other repositories** (written down, not changed): the validator copies and the drawers of the pictures end a wrong option with `2`; `ELECTRO-HOBBY-3D-UPDATER` passes on the code of the updater it runs, ends `versions` and `pins` with `2` when something is behind and a `--preview` that the chosen ecosystem lacks with `64`, but its parser ends a wrong option with `2`; `EH3D-UPDATER` ends with `1` on every error, `10` for `check` and `0` otherwise, and its parser ends a wrong option with `2`.
 
+### The Rust programs
+
+The programs written in Rust follow the same table. This section only writes down what they do today; no program is changed because of it, and each one adopts the table in its own version.
+
+| Program | Today | What the table asks for |
+|---|---|---|
+| `eh3d-camdebug` (EH3D-CAM-DEBUGGER) | `0` clean, `1` the checker found something, `2` the program could not run | `1` for findings and failures, `64` for a wrong option, `2` for a file that was read with warnings; its `2` for "could not run" is the one difference |
+| `eh3d-autolevel`, `eh3d-gerberview`, `eh3d-isocam`, `eh3d-lasercam`, `eh3d-pnp`, `eh3d-stencilcam`, `eh3d-tools`, `eh3d-vision`, `eh3d-launcher` | `0` done, `1` on any error, a wrong option included | `1` for failures; `64` for a wrong option; `2` when the output was written but something was left out (pads skipped, macros ignored, a line not understood) |
+| `eh3d-server` | `0` clean stop, `1` it could not start or serve, `2` a configuration option that does not make sense | `64` for the wrong option (today `2`) |
+
+How a program should choose a code when it adopts the table: no output was written, or the input was refused, is `1`; an option or an argument that does not exist or does not make sense is `64`; the output exists but something the user asked for is missing from it (a skipped pad, an ignored macro) is `2`, and `--strict` may turn it into `1`; "there is something to do" (`10`) is for programs that look for updates. A script that chains several programs can then treat `2` as a warning to show and anything above `2` as a stop. The contract job of the suite can check the `64` of every program by running its binary with an option that does not exist.
+
 ## Names
 
 These are the names the suite uses today. Nothing is renamed to make them fit: a name that differs is written here as it is, and a new repository follows the first column.
