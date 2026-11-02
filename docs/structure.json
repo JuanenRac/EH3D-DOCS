@@ -85,6 +85,84 @@
           "name": "UPDATING.md"
         },
         {
+          "name": "RELEASING.md",
+          "desc": {
+            "en": "raise a version and publish a release with the scripts",
+            "es": "subir una versión y publicar con los scripts",
+            "de": "eine Version erhöhen und mit den Skripten veröffentlichen",
+            "fr": "monter une version et publier avec les scripts",
+            "it": "alzare una versione e pubblicare con gli script",
+            "ja": "スクリプトでバージョンを上げて公開する",
+            "zh": "用脚本提升版本并发布",
+            "pt": "subir uma versão e publicar com os scripts"
+          }
+        },
+        {
+          "name": "REUSABLE_VALIDATION.md",
+          "desc": {
+            "en": "the validation workflow that the repositories can call",
+            "es": "el flujo de validación que pueden llamar los repositorios",
+            "de": "der Validierungs-Workflow, den die Repositories aufrufen können",
+            "fr": "le workflow de validation que les dépôts peuvent appeler",
+            "it": "il workflow di validazione che i repository possono richiamare",
+            "ja": "各リポジトリが呼び出せる検証ワークフロー",
+            "zh": "各仓库可调用的验证工作流",
+            "pt": "o fluxo de validação que os repositórios podem chamar"
+          }
+        },
+        {
+          "name": "VENDORED_TOOLS_REPORT.md",
+          "desc": {
+            "en": "the tools copied into the repositories that nothing uses",
+            "es": "las herramientas copiadas en los repositorios que nadie usa",
+            "de": "die in die Repositories kopierten Werkzeuge, die niemand benutzt",
+            "fr": "les outils copiés dans les dépôts que rien n'utilise",
+            "it": "gli strumenti copiati nei repository che nessuno usa",
+            "ja": "各リポジトリにコピーされた、使われていないツール",
+            "zh": "复制到各仓库但无人使用的工具",
+            "pt": "as ferramentas copiadas para os repositórios que ninguém usa"
+          }
+        },
+        {
+          "name": "suite.json",
+          "desc": {
+            "en": "the constants of the suite",
+            "es": "las constantes de la suite",
+            "de": "die Konstanten der Suite",
+            "fr": "les constantes de la suite",
+            "it": "le costanti della suite",
+            "ja": "スイートの定数",
+            "zh": "套件常量",
+            "pt": "as constantes da suite"
+          }
+        },
+        {
+          "name": "suite_contract_allow.txt",
+          "desc": {
+            "en": "the known exceptions of the contract",
+            "es": "las excepciones conocidas del contrato",
+            "de": "die bekannten Ausnahmen des Vertrags",
+            "fr": "les exceptions connues du contrat",
+            "it": "le eccezioni note del contratto",
+            "ja": "契約の既知の例外",
+            "zh": "契约的已知例外",
+            "pt": "as exceções conhecidas do contrato"
+          }
+        },
+        {
+          "name": "templates/",
+          "desc": {
+            "en": "the template of a new repository",
+            "es": "la plantilla de un repositorio nuevo",
+            "de": "die Vorlage eines neuen Repositorys",
+            "fr": "le modèle d'un nouveau dépôt",
+            "it": "il modello di un nuovo repository",
+            "ja": "新しいリポジトリのテンプレート",
+            "zh": "新仓库的模板",
+            "pt": "o modelo de um repositório novo"
+          }
+        },
+        {
           "desc": {
             "en": "the data of the two pictures",
             "es": "los datos de las dos imágenes",
@@ -127,14 +205,14 @@
       "rows": [
         {
           "desc": {
-            "en": "the repository check, the link check, their tests and the picture tools",
-            "es": "la comprobación del repositorio, la de enlaces, sus pruebas y las herramientas de imágenes",
-            "de": "die Repository-Prüfung, die Link-Prüfung, ihre Tests und die Bildwerkzeuge",
-            "fr": "le contrôle du dépôt, celui des liens, leurs tests et les outils d'images",
-            "it": "il controllo del repository, quello dei link, i loro test e gli strumenti per le immagini",
-            "ja": "リポジトリ チェック、リンク チェック、そのテストと図のツール",
-            "zh": "仓库检查、链接检查、它们的测试和绘图工具",
-            "pt": "a verificação do repositório, a das ligações, os seus testes e as ferramentas de imagens"
+            "en": "the checks, the contract, the version and release scripts, and their tests",
+            "es": "las comprobaciones, el contrato, los scripts de versión y publicación y sus pruebas",
+            "de": "die Prüfungen, der Vertrag, die Skripte für Version und Veröffentlichung und ihre Tests",
+            "fr": "les contrôles, le contrat, les scripts de version et de publication et leurs tests",
+            "it": "i controlli, il contratto, gli script di versione e rilascio e i loro test",
+            "ja": "チェック、契約、バージョンとリリースのスクリプト、そのテスト",
+            "zh": "检查、契约、版本与发布脚本及其测试",
+            "pt": "as verificações, o contrato, os scripts de versão e publicação e os seus testes"
           },
           "name": "tools/"
         },

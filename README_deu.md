@@ -18,7 +18,7 @@
 
 ---
 
-**Ehrlichkeitscheck - was heute tatsächlich läuft:** Dokumente und zwei kleine Prüfungen. Die Suite steht am Anfang: siebenundzwanzig Repositories sind veröffentlicht (die Bibliotheken, die Bungard-Programme, der Server und Studio, die Knoten und Touchscreens, die Handy-Apps, die CAM- und Hilfsprogramme, die Updater und dieses), und das Handbediengerät für kleine Touchscreens ist das einzige Programm, das noch ein Plan ist. Alles Veröffentlichte wurde auf einem Computer getestet, und die Oberflächen sprechen 37 Sprachen; von der ganzen Suite hat nur das serielle Protokoll von EH3D-DRILLPRO eine echte Maschine bewegt (die Referenzfahrt und die Bewegungen jeder Achse an einer Bungard CCD MTC), und noch kein ganzer Auftrag lief auf einer Maschine. 5 Tests decken die Repository-Prüfung ab.
+**Ehrlichkeitscheck - was heute tatsächlich läuft:** Dokumente und die Werkzeuge der Suite, die auf einem Rechner laufen und sonst nirgends (die Repository-Prüfung und die Zeichner der Bilder, die jedes Repository mitbringt, der Vertrag zwischen den Repositories, die Skripte, die eine Version erhöhen und eine Veröffentlichung vorbereiten, das Skript, das einen Arbeitsbereich einrichtet, und das, das ein neues Repository anlegt). Die Suite steht am Anfang: siebenundzwanzig Repositories sind veröffentlicht (die Bibliotheken, die Bungard-Programme, der Server und Studio, die Knoten und Touchscreens, die Handy-Apps, die CAM- und Hilfsprogramme, die Updater und dieses), und das Handbediengerät für kleine Touchscreens ist das einzige Programm, das noch ein Plan ist. Alles Veröffentlichte wurde auf einem Computer getestet, und die Oberflächen sprechen 37 Sprachen; von der ganzen Suite hat nur das serielle Protokoll von EH3D-DRILLPRO eine echte Maschine bewegt (die Referenzfahrt und die Bewegungen jeder Achse an einer Bungard CCD MTC), und noch kein ganzer Auftrag lief auf einer Maschine. 5 Tests decken die Repository-Prüfung ab.
 
 ---
 
@@ -30,8 +30,8 @@
 |---|---|
 | Version | `0.0.4` |
 | Reifegrad | Gerüst |
-| Tests | 5 |
-| Technologie-Stack | Markdown, mit zwei Python-3.10+-Prüfungen |
+| Tests | 126 |
+| Technologie-Stack | Markdown, mit Python-3.10+-Werkzeugen |
 | Auf echter Hardware | Nicht zutreffend: Dokumentation |
 
 **Springe zu:** [Überblick](#-überblick) · [Architektur](#-architektur) · [Schnellstart](#-schnellstart) · [Tests](#-tests) · [Struktur](#-struktur-des-repositorys) · [Verwandte](#-verwandte-projekte)
@@ -44,8 +44,11 @@ Jede Zeile ist ein Teil dieses Repositorys, und die Ampel sagt, wie weit er heut
 
 | Bereich | Stand | Was das hier bedeutet |
 |---|---|---|
-| Repository-Prüfungen | 🟡 | Die Repository-Prüfung, die Prüfung der Links zwischen den Dokumenten und die 5 Tests der Repository-Prüfung laufen in der CI und bestehen. |
-| Tests | 🟠 | Nur die Repository-Prüfung hat Tests (5); die Dokumente und ihre Aussagen werden von Hand und mit den beiden Skripten gelesen und geprüft. |
+| Repository-Prüfungen | 🟡 | Die Repository-Prüfung, die Prüfung der Links zwischen den Dokumenten und die Tests der Werkzeuge laufen in der CI und bestehen. |
+| Tests | 🟠 | 126 Tests der Werkzeuge bestehen auf einem Rechner, einige davon auf kleinen Spielzeug-Repositories; die Dokumente und ihre Aussagen werden von Hand und mit den Skripten gelesen und geprüft. |
+| Vertrag der Suite | 🟡 | Der Vertrag zwischen den Repositories liest jedes Manifest mit dem Parser des Updaters und meldet Abweichungen (Ports, README-Sprachen, gemeinsame Werkzeuge, Issue-Formulare); er läuft täglich in der CI als Warnung, und die Repositories, die er nennt, werden eines nach dem anderen nachgezogen. |
+| Werkzeuge für Version und Veröffentlichung | 🟠 | Die Skripte, die eine Version erhöhen, die Notizen schreiben und eine Veröffentlichung prüfen, und der wiederverwendbare Validierungs-Workflow sind an Spielzeug-Repositories getestet; noch kein Repository hat damit eine Version veröffentlicht. |
+| Arbeitsbereich und neue Repositories | 🟠 | Die Skripte, die auflisten und klonen, was ein Repository braucht, und die ein neues Repository anlegen, sind an Spielzeug-Repositories in einem temporären Ordner getestet; keines hat bisher einen echten Arbeitsbereich eingerichtet oder ein echtes Repository angelegt. |
 | Karte und Fähigkeitsmatrix | 🟡 | Die Karte der Suite, die Architekturnotizen und die Fähigkeitsmatrix decken die siebenundzwanzig veröffentlichten Repositories mit der Version jedes einzelnen ab und führen das eine Programm, das noch ein Plan ist, als geplant; sie werden von Hand geschrieben und können hinter den Repositories zurückbleiben. |
 | Echte Hardware | 🟡 | Nicht zutreffend: Dokumentation, nichts hier läuft auf Hardware. |
 | Dokumentation | 🟡 | README in acht Sprachen, bei jeder Änderung gegen Manifest und Änderungsprotokoll geprüft. |
@@ -56,8 +59,9 @@ Jede Zeile ist ein Teil dieses Repositorys, und die Ampel sagt, wie weit er heut
 * **Die Architektur:** die zwei gemeinsamen Bibliotheken, die Programme, die davon abhängen sollen und nie voneinander, der Knoten und der Server, die die Maschine erreichen, und die Regeln jedes Repositorys.
 * **Die Fähigkeitsmatrix:** was auf einem Computer getestet ist und was auf einer Maschine lief (nur das Protokoll von EH3D-DRILLPRO, an einer Maschine), damit niemand raten muss.
 * **Die Konventionen:** das Manifest, das jedes Repository trägt, die Repository-Prüfung und die README-Dateien in acht Sprachen.
-* **Zwei Prüfungen:** die Repository-Prüfung und eine Prüfung der Links zwischen den Dokumenten, beide in der CI.
-* **Der Suite-Vertrag:** `tools/suite_contract.py` prüft die Beziehungen, die kein Repository allein prüfen kann: Jedes Manifest ist lesbar und trägt den Namen seines Ordners, eine Abhängigkeit von einem Geschwister per Pfad nennt die nötige Version, die Version in der Karte der Suite ist die des Manifests, und die Bildschirme suchen den Server auf dem Port, auf dem er lauscht. Ein täglicher Workflow klont die Repositorys und listet, was abgewichen ist; vorerst warnt er nur, mit einer Liste bekannter Ausnahmen, die geleert wird, wenn jede Ursache behoben ist.
+* **Die Prüfungen und die Werkzeuge:** die Repository-Prüfung, die Prüfung der Links zwischen den Dokumenten, die Zeichner der beiden README-Bilder und die Statusampeln, von hier in jedes Repository kopiert (`tools/sync_shared_tools.py` sagt, wer zurückliegt), und die Prüfung der Konvention für Exit-Codes.
+* **Der Vertrag der Suite:** `tools/suite_contract.py` prüft die Beziehungen, die kein Repository allein prüfen kann: Jedes Manifest ist mit dem Parser des Updaters lesbar und trägt den Namen seines Ordners, eine Abhängigkeit von einem Nachbarn über einen Pfad nennt die benötigte Version, die Versionen der Karte sind die der Manifeste, Bildschirme und Server sind sich über den Port einig, der gemeinsame Validator ist überall derselbe, `docs/suite.json` stimmt mit den Stellen überein, die seine Werte wiederholen, und jedes Repository hat die Issue-Formulare. Er warnt nur.
+* **Versionen, Veröffentlichungen und neue Arbeit:** `bump_version.py`, `release_notes.py`, `prerelease_check.py`, `readme_staleness.py` und `vendored_tools_report.py` ([docs/RELEASING.md](docs/RELEASING.md)), ein wiederverwendbarer Validierungs-Workflow ([docs/REUSABLE_VALIDATION.md](docs/REUSABLE_VALIDATION.md)), `bootstrap_workspace.py`, um zu holen, was ein Repository braucht, und `new_repo.py`, um ein neues Repository anzulegen.
 * **Wie aktualisiert wird:** Die CM5 der Werkstatt wird **per Releases** aktualisiert (`deploy/eh3d-update.py` von EH3D-SERVER lädt das Release von GitHub nach `/opt`); EH3D-UPDATER ist für **Entwicklungs-PCs, per Git** ([docs/UPDATING.md](docs/UPDATING.md)).
 
 ## 🧩 Rolle in EH3D
@@ -92,16 +96,25 @@ Dieses Repository hat kein Programm, das Eingaben von außen annimmt; es schütz
 | Die Repository-Prüfung | `python -I tools/ci_validate.py` gibt `CI_VALIDATION=PASS` aus oder listet, was fehlschlägt | `tools/ci_validate.py` |
 | Die Link-Prüfung | `python -I tools/check_links.py` gibt `LINKS=PASS` aus oder listet die kaputten Links | `tools/check_links.py` |
 | Die Tests der Prüfung | `python -I -m unittest discover -s tools -p "test_*.py"` | `tools/test_ci_validate.py` |
+| Der Vertrag der Suite | `python -I tools/suite_contract.py --workspace ..` gibt `SUITE_CONTRACT=PASS` aus oder listet die Befunde; `--write-map` trägt die Versionen der Manifeste in die Karte ein | `tools/suite_contract.py` |
+| Die gemeinsamen Werkzeuge | `python -I tools/sync_shared_tools.py` sagt, welche Repositories eine abweichende Kopie haben | `tools/sync_shared_tools.py` |
+| Versionen und Veröffentlichungen | `bump_version.py`, `release_notes.py`, `prerelease_check.py`, `readme_staleness.py`, `vendored_tools_report.py` | [docs/RELEASING.md](docs/RELEASING.md) |
+| Der wiederverwendbare Workflow | Validierung mit `on: workflow_call`, zum Aufrufen aus den Repositories | [docs/REUSABLE_VALIDATION.md](docs/REUSABLE_VALIDATION.md) |
+| Der Arbeitsbereich | `bootstrap_workspace.py` listet und klont, was ein Repository braucht; `new_repo.py` legt ein neues Repository an | `tools/bootstrap_workspace.py`, `tools/new_repo.py` |
+| Die Exit-Codes | `0`, `1`, `2`, `10` und `64`; `exit_conventions.py` prüft die Werkzeuge dagegen | [docs/CONVENTIONS.md](docs/CONVENTIONS.md) |
 
 ## ⚙️ Konfiguration
 
-Es gibt nichts zu konfigurieren: Die beiden Prüfungen brauchen Python 3.10 oder neuer und keine Installation und lesen die Dateien des Repositorys, in dem sie liegen. Die Regeln, die sie durchsetzen, stehen im Code von `tools/ci_validate.py`:
+Die Werkzeuge brauchen Python 3.10 oder neuer und keine Installation, und sie lesen die Dateien des Repositorys, in dem sie liegen. Die Regeln, die sie durchsetzen, stehen im Code von `tools/ci_validate.py`, und die Werte der Suite, die mehrere Repositories wiederholen, stehen in `docs/suite.json`:
 
 | Regel | Grenze | Wo |
 |---|---|---|
 | Größe einer versionierten Datei | höchstens 1.500.000 Bytes | `MAX_TRACKED_BYTES` |
 | Sprachen des README | acht Dateien, mit derselben Überschriftenstruktur und denselben Ampeln | `LANGUAGES` |
 | Manifestfelder | die 14 Felder von `REQUIRED`; die Version des Manifests entspricht der in `VERSION` (`native_version`) und im neuesten Eintrag des Änderungsprotokolls | `REQUIRED` |
+| Die Konstanten der Suite | der Port des Servers, das Manifest-Schema, die acht README-Sprachen, das Drehzahlfeld, die Form einer Version, die Issue-Formulare | `docs/suite.json` |
+| Bekannte Ausnahmen des Vertrags | ein `check Repository` pro Zeile, entfernt, wenn die Ursache behoben ist | `docs/suite_contract_allow.txt` |
+| Was ein Repository zur Prüfung hinzufügt | zum Beispiel die Ordner, die die Suche nach verbotenen Wörtern überspringt | `tools/ci_config.json` jedes Repositorys |
 
 ## 🚀 Schnellstart
 
@@ -110,6 +123,8 @@ Du brauchst Python 3.10 oder neuer; es gibt nichts zu installieren.
 ```bash
 python -I tools/ci_validate.py
 python -I tools/check_links.py
+python -I tools/suite_contract.py --workspace ..
+python -I tools/bootstrap_workspace.py --workspace .. EH3D-DRILLPRO
 python -I -m unittest discover -s tools -p "test_*.py"
 ```
 
@@ -117,7 +132,7 @@ Zum Lesen der Dokumente beginne mit [der Karte der Suite](docs/SUITE_MAP.md).
 
 ## 🧪 Tests
 
-Die Repository-Prüfung hat 5 Tests (`python -I -m unittest discover -s tools -p "test_*.py"`), und sie bestehen. Die CI führt die Repository-Prüfung (`tools/ci_validate.py`), die Prüfung der Links zwischen den Dokumenten (`tools/check_links.py`) und diese Tests aus. Die Dokumente selbst haben darüber hinaus keinen Test: Was sie behaupten, bleibt ehrlich, indem man die Repositories liest, die sie beschreiben.
+Die Werkzeuge haben 126 Tests (`python -I -m unittest discover -s tools -p "test_*.py"`), und sie bestehen. Die CI führt die Repository-Prüfung (`tools/ci_validate.py`), die Prüfung der Links zwischen den Dokumenten (`tools/check_links.py`), die Prüfungen der beiden Bilder und diese Tests aus; ein täglicher Workflow führt den Vertrag der Suite aus. Die Dokumente selbst haben keinen weiteren Test: Was sie behaupten, wird durch die Fähigkeitsmatrix und durch Lesen ehrlich gehalten.
 
 ## 🏗️ Build und Veröffentlichung
 
@@ -140,8 +155,14 @@ EH3D-DOCS/
 │   ├── CAPABILITY_MATRIX.md                     was getestet wurde und was auf einer Maschine lief
 │   ├── CONVENTIONS.md                           das Manifest, die Prüfung, die README-Dateien
 │   ├── UPDATING.md                              wie CM5 und PC aktualisiert werden
+│   ├── RELEASING.md                             eine Version erhöhen und mit den Skripten veröffentlichen
+│   ├── REUSABLE_VALIDATION.md                   der Validierungs-Workflow, den die Repositories aufrufen können
+│   ├── VENDORED_TOOLS_REPORT.md                 die in die Repositories kopierten Werkzeuge, die niemand benutzt
+│   ├── suite.json                               die Konstanten der Suite
+│   ├── suite_contract_allow.txt                 die bekannten Ausnahmen des Vertrags
+│   ├── templates/                               die Vorlage eines neuen Repositorys
 │   └── architecture.json structure.json         die Daten der beiden Bilder
-├── tools/                                       die Repository-Prüfung, die Link-Prüfung, ihre Tests und die Bildwerkzeuge
+├── tools/                                       die Prüfungen, der Vertrag, die Skripte für Version und Veröffentlichung und ihre Tests
 ├── images/                                      Banner und die Bilder von Architektur und Repository-Struktur
 ├── .github/                                     CI- und Dashboard-Workflows, Vorlagen für Issues und Pull Requests
 ├── eh3d.project.json                            Manifest: Version, Rolle, Reifegrad und Build-Befehl
@@ -160,11 +181,14 @@ EH3D-DOCS/
 * Die Karte, die Architekturnotizen und die Fähigkeitsmatrix werden von Hand geschrieben; nichts prüft sie gegen die Manifeste der Repositories, sie können also zurückbleiben.
 * Nur die veröffentlichten Repositories sind ausführlich beschrieben; die begonnenen und die geplanten Programme sind je eine entsprechend markierte Zeile der Karte.
 * Die Dokumente haben keinen eigenen Test außer der Repository-Prüfung und der Link-Prüfung.
+* Die Skripte für Veröffentlichung, Arbeitsbereich und neue Repositories wurden nur an Spielzeug-Repositories ausprobiert; keines wurde bisher für eine echte Veröffentlichung oder zum Anlegen eines echten Repositorys benutzt.
+* Der Vertrag der Suite warnt nur, und mehrere Repositories haben noch eine ältere Kopie des gemeinsamen Validators.
 
 **Als Nächstes**
 
 * Die Karte und die Fähigkeitsmatrix mit jedem Repository im Gleichschritt halten, wenn es veröffentlicht wird oder sich ändert.
 * Die Karte gegen die Manifeste der Repositories prüfen, damit ein neues Repository darin nicht fehlen kann.
+* Die Skripte für die nächste echte Veröffentlichung verwenden, den wiederverwendbaren Workflow in den Repositories einführen und den Vertrag der Suite blockierend machen, sobald seine bekannten Befunde verschwunden sind.
 
 ## 🌍 Sprachen
 
@@ -183,11 +207,12 @@ README und Texte gibt es auf Englisch, Spanisch, Französisch, Italienisch, Deut
 ## 📚 Dokumentation
 
 * [Die Karte der Suite](docs/SUITE_MAP.md), [die Architektur](docs/ARCHITECTURE.md), [die Fähigkeitsmatrix](docs/CAPABILITY_MATRIX.md) und [die Konventionen](docs/CONVENTIONS.md).
+* [Eine Version veröffentlichen](docs/RELEASING.md) und [die wiederverwendbare Validierung](docs/REUSABLE_VALIDATION.md).
 * [Änderungsprotokoll](CHANGELOG.md)
 
 ## 🤝 Mitwirken und Community
 
-* Führe vor einem Pull Request `python -I tools/ci_validate.py`, `python -I tools/check_links.py` und die Tests der Prüfung aus: alles muss bestehen. Siehe [CONTRIBUTING.md](CONTRIBUTING.md) und den [Verhaltenskodex](CODE_OF_CONDUCT.md).
+* Führe vor einem Pull Request `python -I tools/ci_validate.py`, `python -I tools/check_links.py` und die Tests der Werkzeuge aus: alles muss bestehen. Siehe [CONTRIBUTING.md](CONTRIBUTING.md) und den [Verhaltenskodex](CODE_OF_CONDUCT.md).
 * Das README gibt es in acht Sprachen: Eine Textänderung wird in allen acht Dateien gemacht, und die beiden Bilder werden aus `docs/architecture.json` und `docs/structure.json` mit `tools/make_architecture.py` und `tools/make_structure.py` gezeichnet.
 * Beschreibe nicht als auf einer Maschine funktionierend, was nur auf einem Computer erprobt wurde: Die Fähigkeitsmatrix sagt, was was ist.
 * Melde eine Schwachstelle privat: [SECURITY.md](SECURITY.md). Fragen, Ideen und Meldungen: electrohobby3d@gmail.com ([SUPPORT.md](SUPPORT.md)).

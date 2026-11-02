@@ -1,8 +1,8 @@
 {
   "repo": "EH3D-DOCS",
   "ecosystem": "eh3d",
-  "tagline": "The map, the architecture and the honest status of the suite, with two small checks.",
-  "description": "EH3D-DOCS holds Markdown documents: the map of the suite, its architecture notes, the capability matrix that separates what has been tested on a computer from what has run on a machine, and the conventions of the repositories. Two Python scripts keep it clean: a repository check (manifest, versions, changelog, the eight READMEs, words that must not appear) and a check of the links between the documents. It runs nothing on a machine.",
+  "tagline": "The map, the architecture and the honest status of the suite, with the tools that keep it consistent.",
+  "description": "EH3D-DOCS holds Markdown documents: the map of the suite, its architecture notes, the capability matrix that separates what has been tested on a computer from what has run on a machine, and the conventions of the repositories. Python tools keep the suite consistent: the repository check that every repository carries, the contract between the repositories, the scripts that raise a version and prepare a release, and the scripts that set up a workspace and make a new repository. It runs nothing on a machine.",
   "columns": [
     "WHO READS IT",
     "THIS REPOSITORY",
@@ -61,15 +61,15 @@
       "id": "checks",
       "column": 1,
       "level": "tested",
-      "title": "Two checks",
+      "title": "The tools",
       "lines": [
-        "repository check with 5 tests;",
-        "links between the documents"
+        "repository check, contract, release",
+        "and workspace scripts; 126 tests"
       ],
       "code": [
         "tools/ci_validate.py",
-        "tools/check_links.py",
-        "tools/test_ci_validate.py"
+        "tools/suite_contract.py",
+        "tools/new_repo.py"
       ]
     },
     {

@@ -18,7 +18,7 @@
 
 ---
 
-**Comprobación de honestidad - lo que se ejecuta hoy:** documentos y dos pequeñas comprobaciones. La suite está en sus primeros pasos: hay veintisiete repositorios publicados (las bibliotecas, los programas Bungard, el servidor y Studio, los nodos y las pantallas táctiles, las aplicaciones de móvil, los programas de CAM y de utilidad, los actualizadores y este) y el mando para pantallas táctiles pequeñas es el único programa que sigue siendo un plan. Todo lo publicado se ha probado en un ordenador y las interfaces hablan 37 idiomas; de toda la suite solo el protocolo serie de EH3D-DRILLPRO ha movido una máquina real (la referencia y los movimientos de cada eje en una Bungard CCD MTC), y ningún trabajo completo se ha ejecutado todavía en una máquina. 5 pruebas cubren la comprobación del repositorio.
+**Comprobación de honestidad - lo que se ejecuta hoy:** documentos y las herramientas de la suite, que se ejecutan en un ordenador y en ningún otro sitio (la comprobación del repositorio y los dibujantes de las imágenes que lleva cada repositorio, el contrato entre los repositorios, los scripts que suben una versión y preparan una publicación, el script que prepara un espacio de trabajo y el que crea un repositorio nuevo). La suite está en sus primeros pasos: hay veintisiete repositorios publicados (las bibliotecas, los programas Bungard, el servidor y Studio, los nodos y las pantallas táctiles, las aplicaciones de móvil, los programas de CAM y de utilidad, los actualizadores y este) y el mando para pantallas táctiles pequeñas es el único programa que sigue siendo un plan. Todo lo publicado se ha probado en un ordenador y las interfaces hablan 37 idiomas; de toda la suite solo el protocolo serie de EH3D-DRILLPRO ha movido una máquina real (la referencia y los movimientos de cada eje en una Bungard CCD MTC), y ningún trabajo completo se ha ejecutado todavía en una máquina. 5 pruebas cubren la comprobación del repositorio.
 
 ---
 
@@ -30,8 +30,8 @@
 |---|---|
 | Versión | `0.0.4` |
 | Madurez | Andamiaje |
-| Pruebas | 5 |
-| Pila tecnológica | Markdown, con dos comprobaciones en Python 3.10+ |
+| Pruebas | 126 |
+| Pila tecnológica | Markdown, con herramientas en Python 3.10+ |
 | En hardware real | No aplica: documentación |
 
 **Ir a:** [Resumen](#-resumen) · [Arquitectura](#-arquitectura) · [Inicio rápido](#-inicio-rápido) · [Pruebas](#-pruebas) · [Estructura](#-estructura-del-repositorio) · [Relacionados](#-proyectos-relacionados)
@@ -44,8 +44,11 @@ Cada línea es una parte de este repositorio y la luz dice hasta dónde llega ho
 
 | Área | Estado | Qué significa aquí |
 |---|---|---|
-| Comprobaciones del repositorio | 🟡 | La comprobación del repositorio, la de los enlaces entre los documentos y las 5 pruebas de la comprobación del repositorio se ejecutan en el CI y pasan. |
-| Pruebas | 🟠 | Solo la comprobación del repositorio tiene pruebas (5); los documentos y las afirmaciones que contienen se leen y comprueban a mano y con los dos scripts. |
+| Comprobaciones del repositorio | 🟡 | La comprobación del repositorio, la de los enlaces entre los documentos y las pruebas de las herramientas se ejecutan en el CI y pasan. |
+| Pruebas | 🟠 | 126 pruebas de las herramientas pasan en un ordenador, algunas sobre pequeños repositorios de juguete; los documentos y las afirmaciones que contienen se leen y comprueban a mano y con los scripts. |
+| Contrato de la suite | 🟡 | El contrato entre los repositorios lee cada manifiesto con el analizador del Updater y avisa de las desviaciones (puertos, idiomas del README, herramientas compartidas, formularios de incidencias); se ejecuta cada día en el CI como aviso, y los repositorios que nombra se ponen al día uno a uno. |
+| Herramientas de versión y publicación | 🟠 | Los scripts que suben una versión, escriben las notas y comprueban una publicación, y el flujo de validación reutilizable, están probados sobre repositorios de juguete; ningún repositorio ha publicado todavía una versión con ellos. |
+| Espacio de trabajo y repositorios nuevos | 🟠 | Los scripts que listan y clonan lo que necesita un repositorio y que crean un repositorio nuevo están probados sobre repositorios de juguete en una carpeta temporal; ninguno ha preparado aún un espacio de trabajo real ni creado un repositorio real. |
 | Mapa y matriz de capacidades | 🟡 | El mapa de la suite, las notas de arquitectura y la matriz de capacidades cubren los veintisiete repositorios publicados, con la versión de cada uno, y listan como previsto el único programa que sigue siendo un plan; se escriben a mano y pueden quedar por detrás de los repositorios. |
 | Hardware real | 🟡 | No aplica: documentación, nada aquí se ejecuta en hardware. |
 | Documentación | 🟡 | README en ocho idiomas, comprobado contra el manifiesto y el registro de cambios en cada cambio. |
@@ -56,8 +59,9 @@ Cada línea es una parte de este repositorio y la luz dice hasta dónde llega ho
 * **La arquitectura:** las dos bibliotecas compartidas, los programas que deben depender de ellas y nunca entre sí, el nodo y el servidor que llegan a la máquina, y las reglas que sigue cada repositorio.
 * **La matriz de capacidades:** qué se ha probado en un ordenador y qué se ha ejecutado en una máquina (solo el protocolo de EH3D-DRILLPRO, en una máquina), para que nadie tenga que adivinar.
 * **Las convenciones:** el manifiesto que lleva cada repositorio, la comprobación del repositorio y los ficheros README en ocho idiomas.
-* **Dos comprobaciones:** la comprobación del repositorio y una de los enlaces entre los documentos, ambas en el CI.
-* **El contrato de la suite:** `tools/suite_contract.py` comprueba las relaciones que ningún repositorio puede comprobar por sí solo: cada manifiesto se lee y lleva el nombre de su carpeta, una dependencia de un hermano por ruta dice qué versión necesita, la versión del mapa de la suite es la del manifiesto, y las pantallas buscan el servidor en el puerto en que escucha. Un flujo diario clona los repositorios y lista lo que se ha desviado; por ahora solo avisa, con una lista de excepciones conocidas que se vacía al corregir cada causa.
+* **Las comprobaciones y las herramientas:** la comprobación del repositorio, la de los enlaces entre los documentos, los dibujantes de las dos imágenes del README y las luces de estado, copiados en cada repositorio desde este (`tools/sync_shared_tools.py` dice quién va por detrás), y el verificador de la convención de códigos de salida.
+* **El contrato de la suite:** `tools/suite_contract.py` comprueba las relaciones que ningún repositorio puede comprobar por sí solo: cada manifiesto se lee con el analizador del Updater y lleva el nombre de su carpeta, una dependencia de un hermano por ruta dice qué versión necesita, las versiones del mapa son las de los manifiestos, las pantallas y el servidor coinciden en el puerto, el validador compartido es el mismo en todas partes, `docs/suite.json` coincide con los sitios que repiten sus valores y cada repositorio tiene los formularios de incidencias. Solo avisa.
+* **Versiones, publicaciones y trabajo nuevo:** `bump_version.py`, `release_notes.py`, `prerelease_check.py`, `readme_staleness.py` y `vendored_tools_report.py` ([docs/RELEASING.md](docs/RELEASING.md)), un flujo de validación reutilizable ([docs/REUSABLE_VALIDATION.md](docs/REUSABLE_VALIDATION.md)), `bootstrap_workspace.py` para traer lo que necesita un repositorio y `new_repo.py` para crear un repositorio nuevo.
 * **Cómo se actualiza:** la CM5 del taller se actualiza **por releases** (`deploy/eh3d-update.py` de EH3D-SERVER descarga la release de GitHub a `/opt`); EH3D-UPDATER es para los **PC de desarrollo, por git** ([docs/UPDATING.md](docs/UPDATING.md)).
 
 ## 🧩 Papel en EH3D
@@ -92,16 +96,25 @@ Este repositorio no tiene ningún programa que reciba entradas de fuera; lo que 
 | La comprobación del repositorio | `python -I tools/ci_validate.py` imprime `CI_VALIDATION=PASS` o lista lo que falla | `tools/ci_validate.py` |
 | La comprobación de enlaces | `python -I tools/check_links.py` imprime `LINKS=PASS` o lista los enlaces rotos | `tools/check_links.py` |
 | Las pruebas de la comprobación | `python -I -m unittest discover -s tools -p "test_*.py"` | `tools/test_ci_validate.py` |
+| El contrato de la suite | `python -I tools/suite_contract.py --workspace ..` imprime `SUITE_CONTRACT=PASS` o lista los hallazgos; `--write-map` pone las versiones de los manifiestos en el mapa | `tools/suite_contract.py` |
+| Las herramientas compartidas | `python -I tools/sync_shared_tools.py` dice qué repositorios tienen una copia distinta | `tools/sync_shared_tools.py` |
+| Versiones y publicaciones | `bump_version.py`, `release_notes.py`, `prerelease_check.py`, `readme_staleness.py`, `vendored_tools_report.py` | [docs/RELEASING.md](docs/RELEASING.md) |
+| El flujo reutilizable | validación con `on: workflow_call`, para que la llamen los repositorios | [docs/REUSABLE_VALIDATION.md](docs/REUSABLE_VALIDATION.md) |
+| El espacio de trabajo | `bootstrap_workspace.py` lista y clona lo que necesita un repositorio; `new_repo.py` crea un repositorio nuevo | `tools/bootstrap_workspace.py`, `tools/new_repo.py` |
+| Los códigos de salida | `0`, `1`, `2`, `10` y `64`; `exit_conventions.py` comprueba las herramientas contra ellos | [docs/CONVENTIONS.md](docs/CONVENTIONS.md) |
 
 ## ⚙️ Configuración
 
-No hay nada que configurar: las dos comprobaciones necesitan Python 3.10 o posterior y ninguna instalación, y leen los ficheros del repositorio en el que viven. Las reglas que aplican están en el código de `tools/ci_validate.py`:
+Las herramientas necesitan Python 3.10 o posterior y ninguna instalación, y leen los ficheros del repositorio en el que viven. Las reglas que aplican están en el código de `tools/ci_validate.py`, y los valores de la suite que repiten varios repositorios están en `docs/suite.json`:
 
 | Regla | Límite | Dónde |
 |---|---|---|
 | Tamaño de un fichero versionado | como máximo 1 500 000 bytes | `MAX_TRACKED_BYTES` |
 | Idiomas del README | ocho ficheros, con la misma estructura de encabezados y los mismos semáforos | `LANGUAGES` |
 | Campos del manifiesto | los 14 campos de `REQUIRED`; la versión del manifiesto es la de `VERSION` (`native_version`) y la de la entrada más reciente del registro de cambios | `REQUIRED` |
+| Las constantes de la suite | el puerto del servidor, el esquema del manifiesto, los ocho idiomas del README, el campo de rpm, la forma de una versión, los formularios de incidencias | `docs/suite.json` |
+| Excepciones conocidas del contrato | un `check repositorio` por línea, que se quita al arreglar la causa | `docs/suite_contract_allow.txt` |
+| Lo que un repositorio añade a la comprobación | por ejemplo las carpetas que el rastreo de palabras prohibidas se salta | `tools/ci_config.json` de cada repositorio |
 
 ## 🚀 Inicio rápido
 
@@ -110,6 +123,8 @@ Necesitas Python 3.10 o posterior; no hay nada que instalar.
 ```bash
 python -I tools/ci_validate.py
 python -I tools/check_links.py
+python -I tools/suite_contract.py --workspace ..
+python -I tools/bootstrap_workspace.py --workspace .. EH3D-DRILLPRO
 python -I -m unittest discover -s tools -p "test_*.py"
 ```
 
@@ -117,7 +132,7 @@ Para leer los documentos, empieza por [el mapa de la suite](docs/SUITE_MAP.md).
 
 ## 🧪 Pruebas
 
-La comprobación del repositorio tiene 5 pruebas (`python -I -m unittest discover -s tools -p "test_*.py"`), y pasan. El CI ejecuta la comprobación del repositorio (`tools/ci_validate.py`), la de los enlaces entre los documentos (`tools/check_links.py`) y esas pruebas. Los documentos en sí no tienen más pruebas: lo que afirman se mantiene honesto leyendo los repositorios que describen.
+Las herramientas tienen 126 pruebas (`python -I -m unittest discover -s tools -p "test_*.py"`), y pasan. El CI ejecuta la comprobación del repositorio (`tools/ci_validate.py`), la de los enlaces entre los documentos (`tools/check_links.py`), las comprobaciones de las dos imágenes y esas pruebas; un flujo diario ejecuta el contrato de la suite. Los documentos no tienen más pruebas que esas: lo que afirman se mantiene honesto con la matriz de capacidades y leyéndolos.
 
 ## 🏗️ Compilación y publicación
 
@@ -140,8 +155,14 @@ EH3D-DOCS/
 │   ├── CAPABILITY_MATRIX.md                     qué se ha probado y qué se ha ejecutado en una máquina
 │   ├── CONVENTIONS.md                           el manifiesto, la comprobación, los README
 │   ├── UPDATING.md                              cómo se actualizan la CM5 y un PC
+│   ├── RELEASING.md                             subir una versión y publicar con los scripts
+│   ├── REUSABLE_VALIDATION.md                   el flujo de validación que pueden llamar los repositorios
+│   ├── VENDORED_TOOLS_REPORT.md                 las herramientas copiadas en los repositorios que nadie usa
+│   ├── suite.json                               las constantes de la suite
+│   ├── suite_contract_allow.txt                 las excepciones conocidas del contrato
+│   ├── templates/                               la plantilla de un repositorio nuevo
 │   └── architecture.json structure.json         los datos de las dos imágenes
-├── tools/                                       la comprobación del repositorio, la de enlaces, sus pruebas y las herramientas de imágenes
+├── tools/                                       las comprobaciones, el contrato, los scripts de versión y publicación y sus pruebas
 ├── images/                                      banner y las imágenes de Arquitectura y Estructura del repositorio
 ├── .github/                                     flujos de CI y del panel, plantillas de issues y pull requests
 ├── eh3d.project.json                            manifiesto: versión, rol, madurez y comando de compilación
@@ -160,11 +181,14 @@ EH3D-DOCS/
 * El mapa, las notas de arquitectura y la matriz de capacidades se escriben a mano; nada los comprueba contra los manifiestos de los repositorios, así que pueden quedar por detrás.
 * Solo los repositorios publicados se describen con detalle; los programas empezados y los previstos son una línea del mapa cada uno, marcada como tal.
 * Los documentos no tienen más pruebas propias que la comprobación del repositorio y la de los enlaces.
+* Los scripts de publicación, de espacio de trabajo y de repositorio nuevo solo se han probado en repositorios de juguete; ninguno se ha usado aún en una publicación real ni para crear un repositorio real.
+* El contrato de la suite solo avisa, y varios repositorios siguen con una copia anterior del validador compartido.
 
 **Siguiente**
 
 * Mantener el mapa y la matriz de capacidades al ritmo de cada repositorio cuando se publica o cambia.
 * Comprobar el mapa contra los manifiestos de los repositorios, para que un repositorio nuevo no pueda faltar en él.
+* Usar los scripts en la próxima publicación real, adoptar el flujo reutilizable en los repositorios y hacer que el contrato de la suite bloquee cuando desaparezcan sus hallazgos conocidos.
 
 ## 🌍 Idiomas
 
@@ -183,11 +207,12 @@ El README y los textos existen en inglés, español, francés, italiano, alemán
 ## 📚 Documentación
 
 * [El mapa de la suite](docs/SUITE_MAP.md), [la arquitectura](docs/ARCHITECTURE.md), [la matriz de capacidades](docs/CAPABILITY_MATRIX.md) y [las convenciones](docs/CONVENTIONS.md).
+* [Publicar una versión](docs/RELEASING.md) y [la validación reutilizable](docs/REUSABLE_VALIDATION.md).
 * [Registro de cambios](CHANGELOG.md)
 
 ## 🤝 Contribuir y comunidad
 
-* Antes de una pull request ejecuta `python -I tools/ci_validate.py`, `python -I tools/check_links.py` y las pruebas de la comprobación: todo debe pasar. Consulta [CONTRIBUTING.md](CONTRIBUTING.md) y el [código de conducta](CODE_OF_CONDUCT.md).
+* Antes de una pull request ejecuta `python -I tools/ci_validate.py`, `python -I tools/check_links.py` y las pruebas de las herramientas: todo debe pasar. Consulta [CONTRIBUTING.md](CONTRIBUTING.md) y el [código de conducta](CODE_OF_CONDUCT.md).
 * El README existe en ocho idiomas: un cambio en el texto se hace en los ocho archivos, y las dos imágenes se dibujan a partir de `docs/architecture.json` y `docs/structure.json` con `tools/make_architecture.py` y `tools/make_structure.py`.
 * No describas como funcionando en una máquina lo que solo se ha probado en un ordenador: la matriz de capacidades dice cuál es cuál.
 * Informa de una vulnerabilidad en privado: [SECURITY.md](SECURITY.md). Preguntas, ideas e informes: electrohobby3d@gmail.com ([SUPPORT.md](SUPPORT.md)).
