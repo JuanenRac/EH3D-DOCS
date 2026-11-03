@@ -163,7 +163,7 @@ EH3D-DOCS/
 │   ├── templates/                               the template of a new repository
 │   └── architecture.json structure.json         the data of the two pictures
 ├── tools/                                       the checks, the contract, the version and release scripts, and their tests
-├── registry/                                    the registry of container codes (EH3D-PKG) and its coherence test
+├── registry/                                    the registries of container and identity codes and their tests
 ├── images/                                      banner and the Architecture and Repository Structure pictures
 ├── .github/                                     CI and dashboard workflows, issue and pull-request templates
 ├── eh3d.project.json                            manifest: version, role, maturity and build command

@@ -218,14 +218,14 @@
         },
         {
           "desc": {
-            "en": "the registry of container codes (EH3D-PKG) and its coherence test",
-            "es": "el registro de códigos del contenedor (EH3D-PKG) y su prueba de coherencia",
-            "de": "das Register der Container-Codes (EH3D-PKG) und sein Konsistenztest",
-            "fr": "le registre des codes du conteneur (EH3D-PKG) et son test de cohérence",
-            "it": "il registro dei codici del contenitore (EH3D-PKG) e il suo test di coerenza",
-            "ja": "コンテナのコードの一覧（EH3D-PKG）とその整合性テスト",
-            "zh": "容器代码注册表（EH3D-PKG）及其一致性测试",
-            "pt": "o registo dos códigos do contentor (EH3D-PKG) e o seu teste de coerência"
+            "en": "the registries of container and identity codes and their tests",
+            "es": "los registros de códigos del contenedor y de la identidad y sus pruebas",
+            "de": "die Register der Container- und Identitätscodes und ihre Tests",
+            "fr": "les registres des codes du conteneur et de l'identité et leurs tests",
+            "it": "i registri dei codici del contenitore e dell'identità e i loro test",
+            "ja": "コンテナと識別子のコードの一覧とそのテスト",
+            "zh": "容器和标识代码注册表及其测试",
+            "pt": "os registos dos códigos do contentor e da identidade e os seus testes"
           },
           "name": "registry/"
         },

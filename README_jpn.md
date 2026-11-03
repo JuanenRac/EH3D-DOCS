@@ -163,7 +163,7 @@ EH3D-DOCS/
 │   ├── templates/                               新しいリポジトリのテンプレート
 │   └── architecture.json structure.json         2 つの図のデータ
 ├── tools/                                       チェック、契約、バージョンとリリースのスクリプト、そのテスト
-├── registry/                                    コンテナのコードの一覧（EH3D-PKG）とその整合性テスト
+├── registry/                                    コンテナと識別子のコードの一覧とそのテスト
 ├── images/                                      バナーとアーキテクチャ・リポジトリ構成の図
 ├── .github/                                     CI とダッシュボードのワークフロー、Issue と PR のテンプレート
 ├── eh3d.project.json                            マニフェスト：バージョン、役割、成熟度、ビルドコマンド
