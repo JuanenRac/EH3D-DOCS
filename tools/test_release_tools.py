@@ -87,11 +87,14 @@ class FakeRunner:
 
     def __init__(self, validate: str = "CI_VALIDATION=PASS", runs: list | None = None, gh_fails: bool = False):
         self.validate, self.runs, self.gh_fails, self.calls = validate, runs, gh_fails, []
+        self.remote_tags: tuple[int, str] = (0, "")  # what `git ls-remote --tags` answers; the real remote is never asked
 
     def __call__(self, cmd: list[str], cwd: Path) -> tuple[int, str]:
         self.calls.append(cmd)
         if cmd[0] == "gh":
             return (1, "not logged in") if self.gh_fails else (0, json.dumps(self.runs or []))
+        if cmd[:2] == ["git", "ls-remote"]:
+            return self.remote_tags
         if cmd[:2] == [sys.executable, "-I"]:
             return (0 if "PASS" in self.validate else 1), self.validate
         return pc.run(cmd, cwd)
@@ -130,7 +133,21 @@ class PrereleaseTests(unittest.TestCase):
         self.assertEqual(code, 0, "\n".join(lines))
         self.assertTrue(lines[-1].startswith("PRERELEASE=PASS"))
         self.assertEqual(set(verdicts(lines).values()), {"OK"})
-        self.assertEqual(set(verdicts(lines)), {"versions", "changelog", "readmes", "git", "validate", "ci"})
+        self.assertEqual(set(verdicts(lines)), {"versions", "changelog", "readmes", "git", "tag", "validate", "ci"})
+
+    def test_a_tag_that_exists_here_or_on_the_remote_fails_and_an_unreachable_remote_only_skips(self) -> None:
+        version = pc.vp.manifest_version(pc.vp.Repo(self.repo))
+        runner = FakeRunner(runs=self.green())
+        runner.remote_tags = (0, f"abc refs/tags/v{version}"+chr(10))
+        code, lines = pc.prerelease(self.repo, runner, have_gh=True)
+        self.assertEqual((code, verdicts(lines)["tag"]), (1, "FAIL"), chr(10).join(lines))
+        runner = FakeRunner(runs=self.green())
+        runner.remote_tags = (128, "offline")
+        code, lines = pc.prerelease(self.repo, runner, have_gh=True)
+        self.assertEqual((code, verdicts(lines)["tag"]), (0, "SKIP"), chr(10).join(lines))
+        pc.run(["git", "tag", f"v{version}"], self.repo)
+        code, lines = pc.prerelease(self.repo, FakeRunner(runs=self.green()), have_gh=True)
+        self.assertEqual((code, verdicts(lines)["tag"]), (1, "FAIL"), chr(10).join(lines))
 
     def test_a_version_that_one_file_does_not_follow_fails(self) -> None:
         toy.write(self.repo, "Cargo.toml", (self.repo / "Cargo.toml").read_text(encoding="utf-8").replace('version = "0.0.9"', 'version = "0.0.8"', 1))

@@ -3,6 +3,11 @@
 All notable changes to this project are documented here.
 
 ## [Unreleased]
+- **The link check reads reference definitions and skips code spans:** `check_links.py` checks `[a]: path` lines, ignores a link written inside a `code span`, and no longer walks build or virtual-environment folders.
+- **A bump keeps the line endings of a file that mixes them:** `version_places.py` writes back each line with its own ending instead of turning the whole file into CRLF.
+- **A malformed picture spec is a clear failure:** `make_architecture.py` and `make_structure.py` (tools version 2) refuse nodes, edges, cards or rows that are not objects with a message instead of a crash, and the example in the documentation no longer uses a search text that every file holds.
+- **The check before a release looks at the tag:** `prerelease_check.py` fails when the tag of the version already exists here or on the remote.
+- **The lock of the shared tools tolerates a wrong shape:** `sync_shared_tools.py` reports a lock whose list of tools is not an object.
 
 ## [0.0.8] - Shared checks, the registry of the object identifier codes and a stricter validator
 

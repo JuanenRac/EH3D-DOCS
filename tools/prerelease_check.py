@@ -14,6 +14,7 @@ It checks, and prints one OK / WARN / SKIP / FAIL line for each:
   changelog  a section for that version, nothing left in [Unreleased], at least 3 entries (a warning; --allow-short accepts it)
   readmes    the eight README files have the "Project status" table and show the same lights
   git        a clean working tree and no commit that is not on the remote
+  tag        the tag vX.Y.Z of the release does not exist yet, here or on the remote
   validate   the repository's own tools/ci_validate.py ends in PASS
   ci         every GitHub Actions run of the commit that is checked out has finished and is green (needs `gh`; it is skipped,
              and says so, when `gh` is not installed or not logged in)
@@ -100,6 +101,24 @@ def check_git(root: Path, runner: Runner) -> list[Result]:
     return results or [("OK", "git", "clean tree, nothing left to push")]
 
 
+def check_tag(root: Path, runner: Runner) -> list[Result]:
+    """The tag of the release (vX.Y.Z) is still free, here and on the remote: a tag that exists would make the release publish another commit's version or fail."""
+    try:
+        version = vp.manifest_version(vp.Repo(root))
+    except vp.VersionError as error:
+        return [("FAIL", "tag", str(error))]
+    tag = f"v{version}"
+    code, out = runner(["git", "tag", "--list", tag], root)
+    if code == 0 and out.strip() == tag:
+        return [("FAIL", "tag", f"the tag {tag} already exists here")]
+    code, out = runner(["git", "ls-remote", "--tags", "origin", f"refs/tags/{tag}"], root)
+    if code == 0 and out.strip():
+        return [("FAIL", "tag", f"the tag {tag} already exists on the remote")]
+    if code != 0:
+        return [("SKIP", "tag", f"{tag} is free here; the remote could not be asked")]
+    return [("OK", "tag", f"{tag} is free")]
+
+
 def check_validate(root: Path, runner: Runner) -> list[Result]:
     script = root / "tools" / "ci_validate.py"
     if not script.is_file():
@@ -148,6 +167,7 @@ def prerelease(root: Path, runner: Runner = run, allow_short: bool = False, with
     results += check_changelog(root, allow_short)
     results += check_readmes(root)
     results += check_git(root, runner)
+    results += check_tag(root, runner)
     results += check_validate(root, runner)
     if with_ci:
         results += check_ci(root, runner, have_gh)
