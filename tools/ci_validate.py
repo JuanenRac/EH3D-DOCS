@@ -309,11 +309,23 @@ def project_yml_problems(root: Path, version: str) -> list[str]:
 
 
 def main() -> int:
+    """Runs the checks; a file that is missing, not UTF-8 or not the JSON object it should be is a FAIL line, never a bare traceback."""
+    try:
+        return _main()
+    except (OSError, ValueError, KeyError, TypeError, AttributeError) as error:
+        print(f"  FAIL a file the checks need cannot be read or has the wrong shape ({error.__class__.__name__}: {error})")
+        print(f"CI_VALIDATION=FAIL project=? version=? tools={TOOLS_VERSION}")
+        return 1
+
+
+def _main() -> int:
     problems: list[str] = header_problems()
     config, config_problems = load_config(ROOT)
     problems.extend(config_problems)
     skipped = skip_dirs(config)
     manifest = json.loads((ROOT / "eh3d.project.json").read_text(encoding="utf-8"))
+    if not isinstance(manifest, dict):
+        raise ValueError("eh3d.project.json must hold a JSON object")
     for key in REQUIRED:
         if key not in manifest:
             problems.append(f"eh3d.project.json lacks '{key}'")

@@ -3,10 +3,10 @@
   "tools": {
     "_readme_svg.py": "8f30473f26",
     "banner_check.py": "1cd625fd99",
-    "changelog_pr_check.py": "d2fe0ec937",
-    "ci_validate.py": "abc0038d65",
-    "make_architecture.py": "94ec775963",
-    "make_structure.py": "c77580d2a5",
+    "changelog_pr_check.py": "d32b3c36ff",
+    "ci_validate.py": "af5b4a300c",
+    "make_architecture.py": "d59b52a808",
+    "make_structure.py": "3c1843159e",
     "pretty_run.py": "51a38eb42a",
     "status_lights.py": "146eb0ea53",
     "universal_readme_check.py": "27b5d13d42"

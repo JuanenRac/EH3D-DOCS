@@ -3,6 +3,9 @@
 All notable changes to this project are documented here.
 
 ## [Unreleased]
+- **The CHANGELOG check of a pull request is stricter:** an empty `[Unreleased]` heading no longer counts as a line, and an edited line under `[Unreleased]` does (tools version 2 of `changelog_pr_check.py`).
+- **A repository with missing or broken files fails with a line:** `ci_validate.py` reports a missing manifest, licence, changelog or README, a manifest that is not an object and bytes that are not UTF-8 as `CI_VALIDATION=FAIL`, and `make_architecture.py` and `make_structure.py` report a malformed spec as a FAIL line; code references cannot leave the repository.
+- **The link check is closer to the CI:** `check_links.py` accepts titles, query strings, `%20` and links from the root, compares the exact case of the target, skips build folders and `~~~` blocks, and reads files that are not UTF-8.
 - **The private-file check knows more secrets and fails closed:** `ci_validate.py` (tools version 3) rejects tracked `keystore.properties`, `local.properties`, `*.p8`, `*.der`, `*.ppk`, `.netrc`, `.npmrc`, `google-services.json` and similar files, and fails when git does not answer.
 - **The scan for forbidden words reads app sources too:** Kotlin, Swift, QML, shell, batch, PowerShell, JavaScript, HTML, C/C++, Gradle, XML, CSV and TSV files are scanned, whatever the case of the extension.
 - **A missing or broken sibling check is a failure, not a pass:** `ci_validate.py` fails when the README layout, status lights or banner tool is missing or does not import, unless the repository lists it in `skip_checks` of `tools/ci_config.json`.

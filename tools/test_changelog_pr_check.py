@@ -64,6 +64,24 @@ class ChangelogPrCheck(unittest.TestCase):
     def test_unknown_base_is_a_usage_error(self):
         self.assertEqual(check.main(["--base", "nope", "--root", str(self.root)]), 64)
 
+    def rebase_on(self, text: str):
+        """Makes `main` hold this CHANGELOG, then starts a new topic branch from it."""
+        run(self.root, "checkout", "-q", "main")
+        (self.root / "CHANGELOG.md").write_text(text, encoding="utf-8")
+        run(self.root, "add", "CHANGELOG.md")
+        run(self.root, "commit", "-q", "-m", "changelog of the base")
+        run(self.root, "checkout", "-q", "-B", "topic2")
+
+    def test_an_empty_unreleased_heading_added_by_the_change_is_not_a_line(self):
+        self.rebase_on(EMPTY.replace("## [Unreleased]\n\n", ""))
+        self.commit({"src/a.rs": "fn a() { 1; }\n", "CHANGELOG.md": EMPTY})
+        self.assertEqual(len(check.problems(self.root, "main")), 1)
+
+    def test_an_edited_line_under_unreleased_counts(self):
+        self.rebase_on(WITH_LINE)
+        self.commit({"src/a.rs": "fn a() { 1; }\n", "CHANGELOG.md": WITH_LINE.replace("Fix the thing.", "Fix the other thing.")})
+        self.assertEqual(check.problems(self.root, "main"), [])
+
     def test_entries_are_counted_under_unreleased_only(self):
         self.assertEqual(check.unreleased_entries(EMPTY), 0)
         self.assertEqual(check.unreleased_entries(WITH_LINE), 1)

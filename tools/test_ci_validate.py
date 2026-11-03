@@ -209,6 +209,24 @@ class HardeningTests(unittest.TestCase):
             (root / "tools" / "ci_config.json").write_text('{"skip_checks": ["no_such_tool_xyz"]}', encoding="utf-8")
             self.assertEqual(VALIDATE._run_check(root, "no_such_tool_xyz", "x"), [])
 
+    def test_a_repository_without_its_files_fails_with_a_line_not_a_traceback(self):
+        import contextlib
+        import io
+
+        with tempfile.TemporaryDirectory() as folder:
+            old = VALIDATE.ROOT
+            VALIDATE.ROOT = Path(folder)
+            try:
+                for text in (None, "[1]", "{ not json"):
+                    if text is not None:
+                        (Path(folder) / "eh3d.project.json").write_text(text, encoding="utf-8")
+                    out = io.StringIO()
+                    with contextlib.redirect_stdout(out):
+                        self.assertEqual(VALIDATE.main(), 1)
+                    self.assertIn("CI_VALIDATION=FAIL", out.getvalue())
+            finally:
+                VALIDATE.ROOT = old
+
 
 if __name__ == "__main__":
     unittest.main()
