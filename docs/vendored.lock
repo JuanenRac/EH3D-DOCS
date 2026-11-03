@@ -1,10 +1,10 @@
 {
   "origin": "EH3D-DOCS",
   "tools": {
-    "_readme_svg.py": "8f30473f26",
-    "banner_check.py": "1cd625fd99",
+    "_readme_svg.py": "5662a6805b",
+    "banner_check.py": "f1066ba136",
     "changelog_pr_check.py": "d32b3c36ff",
-    "ci_validate.py": "af5b4a300c",
+    "ci_validate.py": "b05abf02d6",
     "make_architecture.py": "d59b52a808",
     "make_structure.py": "3c1843159e",
     "pretty_run.py": "51a38eb42a",

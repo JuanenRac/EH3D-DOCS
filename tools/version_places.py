@@ -12,7 +12,9 @@ the file the manifest names in native_version, the badge and the "Version" row o
 section of CHANGELOG.md. Used by bump_version.py and prerelease_check.py. Standard library only."""
 from __future__ import annotations
 
+import fnmatch
 import json
+import os
 import re
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -119,18 +121,29 @@ class Repo:
         return sorted(self.overlay)
 
     def commit(self) -> None:
-        for rel, text in self.overlay.items():
-            data = text.replace("\n", "\r\n") if self._crlf.get(rel) else text
-            (self.root / rel).write_bytes(data.encode("utf-8"))
+        staged: list[tuple[Path, Path]] = []
+        try:
+            for rel, text in self.overlay.items():
+                data = text.replace("\n", "\r\n") if self._crlf.get(rel) else text
+                target = self.root / rel
+                temp = target.with_name(target.name + ".bump-tmp")
+                temp.write_bytes(data.encode("utf-8"))
+                staged.append((temp, target))
+        except OSError:
+            for temp, _ in staged:
+                temp.unlink(missing_ok=True)
+            raise
+        for temp, target in staged:  # every file is complete before the first one replaces its old copy
+            os.replace(temp, target)
 
     def files(self, name: str) -> list[str]:
         """The relative paths of the files called `name` below the root, outside build and tool folders."""
         out = []
-        for path in sorted(self.root.rglob(name)):
-            rel = path.relative_to(self.root)
-            if path.is_file() and not (SKIP_DIRS & set(rel.parts[:-1])):
-                out.append(rel.as_posix())
-        return out
+        for folder, dirs, names in os.walk(self.root):
+            dirs[:] = sorted(d for d in dirs if d not in SKIP_DIRS)  # build and tool folders are never entered
+            for found in fnmatch.filter(names, name):
+                out.append((Path(folder) / found).relative_to(self.root).as_posix())
+        return sorted(out)
 
 
 # --------------------------------------------------------------------------- scanning
@@ -142,6 +155,7 @@ class Found:
     start: int
     end: int
     soft: bool = False  # replaced when it holds the old version, never reported when it holds another one
+    index: int | None = None  # the place holds one number of the version (0 major, 1 minor, 2 patch, 3 build), not the whole of it
 
 
 @dataclass
@@ -263,7 +277,8 @@ def scan(repo: Repo) -> Scan:
         _add(out, "project.yml", "MARKETING_VERSION", yml, r'MARKETING_VERSION:\s*"(?P<v>[^"]+)"')
         out.expect_codes.append(("project.yml", "yml"))
 
-    native = json.loads(manifest).get("native_version") if _valid_json(manifest) else None
+    loaded = json.loads(manifest) if _valid_json(manifest) else None
+    native = loaded.get("native_version") if isinstance(loaded, dict) else None
     if isinstance(native, dict) and native.get("file") and native["file"] not in handled and repo.read(native["file"]) is not None:
         _native(out, repo, native)
 
@@ -289,8 +304,12 @@ def _native(out: Scan, repo: Repo, native: dict) -> None:
     """The file named by native_version, when it is not one of the usual ones: the number the pattern points at, in full."""
     rel = native["file"]
     text = repo.read(rel) or ""
+    pattern = native.get("pattern", r"(\d+\.\d+\.\d+)")
+    if isinstance(pattern, dict):  # one regex per number: major, minor, patch and (optionally) build
+        _native_parts(out, rel, text, pattern)
+        return
     try:
-        match = re.search(native.get("pattern", r"(\d+\.\d+\.\d+)"), text, re.M)
+        match = re.search(pattern, text, re.M)
     except re.error as error:
         out.missing.append(f"native_version pattern of the manifest is not a regular expression: {error}")
         return
@@ -303,6 +322,31 @@ def _native(out: Scan, repo: Repo, native: dict) -> None:
         out.missing.append(f"{rel} (native_version) does not hold a number at its pattern")
         return
     out.found.append(Found(rel, "native version", number.group(0), start, start + len(number.group(0))))
+
+
+def _native_parts(out: Scan, rel: str, text: str, pattern: dict) -> None:
+    """A native version given as one regex per number: every number is a place of its own (`index`) that follows the matching number of the version."""
+    for index, key in enumerate(("major", "minor", "patch", "build")):
+        if key not in pattern:
+            continue
+        try:
+            match = re.search(str(pattern[key]), text, re.M)
+        except re.error as error:
+            out.missing.append(f"native_version {key} pattern of the manifest is not a regular expression: {error}")
+            continue
+        if not match or not match.groups():
+            if key != "build":
+                out.missing.append(f"{rel} (native_version) has no {key} number that its pattern finds")
+            continue
+        out.found.append(Found(rel, f"native version {key}", match.group(1), match.start(1), match.end(1), index=index))
+
+
+def _part(version: str, index: int | None) -> str | None:
+    """The whole version, or its number number `index` (None when the version has no such number)."""
+    if index is None:
+        return version
+    parts = version.split(".")
+    return parts[index] if index < len(parts) else None
 
 
 # --------------------------------------------------------------------------- the check of coherence
@@ -324,7 +368,7 @@ def check(repo: Repo, expected: str | None = None) -> list[str]:
     scanned = scan(repo)
     problems.extend(scanned.missing)
     for item in scanned.found:
-        if not item.soft and item.value != expected:
+        if not item.soft and item.value != _part(expected, item.index) and not (item.index == 3 and _part(expected, 3) is None):
             problems.append(f"{item.file}: {item.label} is {item.value}, the version is {expected}")
     for rel in (repo.manifest, "package.json", "package-lock.json"):
         text = repo.read(rel)
@@ -347,18 +391,20 @@ def apply(repo: Repo, old: str, new: str, fix_drift: bool = False) -> tuple[list
     scanned = scan(repo)
     problems = list(scanned.missing)
     for item in scanned.found:
-        if not item.soft and item.value != old and not fix_drift:
+        if not item.soft and item.value != _part(old, item.index) and not fix_drift and not (item.index == 3 and _part(old, 3) is None):
             problems.append(f"{item.file}: {item.label} is {item.value}, not {old} (the version of the manifest): fix it first or use --fix-drift")
     if problems:
         return problems, []
     by_file: dict[str, list[Found]] = {}
     for item in scanned.found:
-        if item.value == old or (fix_drift and not item.soft):
+        if item.value == _part(old, item.index) or (fix_drift and not item.soft):
             by_file.setdefault(item.file, []).append(item)
     for rel, items in by_file.items():
         text = repo.read(rel) or ""
         for item in sorted(items, key=lambda i: i.start, reverse=True):
-            text = text[:item.start] + new + text[item.end:]
+            replacement = _part(new, item.index)
+            if replacement is not None:
+                text = text[:item.start] + replacement + text[item.end:]
         repo.write(rel, text)
     for rel, kind in scanned.expect_codes:
         text = repo.read(rel) or ""

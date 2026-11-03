@@ -40,4 +40,6 @@ jobs:
         run: python -I -m unittest discover -s registry -p "test_*.py"
       - name: The change has a line in the CHANGELOG
         if: ${{ github.event_name == 'pull_request' && !contains(github.event.pull_request.labels.*.name, 'no-changelog') }}
-        run: python -I tools/changelog_pr_check.py --base origin/${{ github.base_ref }}
+        env:
+          BASE_REF: ${{ github.base_ref }}
+        run: python -I tools/changelog_pr_check.py --base "origin/$BASE_REF"

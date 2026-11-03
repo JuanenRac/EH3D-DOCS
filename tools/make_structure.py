@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 # =============================================================================
-# A.R.M.O.R. - tools/make_structure.py
-# Copyright (C) 2026 JuanenRac (Electro Hobby 3D)
+# EH3D-DOCS - tools/make_structure.py
+# Copyright (C) 2026 JuanenRac (Electro Hobby 3D) <electrohobby3d@gmail.com>
 # GPL-3.0-or-later - see LICENSE
 # =============================================================================
+# canonical: EH3D-DOCS tools 1
 """Draws the Repository Structure of a repository from `docs/structure.json`.
 
     python tools/make_structure.py                  # writes images/repository-structure.svg (and the other languages when "svg": "all")

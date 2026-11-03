@@ -3,6 +3,11 @@
 All notable changes to this project are documented here.
 
 ## [Unreleased]
+- **The README badge and Version row are checked in CI:** `ci_validate.py` (tools version 4) fails when the badge or the Version row of a README shows another version than the manifest, and it reads the manifest of the updater of the family (`electro-hobby-3d.project.json`) as well.
+- **The bump tool handles more projects:** a native version given as one regex per number is read and raised number by number, a manifest that is not an object is a clear error, the search for files never enters build folders, and the files of a bump are written to temporary files before the first one is replaced.
+- **The banner check reads `<tspan>` and any case:** `banner_check.py` joins nested text, finds `*banner*.svg` whatever the case, and reads the manifest of the updater of the family.
+- **The CHANGELOG step of the workflow no longer expands the base branch inside the script:** the name goes through an environment variable.
+- **The headers of the picture tools name this repository:** `_readme_svg.py`, `make_structure.py` and `make_architecture.py` carry the same canonical line as the other shared tools.
 - **The CHANGELOG check of a pull request is stricter:** an empty `[Unreleased]` heading no longer counts as a line, and an edited line under `[Unreleased]` does (tools version 2 of `changelog_pr_check.py`).
 - **A repository with missing or broken files fails with a line:** `ci_validate.py` reports a missing manifest, licence, changelog or README, a manifest that is not an object and bytes that are not UTF-8 as `CI_VALIDATION=FAIL`, and `make_architecture.py` and `make_structure.py` report a malformed spec as a FAIL line; code references cannot leave the repository.
 - **The link check is closer to the CI:** `check_links.py` accepts titles, query strings, `%20` and links from the root, compares the exact case of the target, skips build folders and `~~~` blocks, and reads files that are not UTF-8.

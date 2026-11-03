@@ -4,7 +4,7 @@
 # Copyright (C) 2026 JuanenRac (Electro Hobby 3D) <electrohobby3d@gmail.com>
 # GPL-3.0-or-later - see LICENSE
 # =============================================================================
-# canonical: EH3D-DOCS tools 3
+# canonical: EH3D-DOCS tools 4
 """The repository checks that CI runs besides cargo: manifest, versions, licence, changelog, the eight README files
 and the words that must never appear in public files. Prints CI_VALIDATION=PASS or FAIL with the reasons."""
 from __future__ import annotations
@@ -15,8 +15,9 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-TOOLS_VERSION = "3"  # raise it with every change of this file; the header of every copy says which one it holds
+TOOLS_VERSION = "4"  # raise it with every change of this file; the header of every copy says which one it holds
 DEFAULT_SKIP_DIRS = {"target", ".git"}  # folders the scan for forbidden words never enters; a repository adds its own in tools/ci_config.json
+MANIFEST_NAMES = ("eh3d.project.json", "electro-hobby-3d.project.json")  # the second one belongs to the updater of the whole family
 REQUIRED = ["schema_version", "ecosystem", "name", "version", "role", "stack", "technologies", "deployment_target",
             "maturity", "family", "parent", "build", "notes", "native_version"]
 LANGUAGES = {"README.md": "en", "README_spa.md": "es", "README_deu.md": "de", "README_fra.md": "fr",
@@ -25,6 +26,15 @@ FORBIDDEN = re.compile(r"\b(claude|anthropic|sonnet)\b", re.IGNORECASE)
 TEXT_SUFFIXES = {".md", ".rs", ".toml", ".json", ".yml", ".yaml", ".py", ".txt", ".svg", ".kt", ".kts", ".swift", ".qml", ".sh", ".bat", ".cmd",
                  ".ps1", ".js", ".ts", ".html", ".css", ".c", ".h", ".cpp", ".hpp", ".ino", ".gradle", ".xml", ".cfg", ".ini", ".csv", ".tsv",
                  ".plist", ".properties", ".cmake", ".in", ".lock"}  # compared in lower case
+
+
+BADGE_VERSION = re.compile(r"img\.shields\.io/badge/Version-(\d[\d.]*)-")
+ROW_VERSION = re.compile(r"(?m)^\|[^|\n`]*\|\s*`(\d+\.\d+\.\d+(?:\.\d+)?)`\s*\|\s*$")
+
+
+def readme_version_places(text: str) -> list[str]:
+    """The versions that the badge and the table row of a README state (a row whose only value is a version in code format)."""
+    return BADGE_VERSION.findall(text)[:1] + ROW_VERSION.findall(text)[:1]  # the first of each, as the bump tool reads them
 
 
 def headings(text: str) -> list[int]:
@@ -323,12 +333,13 @@ def _main() -> int:
     config, config_problems = load_config(ROOT)
     problems.extend(config_problems)
     skipped = skip_dirs(config)
-    manifest = json.loads((ROOT / "eh3d.project.json").read_text(encoding="utf-8"))
+    manifest_name = next((name for name in MANIFEST_NAMES if (ROOT / name).is_file()), MANIFEST_NAMES[0])
+    manifest = json.loads((ROOT / manifest_name).read_text(encoding="utf-8"))
     if not isinstance(manifest, dict):
-        raise ValueError("eh3d.project.json must hold a JSON object")
+        raise ValueError(f"{manifest_name} must hold a JSON object")
     for key in REQUIRED:
         if key not in manifest:
-            problems.append(f"eh3d.project.json lacks '{key}'")
+            problems.append(f"{manifest_name} lacks '{key}'")
     version = manifest.get("version", "?")
     native = manifest.get("native_version", {})
     found, native_file = native_version(ROOT, native if isinstance(native, dict) else {})
@@ -360,6 +371,9 @@ def _main() -> int:
             problems.append(f"{name} does not show the same lights as README.md in its 'Project status' table")
         if f"`{version}`" not in text:
             problems.append(f"{name} does not show the version {version}")
+        for stale in readme_version_places(text):
+            if stale != version:
+                problems.append(f"{name} shows the version {stale} in its badge or its Version row, the manifest says {version}")
         for other in LANGUAGES:
             if other != name and other not in text:
                 problems.append(f"{name} does not link to {other} in its language bar")

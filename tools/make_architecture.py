@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 # =============================================================================
-# A.R.M.O.R. - tools/make_architecture.py
-# Copyright (C) 2026 JuanenRac (Electro Hobby 3D)
+# EH3D-DOCS - tools/make_architecture.py
+# Copyright (C) 2026 JuanenRac (Electro Hobby 3D) <electrohobby3d@gmail.com>
 # GPL-3.0-or-later - see LICENSE
 # =============================================================================
+# canonical: EH3D-DOCS tools 1
 """Draws the Architecture picture of a repository from `docs/architecture.json`.
 
     python tools/make_architecture.py             # writes images/architecture.svg
