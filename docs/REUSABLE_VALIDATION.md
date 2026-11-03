@@ -2,7 +2,7 @@
 
 Every repository of the suite runs the same checks first: the manifest, the versions, the licence, the CHANGELOG, the eight README files and the pictures of the README. Today each repository carries its own copy of that part of `.github/workflows/ci.yml`. `.github/workflows/validate.yml` of this repository holds it once, as a **reusable workflow** (`on: workflow_call`), so that a repository can call it instead of copying the steps.
 
-**Status: one pilot.** EH3D-SUITE-LAUNCHER calls it from its `ci.yml`, pinned to the commit of the release 0.0.6 of this repository (a commit SHA, so a change here reaches it only when it chooses); the other repositories still carry their own copy of the steps. A reusable workflow can only be tried on GitHub, so the pilot is where the points of "Trying it in a pilot" below are watched before the others follow.
+**Status: one pilot.** EH3D-SUITE-LAUNCHER calls it from its `ci.yml`, pinned to a commit of this repository (a commit SHA, so a change here reaches it only when it chooses); its check is named `validate / Validate the repository` and it keeps its own `changelog` job; the other repositories still carry their own copy of the steps. A reusable workflow can only be tried on GitHub, so the pilot is where the points of "Trying it in a pilot" below are watched before the others follow.
 
 ## What it does
 
