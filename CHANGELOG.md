@@ -3,6 +3,7 @@
 All notable changes to this project are documented here.
 
 ## [Unreleased]
+- **Brand:** Add the application icon and the logos of the program.
 - **The identity codes are registered:** `registry/EH3D-ID.md` lists `EH3D-ID-001` and `EH3D-ID-002` (an id text that is not a canonical UUID v7, and a clock value that does not fit in 48 bits), with `registry/test_id_codes.py` that checks the numbering and, when the container crate is next to this repository, that the crate returns exactly those codes.
 - **The updater of the whole family keeps its own validator on purpose:** `sync_shared_tools.py` no longer lists its `ci_validate.py` as a difference and refuses to overwrite it; the shared validator reads its manifest as well.
 - **The README badge and Version row are checked in CI:** `ci_validate.py` (tools version 4) fails when the badge or the Version row of a README shows another version than the manifest, and it reads the manifest of the updater of the family (`electro-hobby-3d.project.json`) as well.
