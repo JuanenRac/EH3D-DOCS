@@ -18,7 +18,7 @@
 
 ---
 
-**诚实性核对 - 今天真正能运行的内容：** 文档和套件的工具，它们只在计算机上运行（每个仓库都带的仓库检查和图片绘制工具、仓库之间的契约、提升版本并准备发布的脚本、准备工作区的脚本，以及创建新仓库的脚本）。套件处于最初阶段：已发布二十七个仓库（库、Bungard 程序、服务器和 Studio、节点和触摸屏、手机应用、CAM 和实用程序、更新器以及本仓库），只有用于小型触摸屏的手持控制器仍然只是计划。已发布的内容都在计算机上测试过，界面支持 37 种语言；整个套件中只有 EH3D-DRILLPRO 的串行协议让真实机床动过（在一台 Bungard CCD MTC 上做了参考运行和各轴运动），还没有任何完整作业在机床上运行过。5 个测试覆盖仓库检查。
+**诚实性核对 - 今天真正能运行的内容：** 文档和套件的工具，它们只在计算机上运行（每个仓库都带的仓库检查和图片绘制工具、仓库之间的契约、提升版本并准备发布的脚本、准备工作区的脚本，以及创建新仓库的脚本）。套件处于最初阶段：已发布二十七个仓库（库、Bungard 程序、服务器和 Studio、节点和触摸屏、手机应用、CAM 和实用程序、更新器以及本仓库），两个已启动、有代码和测试但尚无发布版本（电子设计主项目及其测试实验室），十一个仅处于计划中（用于小型触摸屏的手持控制器，以及电子设计项目及其桥接的十个仓库）。已发布的内容都在计算机上测试过，界面支持 37 种语言；整个套件中只有 EH3D-DRILLPRO 的串行协议让真实机床动过（在一台 Bungard CCD MTC 上做了参考运行和各轴运动），还没有任何完整作业在机床上运行过。14 个测试覆盖仓库检查。
 
 ---
 
@@ -30,7 +30,7 @@
 |---|---|
 | 版本 | `0.0.6` |
 | 成熟度 | 可用 |
-| 测试 | 144 |
+| 测试 | 151 |
 | 技术栈 | Markdown，附带 Python 3.10+ 工具 |
 | 真实硬件 | 不适用：文档 |
 
@@ -45,11 +45,11 @@
 | 领域 | 状态 | 在这里的含义 |
 |---|---|---|
 | 仓库检查 | 🟡 | 仓库检查、文档之间的链接检查以及工具的测试都在 CI 中运行并通过。 |
-| 测试 | 🟠 | 工具的 144 个测试在计算机上通过，其中一些在小型玩具仓库上运行；文档及其中的说法靠手工和脚本阅读与核对。 |
+| 测试 | 🟠 | 工具的 151 个测试在计算机上通过，其中一些在小型玩具仓库上运行；文档及其中的说法靠手工和脚本阅读与核对。 |
 | 套件契约 | 🟡 | 仓库之间的契约用 Updater 的解析器读取每个清单，并对偏差发出警告（端口、README 语言、共享工具、问题表单）；它每天在 CI 中作为警告运行，被点名的仓库会逐个更新。 |
 | 版本与发布工具 | 🟠 | 提升版本、撰写说明和检查发布的脚本，以及可复用的验证工作流，都在玩具仓库上测试过；还没有任何仓库用它们发布过版本。 |
 | 工作区与新仓库 | 🟠 | 列出并克隆仓库所需内容的脚本和创建新仓库的脚本，都在临时文件夹中的玩具仓库上测试过；两者都还没有建立过真实的工作区或创建过真实的仓库。 |
-| 地图与能力矩阵 | 🟡 | 套件地图、架构说明和能力矩阵涵盖二十七个已发布的仓库及各自的版本，并把仍是计划的那一个程序列为计划中；它们由人工编写，可能落后于仓库。 |
+| 地图与能力矩阵 | 🟡 | 套件地图、架构说明和能力矩阵涵盖四十个仓库：二十七个已发布的仓库及各自的版本、两个已启动的仓库（有代码和测试、尚无发布版本）和十一个计划中的仓库（只有书面范围、没有代码）；它们由人工编写，可能落后于仓库。 |
 | 真实硬件 | 🟡 | 不适用：文档，这里的内容不会在硬件上运行。 |
 | 文档 | 🟡 | 八种语言的 README，每次更改都会与清单和变更日志对照。 |
 
@@ -92,7 +92,7 @@ EH3D-DOCS 是整体描述套件的地方。每个仓库在自己的 README 中�
 
 | 接口 | 内容 | 位置 |
 |---|---|---|
-| 文档 | Markdown：地图、架构、能力矩阵和约定 | [docs/](docs/SUITE_MAP.md) |
+| 文档 | Markdown：地图、架构、能力矩阵、约定以及更新与发布指南 | [docs/](docs/SUITE_MAP.md) |
 | 仓库检查 | `python -I tools/ci_validate.py` 输出 `CI_VALIDATION=PASS`，或列出失败项 | `tools/ci_validate.py` |
 | 链接检查 | `python -I tools/check_links.py` 输出 `LINKS=PASS`，或列出失效链接 | `tools/check_links.py` |
 | 检查的测试 | `python -I -m unittest discover -s tools -p "test_*.py"` | `tools/test_ci_validate.py` |
@@ -132,7 +132,7 @@ python -I -m unittest discover -s tools -p "test_*.py"
 
 ## 🧪 测试
 
-工具有 144 个测试（`python -I -m unittest discover -s tools -p "test_*.py"`），并且都通过。CI 运行仓库检查（`tools/ci_validate.py`）、文档之间的链接检查（`tools/check_links.py`）、两张图片的检查和这些测试；每日工作流运行套件契约。文档本身除此之外没有测试：它们的说法靠能力矩阵和人工阅读来保持诚实。
+工具有 151 个测试（`python -I -m unittest discover -s tools -p "test_*.py"`），并且都通过。CI 运行仓库检查（`tools/ci_validate.py`）、文档之间的链接检查（`tools/check_links.py`）、两张图片的检查和这些测试；每日工作流运行套件契约。文档本身除此之外没有测试：它们的说法靠能力矩阵和人工阅读来保持诚实。
 
 ## 🏗️ 构建与发布
 
@@ -204,11 +204,12 @@ README 和文本提供英语、西班牙语、法语、意大利语、德语、�
 * [EH3D-SERVER](https://github.com/JuanenRac/EH3D-SERVER) 和 [EH3D-NODE-BUNGARD](https://github.com/JuanenRac/EH3D-NODE-BUNGARD)：程序的中心和通往机床的节点
 * [EH3D-STUDIO](https://github.com/JuanenRac/EH3D-STUDIO)、[EH3D-NODE-BUNGARD-HMI](https://github.com/JuanenRac/EH3D-NODE-BUNGARD-HMI) 和 [EH3D-NODE-BUNGARD-AUX](https://github.com/JuanenRac/EH3D-NODE-BUNGARD-AUX)：服务器的配置面板（含来自 GitHub 的更新）、机床的触摸屏，以及钻头上的节点（RTSP 与 ONVIF 摄像头、测量工作台的激光、主轴转速和温度）
 * [EH3D-UPDATER](https://github.com/JuanenRac/EH3D-UPDATER) 和 [ELECTRO-HOBBY-3D-UPDATER](https://github.com/JuanenRac/ELECTRO-HOBBY-3D-UPDATER)：安装和更新这些仓库
+* [EH3D-PHOENIX-PCB](https://github.com/JuanenRac/EH3D-PHOENIX-PCB) 以及电子设计项目及其桥接的另外十一个仓库（实验室、验证器、热实验室、通往 HYDRA-UMC 的适配器）：已启动或计划中，尚无发布版本
 
 ## 📚 文档
 
 * [套件地图](docs/SUITE_MAP.md)、[架构](docs/ARCHITECTURE.md)、[能力矩阵](docs/CAPABILITY_MATRIX.md)和[约定](docs/CONVENTIONS.md)。
-* [发布版本](docs/RELEASING.md)和[可复用的验证](docs/REUSABLE_VALIDATION.md)。
+* [发布版本](docs/RELEASING.md)、[机器如何保持更新](docs/UPDATING.md)和[可复用的验证](docs/REUSABLE_VALIDATION.md)。
 * [变更日志](CHANGELOG.md)
 
 ## 🤝 参与贡献与社区

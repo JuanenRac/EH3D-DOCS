@@ -18,7 +18,7 @@
 
 ---
 
-**Honesty check - what actually runs today:** documents and the tools of the suite, which run on a computer and nowhere else (the repository check and the drawers of the pictures that every repository carries, the contract between the repositories, the scripts that raise a version and prepare a release, the script that sets up a workspace and the one that makes a new repository). The suite is at its first steps: twenty-seven repositories are published (the libraries, the Bungard programs, the server and Studio, the nodes and touch screens, the phone apps, the CAM and utility programs, the updaters and this one) and the pendant for small touch screens is the only program that is still a plan. Everything published has been tested on a computer, and the interfaces speak 37 languages; of the whole suite only the serial protocol of EH3D-DRILLPRO has moved a real machine (the reference run and the moves of each axis on one Bungard CCD MTC), and no whole job has run on a machine yet. 5 tests cover the repository check.
+**Honesty check - what actually runs today:** documents and the tools of the suite, which run on a computer and nowhere else (the repository check and the drawers of the pictures that every repository carries, the contract between the repositories, the scripts that raise a version and prepare a release, the script that sets up a workspace and the one that makes a new repository). The suite is at its first steps: twenty-seven repositories are published (the libraries, the Bungard programs, the server and Studio, the nodes and touch screens, the phone apps, the CAM and utility programs, the updaters and this one), two have started with code and tests and no release (the main project of electronic design and its test laboratory) and eleven are only planned (the pendant for small touch screens and ten repositories of the electronic design project and its bridges). Everything published has been tested on a computer, and the interfaces speak 37 languages; of the whole suite only the serial protocol of EH3D-DRILLPRO has moved a real machine (the reference run and the moves of each axis on one Bungard CCD MTC), and no whole job has run on a machine yet. 14 tests cover the repository check.
 
 ---
 
@@ -30,7 +30,7 @@
 |---|---|
 | Version | `0.0.6` |
 | Maturity | Functional |
-| Tests | 144 |
+| Tests | 151 |
 | Stack | Markdown, with Python 3.10+ tools |
 | On real hardware | Not applicable: documentation |
 
@@ -45,11 +45,11 @@ Each line is one part of this repository and the light says how far it is today.
 | Area | State | What it means here |
 |---|---|---|
 | Repository checks | 🟡 | The repository check, the check of the links between the documents and the tests of the tools run in CI and pass. |
-| Tests | 🟠 | 144 tests of the tools pass on a computer, some of them on small toy repositories; the documents and the claims in them are read and checked by hand and by the scripts. |
+| Tests | 🟠 | 151 tests of the tools pass on a computer, some of them on small toy repositories; the documents and the claims in them are read and checked by hand and by the scripts. |
 | Suite contract | 🟡 | The contract between the repositories reads every manifest with the parser of the Updater and warns about drift (ports, README languages, shared tools, issue forms); it runs every day in CI as a warning, and the repositories it names are brought up to date one by one. |
 | Version and release tools | 🟠 | The scripts that raise a version, write the notes and check a release, and the reusable validation workflow, are tested on toy repositories; no repository has published a release with them yet. |
 | Workspace and new repositories | 🟠 | The scripts that list and clone what a repository needs and that make a new repository are tested on toy repositories in a temporary folder; neither has set up a real workspace or created a real repository yet. |
-| Map and capability matrix | 🟡 | The suite map, the architecture notes and the capability matrix cover the twenty-seven published repositories, with the release of each, and list the one program that is still a plan as planned; they are written by hand and can fall behind the repositories. |
+| Map and capability matrix | 🟡 | The suite map, the architecture notes and the capability matrix cover the forty repositories: the twenty-seven published ones with the release of each, two started ones (code with tests and no release) and eleven planned ones (a written scope and no code); they are written by hand and can fall behind the repositories. |
 | Real hardware | 🟡 | Not applicable: documentation, nothing here runs on hardware. |
 | Documentation | 🟡 | README in eight languages, checked against the manifest and the changelog on every change. |
 
@@ -92,7 +92,7 @@ This repository has no program that takes input from outside; what it defends is
 
 | Interface | What it is | Where |
 |---|---|---|
-| The documents | Markdown: the map, the architecture, the capability matrix and the conventions | [docs/](docs/SUITE_MAP.md) |
+| The documents | Markdown: the map, the architecture, the capability matrix, the conventions and the guides to updating and releasing | [docs/](docs/SUITE_MAP.md) |
 | The repository check | `python -I tools/ci_validate.py` prints `CI_VALIDATION=PASS` or lists what fails | `tools/ci_validate.py` |
 | The link check | `python -I tools/check_links.py` prints `LINKS=PASS` or lists the broken links | `tools/check_links.py` |
 | The tests of the check | `python -I -m unittest discover -s tools -p "test_*.py"` | `tools/test_ci_validate.py` |
@@ -132,7 +132,7 @@ To read the documents, start with [the map of the suite](docs/SUITE_MAP.md).
 
 ## 🧪 Testing
 
-The tools have 144 tests (`python -I -m unittest discover -s tools -p "test_*.py"`), and they pass. The CI runs the repository check (`tools/ci_validate.py`), the check of the links between the documents (`tools/check_links.py`), the checks of the two pictures and those tests; a daily workflow runs the suite contract. The documents themselves have no test beyond that: what they claim is kept honest by the capability matrix and by reading them.
+The tools have 151 tests (`python -I -m unittest discover -s tools -p "test_*.py"`), and they pass. The CI runs the repository check (`tools/ci_validate.py`), the check of the links between the documents (`tools/check_links.py`), the checks of the two pictures and those tests; a daily workflow runs the suite contract. The documents themselves have no test beyond that: what they claim is kept honest by the capability matrix and by reading them.
 
 ## 🏗️ Build & Release
 
@@ -204,11 +204,12 @@ README and texts exist in English, Spanish, French, Italian, German, Chinese, Ja
 * [EH3D-SERVER](https://github.com/JuanenRac/EH3D-SERVER) and [EH3D-NODE-BUNGARD](https://github.com/JuanenRac/EH3D-NODE-BUNGARD): the center of the programs and the node that reaches the machine
 * [EH3D-STUDIO](https://github.com/JuanenRac/EH3D-STUDIO), [EH3D-NODE-BUNGARD-HMI](https://github.com/JuanenRac/EH3D-NODE-BUNGARD-HMI) and [EH3D-NODE-BUNGARD-AUX](https://github.com/JuanenRac/EH3D-NODE-BUNGARD-AUX): the configuration panel of the server (with its updates from GitHub), the touch screen of the machine, and the node of the drill head (camera as RTSP and ONVIF, laser that measures the table, speed and temperature of the spindle)
 * [EH3D-UPDATER](https://github.com/JuanenRac/EH3D-UPDATER) and [ELECTRO-HOBBY-3D-UPDATER](https://github.com/JuanenRac/ELECTRO-HOBBY-3D-UPDATER): install and update the repositories
+* [EH3D-PHOENIX-PCB](https://github.com/JuanenRac/EH3D-PHOENIX-PCB) and the eleven other repositories of the electronic design project and its bridges (the laboratory, the verifier, the thermal laboratory, the adapter to HYDRA-UMC): started or planned, with no release yet
 
 ## 📚 Documentation
 
 * [The map of the suite](docs/SUITE_MAP.md), [the architecture](docs/ARCHITECTURE.md), [the capability matrix](docs/CAPABILITY_MATRIX.md) and [the conventions](docs/CONVENTIONS.md).
-* [Releasing a version](docs/RELEASING.md) and [the reusable validation](docs/REUSABLE_VALIDATION.md).
+* [Releasing a version](docs/RELEASING.md), [how the machines are kept up to date](docs/UPDATING.md) and [the reusable validation](docs/REUSABLE_VALIDATION.md).
 * [Changelog](CHANGELOG.md)
 
 ## 🤝 Contributing & Community

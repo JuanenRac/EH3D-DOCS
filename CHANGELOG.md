@@ -5,6 +5,13 @@ All notable changes to this project are documented here.
 ## [Unreleased]
 
 - Add `registry/EH3D-PKG.md`, the registry of the container codes `EH3D-PKG-001` to `EH3D-PKG-014` (what each one refuses and who raises it), with `registry/test_error_codes.py` that checks the numbering and, when the container crate is next to this repository, that the titles are the ones the crate reports; the CI runs it.
+- **The map lists the twelve new repositories (the electronic design project and the bridge to HYDRA-UMC):** the main project and its test laboratory as started (code with tests, no release), the other ten as planned with their scope, and the Release column is written from the manifests of the published repositories; the sentences about work that was only on the main branch are gone, since the server, Studio, the programs and the phone apps have released it.
+- **The page on updates covers the three ways a machine is updated:** the Updates page of Studio (steps with a percent, the notes of each release, undo, clearing the history), the helper that replaces itself, the check of OpenSSH signatures against `/etc/eh3d-update.signers` (a release without the `.sig` is refused when the file exists), and the update of EH3D-BUNGARD-GUI from GitHub with a mandatory SHA-256 and undo.
+- **The guide to releasing says how to sign the packages of the server and of Studio,** how `release-binaries.yml` and `release-dist.yml` build them, and the rule that a release holds at least 3 entries.
+- **The conventions write down the codes of errors and diagnostics:** the `EH3D-` and `PHOENIX-` prefixes, one registry per prefix, never translated.
+- **The matrix and the architecture cover the new shared crates and the new work:** the summary, the image reader, the diagnostic and the container of EH3D-COMMON, the raster, geometry and CAM crates and the writers of Gerber and Excellon of EH3D-CORE-LIBS, the update helper with signatures, the operation of the server, and the two PHOENIX repositories that have code; the reusable validation says that one repository calls it.
+- **The README files in the eight languages count the forty repositories** (27 published, 2 started, 11 planned), give the real count of tests of the tools and link the guide to updating.
+
 ## [0.0.6] - Banner check, lock of vendored tools and a bump that follows internal dependencies
 
 - **The text of the banner is checked against the manifest:** `tools/banner_check.py` (called by `ci_validate.py`) compares the tag, the title, the line of technologies, the pills and the badge of `images/*BANNER*.svg` with the role, the name and the technologies of the manifest, so a banner copied from another repository is found; the plain banner of a new repository is checked for its name.

@@ -18,7 +18,7 @@
 
 ---
 
-**Vérification d'honnêteté - ce qui tourne aujourd'hui :** des documents et les outils de la suite, qui tournent sur un ordinateur et nulle part ailleurs (le contrôle du dépôt et les dessinateurs des images que porte chaque dépôt, le contrat entre les dépôts, les scripts qui montent une version et préparent une publication, le script qui prépare un espace de travail et celui qui crée un nouveau dépôt). La suite en est à ses premiers pas : vingt-sept dépôts sont publiés (les bibliothèques, les programmes Bungard, le serveur et Studio, les nœuds et écrans tactiles, les applications mobiles, les programmes de FAO et utilitaires, les mises à jour et celui-ci) et la télécommande pour petits écrans tactiles est le seul programme qui reste un projet. Tout ce qui est publié a été testé sur un ordinateur et les interfaces parlent 37 langues ; dans toute la suite, seul le protocole série d'EH3D-DRILLPRO a déplacé une vraie machine (la référence et les mouvements de chaque axe sur une Bungard CCD MTC), et aucun travail complet n'a encore tourné sur une machine. 5 tests couvrent le contrôle du dépôt.
+**Vérification d'honnêteté - ce qui tourne aujourd'hui :** des documents et les outils de la suite, qui tournent sur un ordinateur et nulle part ailleurs (le contrôle du dépôt et les dessinateurs des images que porte chaque dépôt, le contrat entre les dépôts, les scripts qui montent une version et préparent une publication, le script qui prépare un espace de travail et celui qui crée un nouveau dépôt). La suite en est à ses premiers pas : vingt-sept dépôts sont publiés (les bibliothèques, les programmes Bungard, le serveur et Studio, les nœuds et écrans tactiles, les applications mobiles, les programmes de FAO et utilitaires, les mises à jour et celui-ci), deux ont commencé avec du code et des tests et sans version publiée (le projet principal de conception électronique et son laboratoire d'essais) et onze sont seulement prévus (la télécommande pour petits écrans tactiles et dix dépôts du projet de conception électronique et de ses passerelles). Tout ce qui est publié a été testé sur un ordinateur et les interfaces parlent 37 langues ; dans toute la suite, seul le protocole série d'EH3D-DRILLPRO a déplacé une vraie machine (la référence et les mouvements de chaque axe sur une Bungard CCD MTC), et aucun travail complet n'a encore tourné sur une machine. 14 tests couvrent le contrôle du dépôt.
 
 ---
 
@@ -30,7 +30,7 @@
 |---|---|
 | Version | `0.0.6` |
 | Maturité | Fonctionnel |
-| Tests | 144 |
+| Tests | 151 |
 | Pile technique | Markdown, avec des outils en Python 3.10+ |
 | Sur du matériel réel | Sans objet : documentation |
 
@@ -45,11 +45,11 @@ Chaque ligne est une partie de ce dépôt et le feu dit où elle en est aujourd'
 | Domaine | État | Ce que cela veut dire ici |
 |---|---|---|
 | Contrôles du dépôt | 🟡 | Le contrôle du dépôt, celui des liens entre les documents et les tests des outils tournent dans la CI et réussissent. |
-| Tests | 🟠 | 144 tests des outils réussissent sur un ordinateur, certains sur de petits dépôts jouets ; les documents et les affirmations qu'ils contiennent sont lus et vérifiés à la main et par les scripts. |
+| Tests | 🟠 | 151 tests des outils réussissent sur un ordinateur, certains sur de petits dépôts jouets ; les documents et les affirmations qu'ils contiennent sont lus et vérifiés à la main et par les scripts. |
 | Contrat de la suite | 🟡 | Le contrat entre les dépôts lit chaque manifeste avec l'analyseur de l'Updater et signale les dérives (ports, langues du README, outils partagés, formulaires de tickets) ; il tourne chaque jour dans la CI comme simple avertissement, et les dépôts qu'il nomme sont remis à jour un par un. |
 | Outils de version et de publication | 🟠 | Les scripts qui montent une version, écrivent les notes et vérifient une publication, ainsi que le workflow de validation réutilisable, sont testés sur des dépôts jouets ; aucun dépôt n'a encore publié de version avec eux. |
 | Espace de travail et nouveaux dépôts | 🟠 | Les scripts qui listent et clonent ce dont un dépôt a besoin et qui créent un nouveau dépôt sont testés sur des dépôts jouets dans un dossier temporaire ; aucun n'a encore préparé un vrai espace de travail ni créé un vrai dépôt. |
-| Carte et matrice des capacités | 🟡 | La carte de la suite, les notes d'architecture et la matrice des capacités couvrent les vingt-sept dépôts publiés, avec la version de chacun, et listent comme prévu le seul programme qui reste un projet ; elles sont écrites à la main et peuvent prendre du retard sur les dépôts. |
+| Carte et matrice des capacités | 🟡 | La carte de la suite, les notes d'architecture et la matrice des capacités couvrent les quarante dépôts : les vingt-sept publiés avec la version de chacun, deux commencés (du code avec des tests et sans version publiée) et onze prévus (un périmètre écrit et pas de code) ; elles sont écrites à la main et peuvent prendre du retard sur les dépôts. |
 | Matériel réel | 🟡 | Sans objet : documentation, rien ici ne tourne sur du matériel. |
 | Documentation | 🟡 | README en huit langues, vérifié à chaque changement contre le manifeste et le journal des modifications. |
 
@@ -92,7 +92,7 @@ Ce dépôt n'a aucun programme qui reçoive des entrées de l'extérieur ; ce qu
 
 | Interface | Ce que c'est | Où |
 |---|---|---|
-| Les documents | Markdown : la carte, l'architecture, la matrice des capacités et les conventions | [docs/](docs/SUITE_MAP.md) |
+| Les documents | Markdown : la carte, l'architecture, la matrice des capacités, les conventions et les guides de mise à jour et de publication | [docs/](docs/SUITE_MAP.md) |
 | Le contrôle du dépôt | `python -I tools/ci_validate.py` affiche `CI_VALIDATION=PASS` ou liste ce qui échoue | `tools/ci_validate.py` |
 | Le contrôle des liens | `python -I tools/check_links.py` affiche `LINKS=PASS` ou liste les liens cassés | `tools/check_links.py` |
 | Les tests du contrôle | `python -I -m unittest discover -s tools -p "test_*.py"` | `tools/test_ci_validate.py` |
@@ -132,7 +132,7 @@ Pour lire les documents, commence par [la carte de la suite](docs/SUITE_MAP.md).
 
 ## 🧪 Tests
 
-Les outils ont 144 tests (`python -I -m unittest discover -s tools -p "test_*.py"`), et ils réussissent. La CI exécute le contrôle du dépôt (`tools/ci_validate.py`), celui des liens entre les documents (`tools/check_links.py`), les contrôles des deux images et ces tests ; un workflow quotidien exécute le contrat de la suite. Les documents n'ont pas d'autre test : ce qu'ils affirment est tenu honnête par la matrice des capacités et par leur relecture.
+Les outils ont 151 tests (`python -I -m unittest discover -s tools -p "test_*.py"`), et ils réussissent. La CI exécute le contrôle du dépôt (`tools/ci_validate.py`), celui des liens entre les documents (`tools/check_links.py`), les contrôles des deux images et ces tests ; un workflow quotidien exécute le contrat de la suite. Les documents n'ont pas d'autre test : ce qu'ils affirment est tenu honnête par la matrice des capacités et par leur relecture.
 
 ## 🏗️ Compilation et publication
 
@@ -204,11 +204,12 @@ Le README et les textes existent en anglais, espagnol, français, italien, allem
 * [EH3D-SERVER](https://github.com/JuanenRac/EH3D-SERVER) et [EH3D-NODE-BUNGARD](https://github.com/JuanenRac/EH3D-NODE-BUNGARD) : le centre des programmes et le nœud qui atteint la machine
 * [EH3D-STUDIO](https://github.com/JuanenRac/EH3D-STUDIO), [EH3D-NODE-BUNGARD-HMI](https://github.com/JuanenRac/EH3D-NODE-BUNGARD-HMI) et [EH3D-NODE-BUNGARD-AUX](https://github.com/JuanenRac/EH3D-NODE-BUNGARD-AUX) : le panneau de configuration du serveur (avec ses mises à jour depuis GitHub), l'écran tactile de la machine et le nœud de la tête de perçage (caméra en RTSP et ONVIF, laser qui mesure la table, vitesse et température de la broche)
 * [EH3D-UPDATER](https://github.com/JuanenRac/EH3D-UPDATER) et [ELECTRO-HOBBY-3D-UPDATER](https://github.com/JuanenRac/ELECTRO-HOBBY-3D-UPDATER) : installent et mettent à jour les dépôts
+* [EH3D-PHOENIX-PCB](https://github.com/JuanenRac/EH3D-PHOENIX-PCB) et les onze autres dépôts du projet de conception électronique et de ses passerelles (le laboratoire, le vérificateur, le laboratoire thermique, l'adaptateur vers HYDRA-UMC) : commencés ou prévus, sans version publiée
 
 ## 📚 Documentation
 
 * [La carte de la suite](docs/SUITE_MAP.md), [l'architecture](docs/ARCHITECTURE.md), [la matrice des capacités](docs/CAPABILITY_MATRIX.md) et [les conventions](docs/CONVENTIONS.md).
-* [Publier une version](docs/RELEASING.md) et [la validation réutilisable](docs/REUSABLE_VALIDATION.md).
+* [Publier une version](docs/RELEASING.md), [comment les machines sont tenues à jour](docs/UPDATING.md) et [la validation réutilisable](docs/REUSABLE_VALIDATION.md).
 * [Journal des modifications](CHANGELOG.md)
 
 ## 🤝 Contribuer et communauté

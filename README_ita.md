@@ -18,7 +18,7 @@
 
 ---
 
-**Verifica di onestà - cosa funziona oggi:** documenti e gli strumenti della suite, che girano su un computer e da nessun'altra parte (il controllo del repository e i disegnatori delle immagini che ogni repository porta, il contratto tra i repository, gli script che alzano una versione e preparano un rilascio, lo script che prepara uno spazio di lavoro e quello che crea un nuovo repository). La suite è ai primi passi: sono pubblicati ventisette repository (le librerie, i programmi Bungard, il server e Studio, i nodi e gli schermi tattili, le app per telefono, i programmi CAM e di utilità, gli aggiornatori e questo) e il comando per piccoli schermi tattili è l'unico programma che è ancora un progetto. Tutto ciò che è pubblicato è stato provato su un computer e le interfacce parlano 37 lingue; di tutta la suite solo il protocollo seriale di EH3D-DRILLPRO ha mosso una macchina reale (il riferimento e i movimenti di ogni asse su una Bungard CCD MTC), e nessun lavoro completo è ancora stato eseguito su una macchina. 5 test coprono il controllo del repository.
+**Verifica di onestà - cosa funziona oggi:** documenti e gli strumenti della suite, che girano su un computer e da nessun'altra parte (il controllo del repository e i disegnatori delle immagini che ogni repository porta, il contratto tra i repository, gli script che alzano una versione e preparano un rilascio, lo script che prepara uno spazio di lavoro e quello che crea un nuovo repository). La suite è ai primi passi: sono pubblicati ventisette repository (le librerie, i programmi Bungard, il server e Studio, i nodi e gli schermi tattili, le app per telefono, i programmi CAM e di utilità, gli aggiornatori e questo), due sono stati avviati con codice e test e senza versione pubblicata (il progetto principale di progettazione elettronica e il suo laboratorio di prova) e undici sono solo previsti (il comando per piccoli schermi tattili e dieci repository del progetto di progettazione elettronica e dei suoi ponti). Tutto ciò che è pubblicato è stato provato su un computer e le interfacce parlano 37 lingue; di tutta la suite solo il protocollo seriale di EH3D-DRILLPRO ha mosso una macchina reale (il riferimento e i movimenti di ogni asse su una Bungard CCD MTC), e nessun lavoro completo è ancora stato eseguito su una macchina. 14 test coprono il controllo del repository.
 
 ---
 
@@ -30,7 +30,7 @@
 |---|---|
 | Versione | `0.0.6` |
 | Maturità | Funzionale |
-| Test | 144 |
+| Test | 151 |
 | Stack tecnologico | Markdown, con strumenti in Python 3.10+ |
 | Su hardware reale | Non applicabile: documentazione |
 
@@ -45,11 +45,11 @@ Ogni riga è una parte di questo repository e il semaforo dice a che punto è og
 | Area | Stato | Cosa significa qui |
 |---|---|---|
 | Controlli del repository | 🟡 | Il controllo del repository, quello dei link tra i documenti e i test degli strumenti girano nella CI e passano. |
-| Test | 🟠 | 144 test degli strumenti passano su un computer, alcuni su piccoli repository giocattolo; i documenti e le affermazioni che contengono sono letti e verificati a mano e dagli script. |
+| Test | 🟠 | 151 test degli strumenti passano su un computer, alcuni su piccoli repository giocattolo; i documenti e le affermazioni che contengono sono letti e verificati a mano e dagli script. |
 | Contratto della suite | 🟡 | Il contratto tra i repository legge ogni manifesto con il parser dell'Updater e segnala le derive (porte, lingue del README, strumenti condivisi, moduli per le segnalazioni); gira ogni giorno nella CI come semplice avviso, e i repository che nomina vengono aggiornati uno alla volta. |
 | Strumenti di versione e rilascio | 🟠 | Gli script che alzano una versione, scrivono le note e controllano un rilascio, e il workflow di validazione riutilizzabile, sono provati su repository giocattolo; nessun repository ha ancora pubblicato un rilascio con essi. |
 | Spazio di lavoro e nuovi repository | 🟠 | Gli script che elencano e clonano ciò che serve a un repository e che creano un nuovo repository sono provati su repository giocattolo in una cartella temporanea; nessuno ha ancora preparato uno spazio di lavoro reale né creato un repository reale. |
-| Mappa e matrice delle capacità | 🟡 | La mappa della suite, le note di architettura e la matrice delle capacità coprono i ventisette repository pubblicati, con la versione di ciascuno, ed elencano come previsto l'unico programma che è ancora un progetto; sono scritte a mano e possono restare indietro rispetto ai repository. |
+| Mappa e matrice delle capacità | 🟡 | La mappa della suite, le note di architettura e la matrice delle capacità coprono i quaranta repository: i ventisette pubblicati con la versione di ciascuno, due avviati (codice con test e senza versione pubblicata) e undici previsti (un ambito scritto e nessun codice); sono scritte a mano e possono restare indietro rispetto ai repository. |
 | Hardware reale | 🟡 | Non applicabile: documentazione, nulla qui gira su hardware. |
 | Documentazione | 🟡 | README in otto lingue, verificato a ogni modifica contro il manifesto e il registro delle modifiche. |
 
@@ -92,7 +92,7 @@ Questo repository non ha alcun programma che riceva input dall'esterno; ciò che
 
 | Interfaccia | Che cos'è | Dove |
 |---|---|---|
-| I documenti | Markdown: la mappa, l'architettura, la matrice delle capacità e le convenzioni | [docs/](docs/SUITE_MAP.md) |
+| I documenti | Markdown: la mappa, l'architettura, la matrice delle capacità, le convenzioni e le guide all'aggiornamento e alla pubblicazione | [docs/](docs/SUITE_MAP.md) |
 | Il controllo del repository | `python -I tools/ci_validate.py` stampa `CI_VALIDATION=PASS` o elenca ciò che fallisce | `tools/ci_validate.py` |
 | Il controllo dei link | `python -I tools/check_links.py` stampa `LINKS=PASS` o elenca i link rotti | `tools/check_links.py` |
 | I test del controllo | `python -I -m unittest discover -s tools -p "test_*.py"` | `tools/test_ci_validate.py` |
@@ -132,7 +132,7 @@ Per leggere i documenti, parti da [la mappa della suite](docs/SUITE_MAP.md).
 
 ## 🧪 Test
 
-Gli strumenti hanno 144 test (`python -I -m unittest discover -s tools -p "test_*.py"`), e passano. La CI esegue il controllo del repository (`tools/ci_validate.py`), quello dei link tra i documenti (`tools/check_links.py`), i controlli delle due immagini e questi test; un workflow giornaliero esegue il contratto della suite. I documenti non hanno altri test: ciò che affermano è tenuto onesto dalla matrice delle capacità e dalla lettura.
+Gli strumenti hanno 151 test (`python -I -m unittest discover -s tools -p "test_*.py"`), e passano. La CI esegue il controllo del repository (`tools/ci_validate.py`), quello dei link tra i documenti (`tools/check_links.py`), i controlli delle due immagini e questi test; un workflow giornaliero esegue il contratto della suite. I documenti non hanno altri test: ciò che affermano è tenuto onesto dalla matrice delle capacità e dalla lettura.
 
 ## 🏗️ Compilazione e rilascio
 
@@ -204,11 +204,12 @@ Il README e i testi esistono in inglese, spagnolo, francese, italiano, tedesco, 
 * [EH3D-SERVER](https://github.com/JuanenRac/EH3D-SERVER) ed [EH3D-NODE-BUNGARD](https://github.com/JuanenRac/EH3D-NODE-BUNGARD): il centro dei programmi e il nodo che raggiunge la macchina
 * [EH3D-STUDIO](https://github.com/JuanenRac/EH3D-STUDIO), [EH3D-NODE-BUNGARD-HMI](https://github.com/JuanenRac/EH3D-NODE-BUNGARD-HMI) e [EH3D-NODE-BUNGARD-AUX](https://github.com/JuanenRac/EH3D-NODE-BUNGARD-AUX): il pannello di configurazione del server (con i suoi aggiornamenti da GitHub), lo schermo touch della macchina e il nodo della testa di foratura (telecamera via RTSP e ONVIF, laser che misura il tavolo, velocità e temperatura del mandrino)
 * [EH3D-UPDATER](https://github.com/JuanenRac/EH3D-UPDATER) ed [ELECTRO-HOBBY-3D-UPDATER](https://github.com/JuanenRac/ELECTRO-HOBBY-3D-UPDATER): installano e aggiornano i repository
+* [EH3D-PHOENIX-PCB](https://github.com/JuanenRac/EH3D-PHOENIX-PCB) e gli altri undici repository del progetto di progettazione elettronica e dei suoi ponti (il laboratorio, il verificatore, il laboratorio termico, l'adattatore verso HYDRA-UMC): avviati o previsti, senza versione pubblicata
 
 ## 📚 Documentazione
 
 * [La mappa della suite](docs/SUITE_MAP.md), [l'architettura](docs/ARCHITECTURE.md), [la matrice delle capacità](docs/CAPABILITY_MATRIX.md) e [le convenzioni](docs/CONVENTIONS.md).
-* [Pubblicare una versione](docs/RELEASING.md) e [la validazione riutilizzabile](docs/REUSABLE_VALIDATION.md).
+* [Pubblicare una versione](docs/RELEASING.md), [come si mantengono aggiornate le macchine](docs/UPDATING.md) e [la validazione riutilizzabile](docs/REUSABLE_VALIDATION.md).
 * [Registro delle modifiche](CHANGELOG.md)
 
 ## 🤝 Contribuire e comunità
