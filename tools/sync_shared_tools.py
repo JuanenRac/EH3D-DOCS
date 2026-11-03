@@ -35,6 +35,7 @@ SHARED = (
     "_readme_svg.py",
     "universal_readme_check.py",
     "banner_check.py",
+    "changelog_pr_check.py",
     "pretty_run.py",
     "_manifest_contract.py",
 )

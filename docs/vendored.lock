@@ -3,6 +3,7 @@
   "tools": {
     "_readme_svg.py": "8f30473f26",
     "banner_check.py": "1cd625fd99",
+    "changelog_pr_check.py": "d2fe0ec937",
     "ci_validate.py": "281eb651c0",
     "make_architecture.py": "94ec775963",
     "make_structure.py": "c77580d2a5",
