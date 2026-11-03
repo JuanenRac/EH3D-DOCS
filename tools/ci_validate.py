@@ -4,7 +4,7 @@
 # Copyright (C) 2026 JuanenRac (Electro Hobby 3D) <electrohobby3d@gmail.com>
 # GPL-3.0-or-later - see LICENSE
 # =============================================================================
-# canonical: EH3D-DOCS tools 2
+# canonical: EH3D-DOCS tools 3
 """The repository checks that CI runs besides cargo: manifest, versions, licence, changelog, the eight README files
 and the words that must never appear in public files. Prints CI_VALIDATION=PASS or FAIL with the reasons."""
 from __future__ import annotations
@@ -15,14 +15,16 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-TOOLS_VERSION = "2"  # raise it with every change of this file; the header of every copy says which one it holds
+TOOLS_VERSION = "3"  # raise it with every change of this file; the header of every copy says which one it holds
 DEFAULT_SKIP_DIRS = {"target", ".git"}  # folders the scan for forbidden words never enters; a repository adds its own in tools/ci_config.json
 REQUIRED = ["schema_version", "ecosystem", "name", "version", "role", "stack", "technologies", "deployment_target",
             "maturity", "family", "parent", "build", "notes", "native_version"]
 LANGUAGES = {"README.md": "en", "README_spa.md": "es", "README_deu.md": "de", "README_fra.md": "fr",
              "README_ita.md": "it", "README_jpn.md": "ja", "README_zho.md": "zh", "README_por.md": "pt"}
 FORBIDDEN = re.compile(r"\b(claude|anthropic|sonnet)\b", re.IGNORECASE)
-TEXT_SUFFIXES = {".md", ".rs", ".toml", ".json", ".yml", ".yaml", ".py", ".txt", ".svg"}
+TEXT_SUFFIXES = {".md", ".rs", ".toml", ".json", ".yml", ".yaml", ".py", ".txt", ".svg", ".kt", ".kts", ".swift", ".qml", ".sh", ".bat", ".cmd",
+                 ".ps1", ".js", ".ts", ".html", ".css", ".c", ".h", ".cpp", ".hpp", ".ino", ".gradle", ".xml", ".cfg", ".ini", ".csv", ".tsv",
+                 ".plist", ".properties", ".cmake", ".in", ".lock"}  # compared in lower case
 
 
 def headings(text: str) -> list[int]:
@@ -40,7 +42,11 @@ def headings(text: str) -> list[int]:
 BUILD_FOLDERS = {".compile", "build", "dist", "target", "node_modules", ".venv", "venv", "__pycache__", ".pytest_cache", ".mypy_cache", ".ruff_cache",
                  "managed_components", ".gradle", ".cxx", ".idea", ".vscode"}
 PRIVATE_FOLDERS = {"local-data", "re", "secrets"}
-PRIVATE_FILES = re.compile(r"(^|/)(\.env(\.(?!example$).*)?|id_[a-z0-9]+|\.coverage|sdkconfig(\.old)?|Thumbs\.db|\.DS_Store)$|\.(pem|key|p12|pfx|jks|keystore|log|tmp|pyc)$", re.IGNORECASE)
+PRIVATE_FILES = re.compile(
+    r"(^|/)(\.env(\.(?!example$).*)?|id_[a-z0-9]+|\.coverage|sdkconfig(\.old)?|Thumbs\.db|\.DS_Store"
+    r"|keystore\.properties|local\.properties|\.netrc|_netrc|\.npmrc|\.pypirc|\.git-credentials|google-services\.json|GoogleService-Info\.plist"
+    r"|secrets?(\.[^/]*)?\.json|secrets?\.ya?ml)$"
+    r"|\.(pem|key|p8|p12|pfx|jks|keystore|der|ppk|log|tmp|pyc)$", re.IGNORECASE)
 MAX_TRACKED_BYTES = 1_500_000
 
 
@@ -50,8 +56,8 @@ def hygiene_problems() -> list[str]:
 
     try:
         out = subprocess.run(["git", "ls-files", "-z"], cwd=ROOT, capture_output=True, check=True).stdout
-    except (OSError, subprocess.CalledProcessError):
-        return []
+    except (OSError, subprocess.CalledProcessError) as error:
+        return [f"git ls-files failed ({error.__class__.__name__}): the check for private files cannot run, so it fails"]
     found: list[str] = []
     folders: dict[str, int] = {}
     for raw in out.split(b"\0"):
@@ -159,35 +165,39 @@ def tree_problems(tracked: list[str] | None = None) -> list[str]:
     return problems
 
 
-def _universal_readme_ci(root: Path) -> list[str]:
-    """The layout of the README (22 sections in a fixed order, in the eight languages): a warning until the family has migrated; see tools/universal_readme_check.py."""
-    try:
-        sys.path.insert(0, str(Path(__file__).resolve().parent))
-        import universal_readme_check
-    except ImportError:
+def _run_check(root: Path, module: str, label: str) -> list[str]:
+    """Run `run_in_ci(root)` of a sibling tool. A tool that is missing or that does not import is a problem, never a silent pass
+    (a repository that really lacks one lists its name in "skip_checks" of tools/ci_config.json)."""
+    import importlib
+
+    config, _ = load_config(root)
+    if module in config.get("skip_checks", []):
         return []
-    return universal_readme_check.run_in_ci(root)
+    folder = Path(__file__).resolve().parent
+    if not (folder / f"{module}.py").is_file():
+        return [f"tools/{module}.py is missing, so the {label} check cannot run: run tools/sync_shared_tools.py --write"]
+    if str(folder) not in sys.path:
+        sys.path.insert(0, str(folder))
+    try:
+        tool = importlib.import_module(module)
+    except Exception as error:  # a broken tool must fail the validation, not skip it
+        return [f"tools/{module}.py does not import ({error.__class__.__name__}: {error}), so the {label} check cannot run"]
+    return tool.run_in_ci(root)
+
+
+def _universal_readme_ci(root: Path) -> list[str]:
+    """The layout of the README (22 sections in a fixed order, in the eight languages); see tools/universal_readme_check.py."""
+    return _run_check(root, "universal_readme_check", "README layout")
 
 
 def _status_lights_ci(root: Path) -> list[str]:
     """The lights of the Project status table stay inside what the manifest (maturity, evidence) allows; see tools/status_lights.py."""
-    try:
-        sys.path.insert(0, str(Path(__file__).resolve().parent))
-        import status_lights as lights_tool
-    except ImportError:
-        return []
-    return lights_tool.run_in_ci(root)
-
+    return _run_check(root, "status_lights", "status lights")
 
 
 def _banner_ci(root: Path) -> list[str]:
     """The text of the banner agrees with the manifest (role, name, technologies); see tools/banner_check.py."""
-    try:
-        sys.path.insert(0, str(Path(__file__).resolve().parent))
-        import banner_check
-    except ImportError:
-        return []
-    return banner_check.run_in_ci(root)
+    return _run_check(root, "banner_check", "banner")
 
 
 def scan_files() -> list[Path]:
@@ -232,9 +242,10 @@ def load_config(root: Path) -> tuple[dict, list[str]]:
         return {}, [f"tools/ci_config.json is not valid JSON: {error}"]
     if not isinstance(config, dict):
         return {}, ["tools/ci_config.json must hold an object"]
-    skip = config.get("skip_dirs", [])
-    if not isinstance(skip, list) or not all(isinstance(item, str) for item in skip):
-        return {}, ["tools/ci_config.json: skip_dirs must be a list of folder names"]
+    for key in ("skip_dirs", "skip_checks"):
+        value = config.get(key, [])
+        if not isinstance(value, list) or not all(isinstance(item, str) for item in value):
+            return {}, [f"tools/ci_config.json: {key} must be a list of names"]
     return config, []
 
 
@@ -341,7 +352,7 @@ def main() -> int:
             if other != name and other not in text:
                 problems.append(f"{name} does not link to {other} in its language bar")
     for path in scan_files():
-        if skipped & set(path.relative_to(ROOT).parts) or path.suffix not in TEXT_SUFFIXES:
+        if skipped & set(path.relative_to(ROOT).parts) or path.suffix.lower() not in TEXT_SUFFIXES:
             continue
         if path.name == "ci_validate.py":
             continue

@@ -201,6 +201,8 @@ def create(dest: Path, name: str, *, role: str = "tool", stack: str = "scaffold"
 def check(repo: Path) -> list[str]:
     """Runs the repository check and the two picture checks in the new folder; returns the lines of what fails."""
     problems = []
+    if not (repo / ".git").exists():  # the checks read what git tracks and fail when git does not answer
+        subprocess.run(["git", "init", "-q"], cwd=repo, capture_output=True, check=False)
     for args in (("tools/ci_validate.py",), ("tools/make_architecture.py", "--check"), ("tools/make_structure.py", "--check", "--readmes")):
         result = run_tool(repo, *args)
         if result.returncode != 0:

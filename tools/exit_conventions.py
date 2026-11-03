@@ -43,6 +43,7 @@ KNOWN_DIFFERENCES = {
     "make_structure.py": "a wrong option ends with 2 (argparse), not 64",
     "status_lights.py": "a wrong option ends with 2 (argparse), not 64",
     "universal_readme_check.py": "a wrong option ends with 2 (argparse), not 64",
+    "pretty_run.py": "a wrong option ends with 0, not 64",
 }
 
 

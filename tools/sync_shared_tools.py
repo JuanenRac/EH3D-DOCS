@@ -37,7 +37,6 @@ SHARED = (
     "banner_check.py",
     "changelog_pr_check.py",
     "pretty_run.py",
-    "_manifest_contract.py",
 )
 
 
@@ -113,6 +112,8 @@ def lock_problems(workspace: Path) -> list[str]:
         stored = json.loads(path.read_text(encoding="utf-8"))
     except ValueError:
         return [f"docs/{LOCK_NAME} is not valid JSON"]
+    if not isinstance(stored, dict):
+        return [f"docs/{LOCK_NAME} must hold a JSON object"]
     wanted = lock_data(workspace)
     out = []
     if stored.get("origin") != wanted["origin"]:
@@ -125,6 +126,11 @@ def lock_problems(workspace: Path) -> list[str]:
         if tool not in wanted["tools"]:
             out.append(f"docs/{LOCK_NAME} lists {tool}, which this hub does not hold")
     return out
+
+
+def missing_canonical(workspace: Path) -> list[str]:
+    """The shared tools of which this hub holds no canonical copy: a drift that nothing could ever detect."""
+    return [f"{tool} is listed as shared but {CANONICAL} holds no canonical copy of it" for tool in SHARED if not (workspace / CANONICAL / "tools" / tool).is_file()]
 
 
 def write_lock(workspace: Path) -> None:
@@ -165,6 +171,8 @@ def write_copy(workspace: Path, tool: str, repo: str) -> None:
     """Puts the body of the canonical copy in the file of a repository, whose header (its own name) stays."""
     src = workspace / CANONICAL / "tools" / tool
     dst = workspace / repo / "tools" / tool
+    if repo != Path(repo).name or repo in ("", ".", "..") or not (repo.startswith("EH3D-") or repo == "ELECTRO-HOBBY-3D-UPDATER"):
+        raise SystemExit(f"{repo}: not the name of a repository of the suite")
     if not src.is_file() or not dst.is_file():
         raise SystemExit(f"{tool}: there is no copy to write in {repo} or no canonical one")
     raw = dst.read_bytes().decode("utf-8")
@@ -205,7 +213,7 @@ def main(argv: list[str] | None = None) -> int:
         print(f"docs/{LOCK_NAME}: written")
         return 0
     diff = differing(a.workspace, a.only)
-    lock = lock_problems(a.workspace) if not a.only else []
+    lock = (lock_problems(a.workspace) + missing_canonical(a.workspace)) if not a.only else []
     for line in lock:
         print("  LOCK", line)
     for tool, variants in report(a.workspace, a.only).items():

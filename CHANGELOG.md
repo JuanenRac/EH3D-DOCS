@@ -3,6 +3,10 @@
 All notable changes to this project are documented here.
 
 ## [Unreleased]
+- **The private-file check knows more secrets and fails closed:** `ci_validate.py` (tools version 3) rejects tracked `keystore.properties`, `local.properties`, `*.p8`, `*.der`, `*.ppk`, `.netrc`, `.npmrc`, `google-services.json` and similar files, and fails when git does not answer.
+- **The scan for forbidden words reads app sources too:** Kotlin, Swift, QML, shell, batch, PowerShell, JavaScript, HTML, C/C++, Gradle, XML, CSV and TSV files are scanned, whatever the case of the extension.
+- **A missing or broken sibling check is a failure, not a pass:** `ci_validate.py` fails when the README layout, status lights or banner tool is missing or does not import, unless the repository lists it in `skip_checks` of `tools/ci_config.json`.
+- **The shared-tools check sees every tool:** `pretty_run.py` now has a canonical copy here, the phantom `_manifest_contract.py` is dropped, `--check` fails when a shared tool has no canonical copy, and `--write` refuses a name that is not a repository of the suite.
 - **The workflows are hardened:** every action is pinned by its commit with its version in a comment, and the checkouts keep no credentials.
 
 ## [0.0.7] - Changelog check, EH3D-PKG registry and the map of the PHOENIX repositories

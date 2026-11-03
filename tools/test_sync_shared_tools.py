@@ -26,11 +26,38 @@ def make(root: Path, name: str, body: str, tool: str = "ci_validate.py") -> Path
     return f
 
 
+def full_hub(root: Path) -> None:
+    """EH3D-DOCS holding a canonical copy of every shared tool, as the real hub does."""
+    for tool in SYNC.SHARED:
+        make(root, "EH3D-DOCS", "print(1)" + chr(10), tool)
+
+
 class SyncSharedToolsTests(unittest.TestCase):
+    def test_a_shared_tool_without_a_canonical_copy_fails_the_check(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            make(root, "EH3D-DOCS", "print(1)" + chr(10))
+            self.assertEqual(len(SYNC.missing_canonical(root)), len(SYNC.SHARED) - 1)
+            SYNC.main(["--workspace", str(root), "--lock"])
+            self.assertEqual(SYNC.main(["--workspace", str(root), "--check"]), 1)
+            full_hub(root)
+            self.assertEqual(SYNC.missing_canonical(root), [])
+
+    def test_a_lock_that_is_not_an_object_and_a_foreign_repo_name_are_told(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            full_hub(root)
+            SYNC.write_lock(root)
+            SYNC.lock_path(root).write_text("[1]", encoding="utf-8")
+            self.assertEqual(SYNC.lock_problems(root), ["docs/vendored.lock must hold a JSON object"])
+            for bad in ("../x", "OTHER", "EH3D-X/../..", ""):
+                with self.assertRaises(SystemExit):
+                    SYNC.write_copy(root, "ci_validate.py", bad)
+
     def test_the_name_in_the_header_is_not_a_difference(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
-            make(root, "EH3D-DOCS", "print(1)\n")
+            full_hub(root)
             make(root, "EH3D-ISOCAM", "print(1)\n")
             self.assertEqual(SYNC.differing(root), {})
             self.assertEqual(SYNC.main(["--workspace", str(root), "--lock"]), 0)
@@ -82,7 +109,8 @@ class SyncSharedToolsTests(unittest.TestCase):
     def test_the_lock_names_the_origin_and_notices_a_tool_changed_after_it(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
-            docs = make(root, "EH3D-DOCS", "print(1)\n")
+            full_hub(root)
+            docs = root / "EH3D-DOCS" / "tools" / "ci_validate.py"
             self.assertEqual(len(SYNC.lock_problems(root)), 1)  # no lock yet
             SYNC.write_lock(root)
             self.assertEqual(SYNC.lock_problems(root), [])

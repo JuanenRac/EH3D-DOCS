@@ -172,5 +172,43 @@ class CanonicalTests(unittest.TestCase):
                 VALIDATE.ROOT = old
 
 
+class HardeningTests(unittest.TestCase):
+    def test_signing_and_credential_files_are_private(self):
+        for name in ("keystore.properties", "app/keystore.properties", "AuthKey_X.p8", "k.der", "a.ppk", ".netrc", ".npmrc",
+                     "google-services.json", "app/google-services.json", "local.properties", "secrets.json", ".git-credentials"):
+            self.assertTrue(VALIDATE.PRIVATE_FILES.search(name), name)
+        for name in (".env.example", "README.md", "src/keystore_helper.py", "p8.md"):
+            self.assertFalse(VALIDATE.PRIVATE_FILES.search(name), name)
+
+    def test_a_git_that_does_not_answer_fails_the_private_files_check(self):
+        import unittest.mock as mock
+
+        with mock.patch("subprocess.run", side_effect=OSError("no git")):
+            (problem,) = VALIDATE.hygiene_problems()
+        self.assertIn("git ls-files failed", problem)
+
+    def test_the_scan_for_forbidden_words_covers_app_sources_in_any_case(self):
+        for suffix in (".kt", ".swift", ".qml", ".sh", ".bat", ".js", ".html", ".tsv", ".ps1", ".gradle"):
+            self.assertIn(suffix, VALIDATE.TEXT_SUFFIXES)
+
+    def test_a_check_that_does_not_import_is_a_problem_not_a_pass(self):
+        import sys
+
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            self.assertEqual(VALIDATE._run_check(root, "no_such_tool_xyz", "x")[0].split(" is missing")[0], "tools/no_such_tool_xyz.py")
+            fake = TOOLS / "_broken_probe.py"
+            fake.write_text("import a_module_that_does_not_exist\n", encoding="utf-8")
+            try:
+                (problem,) = VALIDATE._run_check(root, "_broken_probe", "probe")
+            finally:
+                fake.unlink()
+                sys.modules.pop("_broken_probe", None)
+            self.assertIn("does not import", problem)
+            (root / "tools").mkdir()
+            (root / "tools" / "ci_config.json").write_text('{"skip_checks": ["no_such_tool_xyz"]}', encoding="utf-8")
+            self.assertEqual(VALIDATE._run_check(root, "no_such_tool_xyz", "x"), [])
+
+
 if __name__ == "__main__":
     unittest.main()
