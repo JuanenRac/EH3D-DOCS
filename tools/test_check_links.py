@@ -53,6 +53,29 @@ class LinkTests(unittest.TestCase):
         code, out = check(files)
         self.assertEqual(code, 0, out)
 
+    def test_a_reference_definition_is_checked_and_a_good_one_passes(self):
+        code, out = check({"README.md": b'see [a][1]\n\n[1]: missing.md\n[2]: other.md "title"\n', "other.md": b"x"})
+        self.assertEqual(code, 1)
+        self.assertIn("missing.md", out)
+        self.assertNotIn("other.md", out)
+        code, out = check({"README.md": b"[a][1]\n\n[1]: <other.md>\n", "other.md": b"x"})
+        self.assertEqual(code, 0, out)
+
+    def test_an_example_inside_a_code_span_is_not_a_link_but_the_text_around_it_is(self):
+        code, out = check({"README.md": b"write `[a](nope.md)` like this and read [b](gone.md)"})
+        self.assertEqual(code, 1)
+        self.assertIn("gone.md", out)
+        self.assertNotIn("nope.md", out)
+
+    def test_an_example_in_a_double_backtick_span_is_not_a_link(self):
+        code, out = check({"README.md": b"``[a](nope.md)`` and ``a ` b [c](nope.md)``"})
+        self.assertEqual(code, 0, out)
+
+    def test_the_build_folders_are_not_entered(self):
+        files = {"README.md": b"x", ".venv/lib/a.md": b"[a](nope.md)", "target/doc/a.md": b"[a](nope.md)"}
+        code, out = check(files)
+        self.assertEqual(code, 0, out)
+
 
 if __name__ == "__main__":
     unittest.main()

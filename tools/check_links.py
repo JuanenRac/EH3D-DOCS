@@ -4,7 +4,8 @@
 # Copyright (C) 2026 JuanenRac (Electro Hobby 3D) <electrohobby3d@gmail.com>
 # GPL-3.0-or-later - see LICENSE
 # =============================================================================
-"""Every relative link of every Markdown file must point at a file that exists. Prints LINKS=PASS or FAIL with the broken ones."""
+"""Every relative link of every Markdown file must point at a file that exists. Prints LINKS=PASS or FAIL with the broken ones.
+Inline links, reference definitions (`[a]: x.md`) and links with a title, a query or `%20` are read; fenced blocks (``` and ~~~) and `code spans` are not."""
 from __future__ import annotations
 
 import os
@@ -15,6 +16,8 @@ from urllib.parse import unquote
 
 ROOT = Path(__file__).resolve().parents[1]
 LINK = re.compile(r"\[[^\]]*\]\(<?([^)\s>]+)>?(?:\s+\"[^\"]*\")?\)")
+REFERENCE = re.compile(r"^ {0,3}\[[^\]]+\]:\s*<?([^\s>]+)>?(?:\s+(?:\"[^\"]*\"|'[^']*'|\([^)]*\)))?\s*$")
+CODE_SPAN = re.compile(r"(`+)(?:(?!\1).)+?\1")
 SKIP_FOLDERS = {".git", ".venv", "venv", "node_modules", "target", "build", "dist", "__pycache__"}
 
 
@@ -41,11 +44,26 @@ def exists_exactly(base: Path, target: str) -> bool:
     return current.exists()
 
 
+def markdown_files() -> list[Path]:
+    """Every Markdown file below the root; the build and tool folders are not entered at all."""
+    found: list[Path] = []
+    for folder, dirs, names in os.walk(ROOT):
+        dirs[:] = sorted(d for d in dirs if d not in SKIP_FOLDERS)
+        found.extend(Path(folder) / name for name in names if name.endswith(".md"))
+    return sorted(found)
+
+
+def targets_in(line: str) -> list[str]:
+    """The link targets of one line: the inline ones `[a](x.md)` outside a `code span`, and a reference definition `[a]: x.md`."""
+    reference = REFERENCE.match(line)
+    if reference:
+        return [reference.group(1)]
+    return LINK.findall(CODE_SPAN.sub("", line))
+
+
 def main() -> int:
     broken = []
-    for path in sorted(ROOT.rglob("*.md")):
-        if SKIP_FOLDERS & set(path.relative_to(ROOT).parts):
-            continue
+    for path in markdown_files():
         fenced = False
         for number, line in enumerate(path.read_text(encoding="utf-8", errors="replace").splitlines(), 1):
             if line.lstrip().startswith(("```", "~~~")):
@@ -53,7 +71,7 @@ def main() -> int:
                 continue
             if fenced:
                 continue
-            for target in LINK.findall(line):
+            for target in targets_in(line):
                 if target.startswith(("http://", "https://", "mailto:", "#")):
                     continue
                 if not exists_exactly(path.parent, target):
