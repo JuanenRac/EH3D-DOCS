@@ -39,7 +39,7 @@ The SHA-256 that a release publishes only proves that the file arrived whole: wh
 * Without the file the helper works as before and its log says that the hash proves the file arrived whole and not who made it.
 * The private half of the key is only for releases and is never kept on a server. The steps for making the key, putting the public half on the machine and signing a release are in `docs/DEPLOY.md` of EH3D-SERVER; the step that signs a release is in [RELEASING.md](RELEASING.md).
 
-Turning the signature check on is a decision about the machine, not about the software: a machine that has the file will refuse every release published before the signing step was part of the process.
+Turning the signature check on is a decision about the machine, not about the software: a machine that has the file will refuse every release published before the signing step was part of the process. The packages of the server 0.1.1 and of Studio 0.1.0 and later are signed; the check has not been run on a real machine yet.
 
 ## A development PC: by git
 

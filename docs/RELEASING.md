@@ -59,7 +59,7 @@ The version inside the package is the one the odometer gave: raise it (step 3) *
 3. Upload the `.sig` to the same release (`gh release upload vX.Y.Z <package>.tar.gz.sig`). Sign the package of the server and the package of Studio, each in its own release.
 4. Check that the helper accepts it (`ssh-keygen -Y verify` with the signers file) before telling anybody to update.
 
-A release without the `.sig` is refused by every machine that turned the check on. Nothing in the workflows signs for you today, and the key has to be made by the owner (the steps are in `docs/DEPLOY.md` of EH3D-SERVER).
+A release without the `.sig` is refused by every machine that turned the check on. Nothing in the workflows signs for you: the owner signs with the key of releases after the workflow has published the package (the server 0.1.1 and Studio 0.1.0 are signed this way), and the private half never leaves the machine of the owner. The steps for making a key are in `docs/DEPLOY.md` of EH3D-SERVER.
 
 ## When to publish
 
