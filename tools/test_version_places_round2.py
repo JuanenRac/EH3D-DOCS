@@ -46,6 +46,27 @@ class ComponentPatternTests(unittest.TestCase):
             self.assertIn("BUILD 0", text)
 
 
+class LineEndingTests(unittest.TestCase):
+    def test_a_file_that_mixes_crlf_and_lf_keeps_the_ending_of_each_line(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = with_parts(Path(tmp))
+            (root / "version.h").write_bytes(b"#define MAJOR 0\r\n#define MINOR 8\n#define PATCH 0\r\n#define BUILD 1\n")
+            repo = vp.Repo(root)
+            problems, _changed = vp.apply(repo, "0.8.0.1", "0.8.1.0")
+            self.assertEqual(problems, [])
+            repo.commit()
+            self.assertEqual((root / "version.h").read_bytes(), b"#define MAJOR 0\r\n#define MINOR 8\n#define PATCH 1\r\n#define BUILD 0\n")
+
+    def test_a_file_with_only_crlf_stays_crlf(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = with_parts(Path(tmp))
+            (root / "version.h").write_bytes(b"#define MAJOR 0\r\n#define MINOR 8\r\n#define PATCH 0\r\n#define BUILD 1\r\n")
+            repo = vp.Repo(root)
+            vp.apply(repo, "0.8.0.1", "0.8.1.0")
+            repo.commit()
+            self.assertEqual((root / "version.h").read_bytes().count(b"\r\n"), 4)
+
+
 class RobustnessTests(unittest.TestCase):
     def test_a_manifest_that_is_not_an_object_is_not_a_crash(self):
         with tempfile.TemporaryDirectory() as tmp:

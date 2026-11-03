@@ -93,6 +93,7 @@ class Repo:
         self.overlay: dict[str, str] = {}
         self._crlf: dict[str, bool] = {}
         self._disk: dict[str, str] = {}
+        self._ends: dict[str, list[str] | None] = {}  # the line endings of a file that mixes CRLF and LF, one per line
 
     def exists(self, rel: str) -> bool:
         return rel in self.overlay or (self.root / rel).is_file()
@@ -104,6 +105,8 @@ class Repo:
                 return None
             raw = path.read_bytes().decode("utf-8")
             self._crlf[rel] = "\r\n" in raw
+            mixed = "\r\n" in raw and re.search(r"(?<!\r)\n", raw) is not None
+            self._ends[rel] = re.findall(r"\r?\n", raw) if mixed else None
             self._disk[rel] = raw.replace("\r\n", "\n")
         return self._disk[rel]
 
@@ -124,7 +127,7 @@ class Repo:
         staged: list[tuple[Path, Path]] = []
         try:
             for rel, text in self.overlay.items():
-                data = text.replace("\n", "\r\n") if self._crlf.get(rel) else text
+                data = self._with_endings(rel, text)
                 target = self.root / rel
                 temp = target.with_name(target.name + ".bump-tmp")
                 temp.write_bytes(data.encode("utf-8"))
@@ -135,6 +138,17 @@ class Repo:
             raise
         for temp, target in staged:  # every file is complete before the first one replaces its old copy
             os.replace(temp, target)
+
+    def _with_endings(self, rel: str, text: str) -> str:
+        """`text` (written with LF) in the line endings the file had. A file that mixes CRLF and LF keeps the ending of each line as long as the number of lines is the same;
+        when it is not, the ending of the majority is used."""
+        ends = self._ends.get(rel)
+        if ends is not None and text.count("\n") == len(ends):
+            parts = text.split("\n")
+            return "".join(part + (ends[i] if i < len(ends) else "") for i, part in enumerate(parts))
+        if ends is not None:
+            return text.replace("\n", "\r\n" if ends.count("\r\n") >= len(ends) / 2 else "\n")
+        return text.replace("\n", "\r\n") if self._crlf.get(rel) else text
 
     def files(self, name: str) -> list[str]:
         """The relative paths of the files called `name` below the root, outside build and tool folders."""
