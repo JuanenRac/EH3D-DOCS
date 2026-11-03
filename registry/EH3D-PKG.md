@@ -6,7 +6,7 @@ The rules in the table are the **strict policy** that applies to new formats (`.
 
 | Code | Title | Rule | Raised by |
 |---|---|---|---|
-| EH3D-PKG-001 | Invalid entry name | An entry name that is empty, absolute, longer than the limit, contains `\`, `:`, a control character, an empty part, `.` or `..`, is not valid UTF-8, is not in Unicode normal form C, or has non-ASCII characters without the UTF-8 flag (bit 11). | reader, writer |
+| EH3D-PKG-001 | Invalid entry name | An entry name that is empty, absolute, longer than the limit, contains `\`, `:`, a control character, an empty part, `.` or `..`, is not valid UTF-8, is not in Unicode normal form C, has a part that ends with a dot or a space or is a Windows device name (`CON`, `NUL`, `COM1`, ...), or has non-ASCII characters without the UTF-8 flag (bit 11). | reader, writer |
 | EH3D-PKG-002 | Duplicate entry name | Two names that are equal, or equal once letter case and Unicode form are ignored (they would collide on Windows and macOS). | reader, writer |
 | EH3D-PKG-003 | Link, device or special entry | A symbolic link, a device or any entry that is not a regular file. | reader |
 | EH3D-PKG-004 | Explicit directory entry | A directory entry (the folders are implied by the names). | reader |
