@@ -4,6 +4,8 @@ All notable changes to this project are documented here.
 
 ## [Unreleased]
 
+## [0.0.7] - Changelog check, EH3D-PKG registry and the map of the PHOENIX repositories
+
 - **One more shared tool:** `tools/changelog_pr_check.py` fails a pull request that changes code without a line under [Unreleased]; it is registered in `sync_shared_tools.py` and `docs/vendored.lock`.
 - **CI of the hub:** superseded runs are cancelled, jobs have a time limit, the reusable validation workflow has a timeout, and Dependabot proposes monthly grouped updates for the GitHub Actions.
 - Add `registry/EH3D-PKG.md`, the registry of the container codes `EH3D-PKG-001` to `EH3D-PKG-014` (what each one refuses and who raises it), with `registry/test_error_codes.py` that checks the numbering and, when the container crate is next to this repository, that the titles are the ones the crate reports; the CI runs it.
