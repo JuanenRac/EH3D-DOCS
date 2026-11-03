@@ -200,7 +200,7 @@ README und Texte gibt es auf Englisch, Spanisch, Französisch, Italienisch, Deut
 * [EH3D-COMMON](https://github.com/JuanenRac/EH3D-COMMON): der Projektcontainer, die Maschinentypen und die Firmware-Basis der Knoten
 * [EH3D-CORE-LIBS](https://github.com/JuanenRac/EH3D-CORE-LIBS): die Leser für Gerber, Excellon und G-Code
 * [EH3D-DRILLPRO](https://github.com/JuanenRac/EH3D-DRILLPRO) und [EH3D-ROUTEPRO](https://github.com/JuanenRac/EH3D-ROUTEPRO): die Bohr- und Fräsprogramme
-* [EH3D-BUNGARD-GUI](https://github.com/JuanenRac/EH3D-BUNGARD-GUI) und [EH3D-MOTIONCNC](https://github.com/JuanenRac/EH3D-MOTIONCNC): die moderne Oberfläche der Bungard-Maschinen und das Maschinensteuerprogramm
+* [EH3D-BUNGARD-GUI](https://github.com/JuanenRac/EH3D-BUNGARD-GUI) und [EH3D-PHOENIX-CNC](https://github.com/JuanenRac/EH3D-PHOENIX-CNC): die moderne Oberfläche der Bungard-Maschinen und das Maschinensteuerprogramm
 * [EH3D-SERVER](https://github.com/JuanenRac/EH3D-SERVER) und [EH3D-NODE-BUNGARD](https://github.com/JuanenRac/EH3D-NODE-BUNGARD): das Zentrum der Programme und der Knoten, der die Maschine erreicht
 * [EH3D-STUDIO](https://github.com/JuanenRac/EH3D-STUDIO), [EH3D-NODE-BUNGARD-HMI](https://github.com/JuanenRac/EH3D-NODE-BUNGARD-HMI) und [EH3D-NODE-BUNGARD-AUX](https://github.com/JuanenRac/EH3D-NODE-BUNGARD-AUX): das Konfigurationspanel des Servers (mit seinen Aktualisierungen von GitHub), der Touchscreen der Maschine und der Knoten am Bohrkopf (Kamera über RTSP und ONVIF, Laser, der den Tisch misst, Drehzahl und Temperatur der Spindel)
 * [EH3D-UPDATER](https://github.com/JuanenRac/EH3D-UPDATER) und [ELECTRO-HOBBY-3D-UPDATER](https://github.com/JuanenRac/ELECTRO-HOBBY-3D-UPDATER): installieren und aktualisieren die Repositories

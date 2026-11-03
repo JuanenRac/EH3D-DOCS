@@ -200,7 +200,7 @@ README とテキストは、英語、スペイン語、フランス語、イタ�
 * [EH3D-COMMON](https://github.com/JuanenRac/EH3D-COMMON)：プロジェクト コンテナ、機械の型、ノードのファームウェア基盤
 * [EH3D-CORE-LIBS](https://github.com/JuanenRac/EH3D-CORE-LIBS)：Gerber、Excellon、G コードのリーダー
 * [EH3D-DRILLPRO](https://github.com/JuanenRac/EH3D-DRILLPRO) と [EH3D-ROUTEPRO](https://github.com/JuanenRac/EH3D-ROUTEPRO)：ドリルとルーティングのプログラム
-* [EH3D-BUNGARD-GUI](https://github.com/JuanenRac/EH3D-BUNGARD-GUI) と [EH3D-MOTIONCNC](https://github.com/JuanenRac/EH3D-MOTIONCNC)：Bungard マシンのモダンなインターフェースとマシン制御プログラム
+* [EH3D-BUNGARD-GUI](https://github.com/JuanenRac/EH3D-BUNGARD-GUI) と [EH3D-PHOENIX-CNC](https://github.com/JuanenRac/EH3D-PHOENIX-CNC)：Bungard マシンのモダンなインターフェースとマシン制御プログラム
 * [EH3D-SERVER](https://github.com/JuanenRac/EH3D-SERVER) と [EH3D-NODE-BUNGARD](https://github.com/JuanenRac/EH3D-NODE-BUNGARD)：プログラムの中心と、機械に届くノード
 * [EH3D-STUDIO](https://github.com/JuanenRac/EH3D-STUDIO)、[EH3D-NODE-BUNGARD-HMI](https://github.com/JuanenRac/EH3D-NODE-BUNGARD-HMI)、[EH3D-NODE-BUNGARD-AUX](https://github.com/JuanenRac/EH3D-NODE-BUNGARD-AUX)：サーバーの設定パネル（GitHub からの更新付き）、マシンのタッチスクリーン、ドリルヘッドのノード（RTSP と ONVIF のカメラ、テーブルを測るレーザー、スピンドルの回転数と温度）
 * [EH3D-UPDATER](https://github.com/JuanenRac/EH3D-UPDATER) と [ELECTRO-HOBBY-3D-UPDATER](https://github.com/JuanenRac/ELECTRO-HOBBY-3D-UPDATER)：リポジトリのインストールと更新

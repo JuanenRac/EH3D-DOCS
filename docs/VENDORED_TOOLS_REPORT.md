@@ -20,13 +20,13 @@ A script counts as used when a workflow file, a script of the root of the reposi
 | EH3D-GERBERVIEWER | 7 | 7 | 0 |
 | EH3D-IOS-CONTROL | 8 | 7 | 1 |
 | EH3D-ISOCAM | 7 | 7 | 0 |
-| EH3D-LASER-CAM | 7 | 7 | 0 |
-| EH3D-MOTIONCNC | 10 | 7 | 3 |
+| EH3D-PHOENIX-LASER | 7 | 7 | 0 |
+| EH3D-PHOENIX-CNC | 10 | 7 | 3 |
 | EH3D-NODE-BUNGARD | 13 | 8 | 5 |
 | EH3D-NODE-BUNGARD-AUX | 12 | 7 | 5 |
 | EH3D-NODE-BUNGARD-HMI | 13 | 9 | 4 |
 | EH3D-NODE-HMI-GUI | 13 | 9 | 4 |
-| EH3D-PNP-MANAGER | 7 | 7 | 0 |
+| EH3D-PHOENIX-PNP | 7 | 7 | 0 |
 | EH3D-ROUTEPRO | 10 | 7 | 3 |
 | EH3D-SERVER | 9 | 8 | 1 |
 | EH3D-STENCILCAM | 7 | 7 | 0 |
@@ -68,7 +68,7 @@ A script counts as used when a workflow file, a script of the root of the reposi
 |---|---|
 | `pretty_run.py` | nothing |
 
-### EH3D-MOTIONCNC
+### EH3D-PHOENIX-CNC
 
 | Script | Still named by |
 |---|---|

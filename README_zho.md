@@ -200,7 +200,7 @@ README 和文本提供英语、西班牙语、法语、意大利语、德语、�
 * [EH3D-COMMON](https://github.com/JuanenRac/EH3D-COMMON)：项目容器、机床类型和节点的固件基础
 * [EH3D-CORE-LIBS](https://github.com/JuanenRac/EH3D-CORE-LIBS)：Gerber、Excellon 和 G 代码的读取库
 * [EH3D-DRILLPRO](https://github.com/JuanenRac/EH3D-DRILLPRO) 和 [EH3D-ROUTEPRO](https://github.com/JuanenRac/EH3D-ROUTEPRO)：钻孔和铣削程序
-* [EH3D-BUNGARD-GUI](https://github.com/JuanenRac/EH3D-BUNGARD-GUI) 和 [EH3D-MOTIONCNC](https://github.com/JuanenRac/EH3D-MOTIONCNC)：Bungard 机床的现代界面和机床控制程序
+* [EH3D-BUNGARD-GUI](https://github.com/JuanenRac/EH3D-BUNGARD-GUI) 和 [EH3D-PHOENIX-CNC](https://github.com/JuanenRac/EH3D-PHOENIX-CNC)：Bungard 机床的现代界面和机床控制程序
 * [EH3D-SERVER](https://github.com/JuanenRac/EH3D-SERVER) 和 [EH3D-NODE-BUNGARD](https://github.com/JuanenRac/EH3D-NODE-BUNGARD)：程序的中心和通往机床的节点
 * [EH3D-STUDIO](https://github.com/JuanenRac/EH3D-STUDIO)、[EH3D-NODE-BUNGARD-HMI](https://github.com/JuanenRac/EH3D-NODE-BUNGARD-HMI) 和 [EH3D-NODE-BUNGARD-AUX](https://github.com/JuanenRac/EH3D-NODE-BUNGARD-AUX)：服务器的配置面板（含来自 GitHub 的更新）、机床的触摸屏，以及钻头上的节点（RTSP 与 ONVIF 摄像头、测量工作台的激光、主轴转速和温度）
 * [EH3D-UPDATER](https://github.com/JuanenRac/EH3D-UPDATER) 和 [ELECTRO-HOBBY-3D-UPDATER](https://github.com/JuanenRac/ELECTRO-HOBBY-3D-UPDATER)：安装和更新这些仓库
