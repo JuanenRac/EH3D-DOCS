@@ -2,7 +2,7 @@
 
 Every repository of the suite runs the same checks first: the manifest, the versions, the licence, the CHANGELOG, the eight README files and the pictures of the README. Today each repository carries its own copy of that part of `.github/workflows/ci.yml`. `.github/workflows/validate.yml` of this repository holds it once, as a **reusable workflow** (`on: workflow_call`), so that a repository can call it instead of copying the steps.
 
-**Status: documented, not adopted.** No repository calls it yet. A reusable workflow can only be tried on GitHub, so the first repository to use it should be a pilot (see "Trying it in a pilot" below) before the others follow.
+**Status: one pilot.** EH3D-SUITE-LAUNCHER calls it from its `ci.yml`, pinned to the commit of the release 0.0.6 of this repository (a commit SHA, so a change here reaches it only when it chooses); the other repositories still carry their own copy of the steps. A reusable workflow can only be tried on GitHub, so the pilot is where the points of "Trying it in a pilot" below are watched before the others follow.
 
 ## What it does
 
@@ -66,8 +66,8 @@ Replace `<tag>` with a tag or a commit SHA of this repository. A tag moves only 
 
 What to look at in the pilot: that `tools/ci_validate.py` finds the repository's files (the checkout is of the calling repository), that the job name shown in the checks of a pull request is the one the branch protection expects (a called workflow shows as `validate / Validate the repository`), and that the repositories that need extra setup before the validation (for example a generated file) still get it.
 
-## Why not adopted yet
+## Why the others have not adopted it yet
 
-- It cannot be run from a local checkout: the only test is a real run on GitHub.
+- It cannot be run from a local checkout: the only test is a real run on GitHub, and only one repository has done it.
 - The name of the check changes (`validate / Validate the repository`), which matters wherever a rule requires a check by name.
 - A repository whose `ci.yml` runs `ci_validate` with environment variables or in another folder needs an input for it first.

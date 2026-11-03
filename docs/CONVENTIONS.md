@@ -37,6 +37,16 @@ The programs written in Rust follow the same table. This section only writes dow
 
 How a program should choose a code when it adopts the table: no output was written, or the input was refused, is `1`; an option or an argument that does not exist or does not make sense is `64`; the output exists but something the user asked for is missing from it (a skipped pad, an ignored macro) is `2`, and `--strict` may turn it into `1`; "there is something to do" (`10`) is for programs that look for updates. A script that chains several programs can then treat `2` as a warning to show and anything above `2` as a stop. The contract job of the suite can check the `64` of every program by running its binary with an option that does not exist.
 
+## Codes of errors and diagnostics
+
+A reader or a container that refuses something returns a diagnostic with a **stable code**, an opaque string made of a prefix, a family and a number: `EH3D-PKG-010`, `PHOENIX-UNITS-002`. The common shape is the `eh3d-diagnostic` crate of EH3D-COMMON (a code, a severity of `info`, `warning` or `error`, a category, an English message, where it happened and arguments), and its JSON form is stable.
+
+* **The prefix says who owns the registry:** `EH3D-` for the shared pieces of the suite and `PHOENIX-` for the electronic design project. A code never changes its meaning and is never reused; a new reason gets a new number.
+* **Each prefix has its own registry,** not the crate: `registry/EH3D-PKG.md` of this repository lists `EH3D-PKG-001` to `EH3D-PKG-014` (the container), with a test that keeps it in agreement with the container crate. The PHOENIX project keeps its families (`PHOENIX-UNITS-`, `PHOENIX-ID-`, `PHOENIX-JSON-`) in its own repository.
+* **Codes and field names are never translated;** an interface translates by the key `diag.<code>` and fills in the arguments.
+* The refusals of the HTTP API of EH3D-SERVER are a different, older kind: short lower-case words (`outside_course`, `spindle_limit`) listed in the catalog `src/errors.rs`, mirrored in `docs/error-codes.json` and given a sentence in the eight languages by Studio.
+* The readers of EH3D-CORE-LIBS use short names for their diagnostics (`units-missing`, `number-too-large`), listed in `docs/DIAGNOSTICS.md` of that repository.
+
 ## Names
 
 These are the names the suite uses today. Nothing is renamed to make them fit: a name that differs is written here as it is, and a new repository follows the first column.

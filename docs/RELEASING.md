@@ -43,6 +43,28 @@ Every number of the version goes from 0 to 9 and carries to the one before it: `
 
    `--check` fails when the CHANGELOG has no section for the version of the manifest or `[Unreleased]` still holds entries. Fewer than 3 entries exits with 2 and a warning (`--allow-short` accepts it). Then publish with `gh release create vX.Y.Z --title "<the title>" --notes-file notes.md <files>`; the scripts do not publish.
 
+## The packages of the services, and signing them
+
+Two repositories publish the packages that the update helper of the CM5 installs (see [UPDATING.md](UPDATING.md)):
+
+* **EH3D-SERVER:** the workflow `release-binaries.yml` builds `eh3d-server-<version>-linux-<arch>.tar.gz` (after a smoke test of the built binary) and its `.sha256`.
+* **EH3D-STUDIO:** the workflow `release-dist.yml` builds `eh3d-studio-<version>.tar.gz` and its `.sha256`.
+
+The version inside the package is the one the odometer gave: raise it (step 3) **before** the workflow builds, and look in the result for the new number, because a package built with an old number inside makes the page say the update was not done.
+
+**The signing step.** A machine that has a file of allowed signers (`/etc/eh3d-update.signers`) installs only a package that has a signature next to it. So, after the workflow has published the package and before anybody updates a machine:
+
+1. Download the package of the release to a machine that has the private key of releases (the key is only for signing releases and never lives on a server).
+2. Sign it: `ssh-keygen -Y sign -f <private key of releases> -n eh3d-release <package>.tar.gz`. This makes `<package>.tar.gz.sig`.
+3. Upload the `.sig` to the same release (`gh release upload vX.Y.Z <package>.tar.gz.sig`). Sign the package of the server and the package of Studio, each in its own release.
+4. Check that the helper accepts it (`ssh-keygen -Y verify` with the signers file) before telling anybody to update.
+
+A release without the `.sig` is refused by every machine that turned the check on. Nothing in the workflows signs for you today, and the key has to be made by the owner (the steps are in `docs/DEPLOY.md` of EH3D-SERVER).
+
+## When to publish
+
+A release is meant to hold **at least 3 entries** under `[Unreleased]`; `release_notes.py --check` exits with 2 when there are fewer, and `--allow-short` accepts it for an emergency. Raise the version by batches, not for each change: the odometer carries (`0.0.9` becomes `0.1.0`), and every release is a GitHub release with its notes, not only a tag. The documents (README files in eight languages, the changelog, the counts of tests and the status table) are brought up to date in the same step as the version.
+
 ## Other reports
 
 * `python tools/readme_staleness.py [REPOSITORY ...] [--all]` says which sections of a translated README are older than the English one. It is informative and never fails.
