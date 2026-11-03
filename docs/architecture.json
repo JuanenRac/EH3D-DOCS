@@ -64,7 +64,7 @@
       "title": "The tools",
       "lines": [
         "repository check, contract, release",
-        "and workspace scripts; 126 tests"
+        "and workspace scripts; 151 tests"
       ],
       "code": [
         "tools/ci_validate.py",
@@ -87,10 +87,11 @@
       "id": "planned",
       "column": 2,
       "level": "config",
-      "title": "The planned programs",
+      "title": "Started and planned",
       "lines": [
-        "the pendant for small screens:",
-        "a name on the map, no code"
+        "2 started and 11 planned: the",
+        "pendant and the electronic design",
+        "project, with no release yet"
       ]
     }
   ],
