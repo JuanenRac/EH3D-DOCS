@@ -28,3 +28,5 @@ jobs:
         run: python -I tools/check_links.py
       - name: Tests of the repository checks
         run: python -I -m unittest discover -s tools -p "test_*.py"
+      - name: Registry of container codes
+        run: python -I -m unittest discover -s registry -p "test_*.py"
