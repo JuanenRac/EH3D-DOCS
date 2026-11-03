@@ -137,6 +137,14 @@ class SyncSharedToolsTests(unittest.TestCase):
             SYNC.lock_path(root).write_text("{", encoding="utf-8")
             self.assertEqual(SYNC.lock_problems(root), ["docs/vendored.lock is not valid JSON"])
 
+    def test_a_lock_whose_tools_are_not_an_object_is_told_and_not_a_crash(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            make(root, "EH3D-DOCS", "print(1)\n")
+            SYNC.write_lock(root)
+            SYNC.lock_path(root).write_text('{"origin": "EH3D-DOCS", "tools": [1]}', encoding="utf-8")
+            self.assertEqual(SYNC.lock_problems(root), ["docs/vendored.lock: 'tools' must be an object"])
+
     def test_folders_that_are_not_of_the_suite_are_left_alone(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)

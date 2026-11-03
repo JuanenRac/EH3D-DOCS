@@ -4,7 +4,7 @@
 # Copyright (C) 2026 JuanenRac (Electro Hobby 3D) <electrohobby3d@gmail.com>
 # GPL-3.0-or-later - see LICENSE
 # =============================================================================
-# canonical: EH3D-DOCS tools 1
+# canonical: EH3D-DOCS tools 2
 """Draws the Repository Structure of a repository from `docs/structure.json`.
 
     python tools/make_structure.py                  # writes images/repository-structure.svg (and the other languages when "svg": "all")
@@ -106,9 +106,13 @@ def validate_spec(spec: dict) -> None:
     K.palette(spec["ecosystem"])
     if spec.get("svg", "en") not in ("en", "all"):
         raise SpecError("'svg' is 'en' or 'all'")
+    if not isinstance(spec["cards"], list):
+        raise SpecError("'cards' is a list")
     for card in spec["cards"]:
-        if "name" not in card or not card.get("rows"):
-            raise SpecError(f"every card needs a name and rows: {card.get('name')}")
+        if not isinstance(card, dict):
+            raise SpecError(f"a card has to be an object, got {card!r}")
+        if "name" not in card or not card.get("rows") or not isinstance(card["rows"], list) or not all(isinstance(row, dict) for row in card["rows"]):
+            raise SpecError(f"every card needs a name and a list of rows (objects): {card.get('name')}")
         if card.get("span", 1) not in (1, 2, 3):
             raise SpecError(f"card '{card['name']}': span is 1, 2 or 3")
         if card.get("accent", "a") not in ("a", "b", "c", "d"):

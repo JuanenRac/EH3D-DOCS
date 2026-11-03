@@ -49,6 +49,35 @@ class MalformedSpecTests(unittest.TestCase):
         self.assertEqual(len(problems), 2)
         self.assertTrue(all("inside the repository" in problem for problem in problems))
 
+    def test_a_spec_of_the_wrong_shape_is_a_spec_error_and_not_a_crash(self):
+        for node in ("text", 5, ["a"]):
+            spec = _spec()
+            spec["nodes"] = [node]
+            with self.assertRaises(ARCH.SpecError):
+                ARCH.validate_spec(spec)
+        spec = _spec()
+        spec["nodes"][0]["code"] = "src/a.py"
+        with self.assertRaises(ARCH.SpecError):
+            ARCH.validate_spec(spec)
+        spec = _spec()
+        spec["edges"] = ["a-b"]
+        with self.assertRaises(ARCH.SpecError):
+            ARCH.validate_spec(spec)
+
+    def test_the_example_of_the_docstring_does_not_use_a_trivial_search_text(self):
+        self.assertNotIn("::9", ARCH.__doc__)
+
+    def test_a_structure_spec_of_the_wrong_shape_is_a_spec_error(self):
+        spec_file = importlib.util.spec_from_file_location("eh3d_make_structure", TOOLS / "make_structure.py")
+        structure = importlib.util.module_from_spec(spec_file)
+        spec_file.loader.exec_module(structure)
+        base = json.loads((TOOLS.parent / "docs" / "structure.json").read_text(encoding="utf-8"))
+        for cards in ("text", ["card"], [{"name": "docs/", "rows": ["row"]}], [{"name": "docs/", "rows": "row"}]):
+            spec = dict(base)
+            spec["cards"] = cards
+            with self.assertRaises(structure.SpecError):
+                structure.validate_spec(spec)
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -122,6 +122,8 @@ def lock_problems(workspace: Path) -> list[str]:
     if stored.get("origin") != wanted["origin"]:
         out.append(f"docs/{LOCK_NAME} names the origin {stored.get('origin')!r}, the origin is {wanted['origin']!r}")
     have = stored.get("tools", {})
+    if not isinstance(have, dict):
+        return [f"docs/{LOCK_NAME}: 'tools' must be an object"]
     for tool, value in wanted["tools"].items():
         if have.get(tool) != value:
             out.append(f"{tool} changed since docs/{LOCK_NAME} was written: run tools/sync_shared_tools.py --lock")

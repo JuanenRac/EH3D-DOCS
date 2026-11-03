@@ -5,8 +5,8 @@
     "banner_check.py": "f1066ba136",
     "changelog_pr_check.py": "d32b3c36ff",
     "ci_validate.py": "b05abf02d6",
-    "make_architecture.py": "d59b52a808",
-    "make_structure.py": "3c1843159e",
+    "make_architecture.py": "34ab83b324",
+    "make_structure.py": "11708254cc",
     "pretty_run.py": "51a38eb42a",
     "status_lights.py": "146eb0ea53",
     "universal_readme_check.py": "27b5d13d42"
