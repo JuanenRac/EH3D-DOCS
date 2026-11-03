@@ -145,5 +145,17 @@ class SyncSharedToolsTests(unittest.TestCase):
             self.assertEqual(list(SYNC.report(root)["ci_validate.py"].values()), [["EH3D-DOCS"]])
 
 
+class OwnCopyTests(unittest.TestCase):
+    def test_a_copy_a_repository_keeps_on_purpose_is_not_a_difference_and_is_never_written(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            full_hub(root)
+            make(root, "ELECTRO-HOBBY-3D-UPDATER", "print('its own checks')")
+            self.assertEqual(SYNC.differing(root), {})
+            self.assertEqual(SYNC.canonical_problems(root), [])
+            with self.assertRaises(SystemExit):
+                SYNC.write_copy(root, "ci_validate.py", "ELECTRO-HOBBY-3D-UPDATER")
+
+
 if __name__ == "__main__":
     unittest.main()

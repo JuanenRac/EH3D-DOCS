@@ -3,6 +3,7 @@
 All notable changes to this project are documented here.
 
 ## [Unreleased]
+- **The updater of the whole family keeps its own validator on purpose:** `sync_shared_tools.py` no longer lists its `ci_validate.py` as a difference and refuses to overwrite it; the shared validator reads its manifest as well.
 - **The README badge and Version row are checked in CI:** `ci_validate.py` (tools version 4) fails when the badge or the Version row of a README shows another version than the manifest, and it reads the manifest of the updater of the family (`electro-hobby-3d.project.json`) as well.
 - **The bump tool handles more projects:** a native version given as one regex per number is read and raised number by number, a manifest that is not an object is a clear error, the search for files never enters build folders, and the files of a bump are written to temporary files before the first one is replaced.
 - **The banner check reads `<tspan>` and any case:** `banner_check.py` joins nested text, finds `*banner*.svg` whatever the case, and reads the manifest of the updater of the family.

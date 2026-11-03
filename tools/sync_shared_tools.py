@@ -66,7 +66,7 @@ def report(workspace: Path, only: str | None = None) -> dict[str, dict[str, list
         variants: dict[str, list[str]] = {}
         for repo in repos(workspace):
             f = repo / "tools" / tool
-            if f.is_file():
+            if f.is_file() and (repo.name, tool) not in OWN_COPIES:
                 variants.setdefault(digest(f), []).append(repo.name)
         if variants:
             out[tool] = variants
@@ -85,6 +85,9 @@ def differing(workspace: Path, only: str | None = None) -> dict[str, list[str]]:
             result[tool] = others
     return result
 
+
+#: Copies a repository keeps on purpose (its own lineage, with checks of its own): they are neither compared nor written.
+OWN_COPIES = {("ELECTRO-HOBBY-3D-UPDATER", "ci_validate.py")}
 
 LOCK_NAME = "vendored.lock"
 
@@ -160,7 +163,7 @@ def canonical_problems(workspace: Path) -> list[str]:
     out = []
     for repo in repos(workspace):
         path = repo / "tools" / "ci_validate.py"
-        if path.is_file() and repo.name != CANONICAL:
+        if path.is_file() and repo.name != CANONICAL and (repo.name, "ci_validate.py") not in OWN_COPIES:
             stated = canonical_line(split_header(path.read_text(encoding="utf-8"))[0])
             if stated != wanted:
                 out.append(f"{repo.name}: ci_validate.py declares {stated.split('tools ')[-1] if stated else 'no canonical version'}, the suite is at {wanted.split('tools ')[-1] if wanted else '?'}")
@@ -173,6 +176,8 @@ def write_copy(workspace: Path, tool: str, repo: str) -> None:
     dst = workspace / repo / "tools" / tool
     if repo != Path(repo).name or repo in ("", ".", "..") or not (repo.startswith("EH3D-") or repo == "ELECTRO-HOBBY-3D-UPDATER"):
         raise SystemExit(f"{repo}: not the name of a repository of the suite")
+    if (repo, tool) in OWN_COPIES:
+        raise SystemExit(f"{tool} in {repo} is a copy that the repository keeps on purpose")
     if not src.is_file() or not dst.is_file():
         raise SystemExit(f"{tool}: there is no copy to write in {repo} or no canonical one")
     raw = dst.read_bytes().decode("utf-8")
