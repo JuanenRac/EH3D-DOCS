@@ -344,5 +344,36 @@ class TemplatesTests(unittest.TestCase):
             self.assertTrue((TOOLS.parent / rel).read_text(encoding="utf-8").strip(), rel)
 
 
+class TranslationsCheckTests(unittest.TestCase):
+    def stale_workspace(self, root: Path) -> None:
+        import test_readme_staleness as ts
+        import _toy_repo as toy
+
+        repo = toy.make_repo(root)
+        toy.git(repo, "init", "-b", "main")
+        ts.commit(repo, "start", ts.START)
+        ts.edit(repo, "README.md", "| Tests | 5 |", "| Tests | 6 |")
+        ts.commit(repo, "english only", ts.START + 10 * ts.DAY)
+
+    def test_a_section_only_the_english_readme_changed_is_a_warning_for_each_language(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            self.stale_workspace(root)
+            ok, found = CONTRACT.run(root, only="translations", allow_file=root / "none.txt")
+            self.assertTrue(ok)
+            self.assertEqual(len(found), 7)
+            self.assertTrue(all(f.level == "WARNING" and f.repo == "EH3D-TOY" for f in found), found)
+            ok, _ = CONTRACT.run(root, only="translations", strict=True, allow_file=root / "none.txt")
+            self.assertFalse(ok)
+
+    def test_a_repository_without_a_history_is_not_compared(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            make(root, "EH3D-NEW")
+            ok, found = CONTRACT.run(root, only="translations", allow_file=root / "none.txt")
+            self.assertTrue(ok)
+            self.assertEqual(found, [])
+
+
 if __name__ == "__main__":
     unittest.main()

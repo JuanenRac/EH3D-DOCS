@@ -18,6 +18,7 @@ The checks:
     versions    the version that SUITE_MAP.md gives for a repository is the one in its manifest
     ports       the screens and the server agree on the port of the server
     templates   every repository has the issue forms and the pull-request template that docs/suite.json lists (github_templates); only warnings
+    translations a section of a translated README that is older than the same section of the English one (from the history of git; only warnings)
     constants   the values that docs/suite.json holds (port of the server in every place that repeats it, the manifest name and schema, the README languages, the rpm field of the panel,
                 the shape of a version) are the ones the repositories use; only warnings
 
@@ -27,6 +28,7 @@ next to this one is skipped, so the check runs on whatever is there. The known e
 from __future__ import annotations
 
 import argparse
+import importlib.util
 import json
 import re
 import sys
@@ -294,7 +296,27 @@ def check_templates(workspace: Path) -> list[Finding]:
     return out
 
 
-CHECKS = {"manifests": check_manifests, "paths": check_paths, "versions": check_versions, "ports": check_ports, "tools": check_tools, "constants": check_constants, "templates": check_templates}
+def check_translations(workspace: Path) -> list[Finding]:
+    """A section of README_xx.md that is older than the English one is a warning: the translation has not followed the text. A repository without a git history is not compared."""
+    spec = importlib.util.spec_from_file_location("eh3d_contract_readme_staleness", HERE / "readme_staleness.py")
+    if spec is None or spec.loader is None:
+        return []
+    module = importlib.util.module_from_spec(spec)
+    sys.modules[spec.name] = module
+    try:
+        spec.loader.exec_module(module)
+    except Exception:  # noqa: BLE001 - a tool that does not load is not a finding about a README
+        return []
+    finally:
+        sys.modules.pop(spec.name, None)
+    out: list[Finding] = []
+    for repo in repos(workspace):
+        findings, _notes = module.staleness(repo)
+        out += [Finding("translations", repo.name, "WARNING", text) for text in findings]
+    return out
+
+
+CHECKS = {"manifests": check_manifests, "paths": check_paths, "versions": check_versions, "ports": check_ports, "tools": check_tools, "constants": check_constants, "templates": check_templates, "translations": check_translations}
 
 
 def allowed(allow_file: Path) -> set[tuple[str, str]]:

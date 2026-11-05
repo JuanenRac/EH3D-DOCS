@@ -64,7 +64,7 @@
       "title": "The tools",
       "lines": [
         "repository check, contract, release",
-        "and workspace scripts; 151 tests"
+        "and workspace scripts; 191 tests"
       ],
       "code": [
         "tools/ci_validate.py",

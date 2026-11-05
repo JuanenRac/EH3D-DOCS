@@ -50,6 +50,14 @@ class MadeRepositoryTests(unittest.TestCase):
         self.assertEqual((self.repo / "VERSION").read_text(encoding="utf-8").strip(), "0.0.2")
         self.assertIn("## [0.0.2]", (self.repo / "CHANGELOG.md").read_text(encoding="utf-8"))
 
+    def test_the_workflow_calls_the_reusable_validation_fixed_to_a_full_commit(self) -> None:
+        text = (self.repo / ".github" / "workflows" / "ci.yml").read_text(encoding="utf-8")
+        self.assertRegex(text, r"uses: JuanenRac/EH3D-DOCS/\.github/workflows/validate\.yml@[0-9a-f]{40}\s")
+        self.assertIn("run-tool-tests: true", text)
+        for line in text.splitlines():
+            if "uses: actions/" in line:
+                self.assertRegex(line, r"@[0-9a-f]{40} # v", line)
+
     def test_nothing_of_the_template_is_left_unfilled(self) -> None:
         for path in self.repo.rglob("*"):
             if path.is_file() and path.suffix in {".md", ".json", ".yml", ".svg", ".py", ".txt", ""}:

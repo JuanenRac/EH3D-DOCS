@@ -2,7 +2,7 @@
 
 Every repository of the suite runs the same checks first: the manifest, the versions, the licence, the CHANGELOG, the eight README files and the pictures of the README. Today each repository carries its own copy of that part of `.github/workflows/ci.yml`. `.github/workflows/validate.yml` of this repository holds it once, as a **reusable workflow** (`on: workflow_call`), so that a repository can call it instead of copying the steps.
 
-**Status: one pilot.** EH3D-SUITE-LAUNCHER calls it from its `ci.yml`, pinned to a commit of this repository (a commit SHA, so a change here reaches it only when it chooses); its check is named `validate / Validate the repository` and it keeps its own `changelog` job; the other repositories still carry their own copy of the steps. A reusable workflow can only be tried on GitHub, so the pilot is where the points of "Trying it in a pilot" below are watched before the others follow.
+**Status: three repositories and the template of a new one.** EH3D-SUITE-LAUNCHER, EH3D-TOOL-MANAGER and EH3D-PHOENIX-PNP call it from their `ci.yml`, and so does the CI of a repository made by `new_repo.py`; each pins it to a full commit of this repository (so a change here reaches it only when it chooses). The commit has to be one whose own actions are pinned by commit as well: a run that calls a workflow with actions named by a tag (as it was before the actions were pinned) does not start at all. SUITE-LAUNCHER is where it was tried first, and its pin was moved for that reason; its check is named `validate / Validate the repository` and it keeps its own `changelog` job; the other repositories still carry their own copy of the steps. A reusable workflow can only be tried on GitHub, so the first repositories are where the points of "Trying it in a pilot" below are watched before the others follow.
 
 ## What it does
 
@@ -68,6 +68,6 @@ What to look at in the pilot: that `tools/ci_validate.py` finds the repository's
 
 ## Why the others have not adopted it yet
 
-- It cannot be run from a local checkout: the only test is a real run on GitHub, and only one repository has done it.
+- It cannot be run from a local checkout: the only test is a real run on GitHub, and only three repositories have done it.
 - The name of the check changes (`validate / Validate the repository`), which matters wherever a rule requires a check by name.
 - A repository whose `ci.yml` runs `ci_validate` with environment variables or in another folder needs an input for it first.
