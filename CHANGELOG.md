@@ -3,6 +3,9 @@
 All notable changes to this project are documented here.
 
 ## [Unreleased]
+
+## [0.0.9] - Reusable checks and the file of the project passport
+
 - **The public key of the releases:** `docs/RELEASE_KEY.md` holds the public half of the key that signs the releases (namespace, fingerprint, the file of allowed signers and the commands to check a download), so that every program can link to one place.
 - **The contract warns about a translation that fell behind:** `suite_contract.py` has a `translations` check that names each section of a translated README that is older than the same section of the English one (a warning, from the history of git).
 - **The CI of a new repository calls the reusable validation:** the template of `new_repo.py` uses the shared workflow fixed to a full commit and the tests of `tools/`, and the guide says that three repositories already do the same and why the commit must be one with pinned actions.
