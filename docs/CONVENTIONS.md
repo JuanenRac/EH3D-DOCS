@@ -47,6 +47,18 @@ A reader or a container that refuses something returns a diagnostic with a **sta
 * The refusals of the HTTP API of EH3D-SERVER are a different, older kind: short lower-case words (`outside_course`, `spindle_limit`) listed in the catalog `src/errors.rs`, mirrored in `docs/error-codes.json` and given a sentence in the eight languages by Studio.
 * The readers of EH3D-CORE-LIBS use short names for their diagnostics (`units-missing`, `number-too-large`), listed in `docs/DIAGNOSTICS.md` of that repository.
 
+## The build text of a program
+
+A program that shows or reports its own version (an About window, a bug report, the updater) reads it from a small JSON text embedded in its binary, not from a file beside it, the network or the clock. The layout, the rules and the codes `EH3D-BUILD-001` to `EH3D-BUILD-008` are in `eh3d_common::build` (EH3D-COMMON, `docs/BUILD.md`):
+
+```json
+{"schema":1,"repo":"EH3D-DRILLPRO","version":"0.1.6","commit":"1a2b3c4","kind":"release"}
+```
+
+* `repo` is the name of the repository, `version` the version of the manifest (three or four numbers), `commit` the abbreviated commit or `null`, and `kind` is `release`, `ci` or `dev`.
+* A program makes it with `eh3d_common::embedded_build!()`; a `build.rs` gives the commit through `EH3D_BUILD_COMMIT`, and the workflow that builds a release gives `EH3D_BUILD_KIND=release`. A build that sets neither is a `dev` build with no commit.
+* A program of another language (a node, an app) writes the same text with the same keys and the same order; it does not add keys, because the reader refuses them.
+
 ## Names
 
 These are the names the suite uses today. Nothing is renamed to make them fit: a name that differs is written here as it is, and a new repository follows the first column.

@@ -30,7 +30,7 @@
 |---|---|
 | Version | `0.0.9` |
 | Maturité | Fonctionnel |
-| Tests | 191 |
+| Tests | 196 |
 | Pile technique | Markdown, avec des outils en Python 3.10+ |
 | Sur du matériel réel | Sans objet : documentation |
 
@@ -45,7 +45,7 @@ Chaque ligne est une partie de ce dépôt et le feu dit où elle en est aujourd'
 | Domaine | État | Ce que cela veut dire ici |
 |---|---|---|
 | Contrôles du dépôt | 🟡 | Le contrôle du dépôt, celui des liens entre les documents et les tests des outils tournent dans la CI et réussissent. |
-| Tests | 🟠 | 191 tests des outils réussissent sur un ordinateur, certains sur de petits dépôts jouets ; les documents et les affirmations qu'ils contiennent sont lus et vérifiés à la main et par les scripts. |
+| Tests | 🟠 | 196 tests des outils réussissent sur un ordinateur, certains sur de petits dépôts jouets ; les documents et les affirmations qu'ils contiennent sont lus et vérifiés à la main et par les scripts. |
 | Contrat de la suite | 🟡 | Le contrat entre les dépôts lit chaque manifeste avec l'analyseur de l'Updater et signale les dérives (ports, langues du README, outils partagés, formulaires de tickets) ; il tourne chaque jour dans la CI comme simple avertissement, et les dépôts qu'il nomme sont remis à jour un par un. |
 | Outils de version et de publication | 🟠 | Les scripts qui montent une version, écrivent les notes et vérifient une publication, ainsi que le workflow de validation réutilisable, sont testés sur des dépôts jouets ; aucun dépôt n'a encore publié de version avec eux. |
 | Espace de travail et nouveaux dépôts | 🟠 | Les scripts qui listent et clonent ce dont un dépôt a besoin et qui créent un nouveau dépôt sont testés sur des dépôts jouets dans un dossier temporaire ; aucun n'a encore préparé un vrai espace de travail ni créé un vrai dépôt. |
@@ -132,7 +132,7 @@ Pour lire les documents, commence par [la carte de la suite](docs/SUITE_MAP.md).
 
 ## 🧪 Tests
 
-Les outils ont 191 tests (`python -I -m unittest discover -s tools -p "test_*.py"`), et ils réussissent. La CI exécute le contrôle du dépôt (`tools/ci_validate.py`), celui des liens entre les documents (`tools/check_links.py`), les contrôles des deux images et ces tests ; un workflow quotidien exécute le contrat de la suite. Les documents n'ont pas d'autre test : ce qu'ils affirment est tenu honnête par la matrice des capacités et par leur relecture.
+Les outils ont 196 tests (`python -I -m unittest discover -s tools -p "test_*.py"`), et ils réussissent. La CI exécute le contrôle du dépôt (`tools/ci_validate.py`), celui des liens entre les documents (`tools/check_links.py`), les contrôles des deux images et ces tests ; un workflow quotidien exécute le contrat de la suite. Les documents n'ont pas d'autre test : ce qu'ils affirment est tenu honnête par la matrice des capacités et par leur relecture.
 
 ## 🏗️ Compilation et publication
 

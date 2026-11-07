@@ -9,7 +9,7 @@ Every repository of the suite runs the same checks first: the manifest, the vers
 One job, `validate`, on `ubuntu-latest` with these steps, in order:
 
 1. Check out the repository that called it and set up Python.
-2. `python -I tools/ci_validate.py` (manifest, versions, licence, CHANGELOG, README files, forbidden words, tracked files).
+2. `python -I tools/ci_validate.py` (manifest, versions, licence, CHANGELOG, README files, forbidden words, tracked files, and the file tree: the text tree of every README and the Repository Structure picture against `docs/structure.json` and the files of the repository, through `make_structure.run_in_ci`).
 3. The pictures of the README: `tools/make_architecture.py --check` and `tools/make_structure.py --check --readmes` (when `check-pictures` is true).
 4. The links between the documents: `tools/check_links.py` (when `check-links` is true).
 5. The unit tests of `tools/` (when `run-tool-tests` is true).

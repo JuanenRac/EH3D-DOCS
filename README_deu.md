@@ -30,7 +30,7 @@
 |---|---|
 | Version | `0.0.9` |
 | Reifegrad | Funktionsfähig |
-| Tests | 191 |
+| Tests | 196 |
 | Technologie-Stack | Markdown, mit Python-3.10+-Werkzeugen |
 | Auf echter Hardware | Nicht zutreffend: Dokumentation |
 
@@ -45,7 +45,7 @@ Jede Zeile ist ein Teil dieses Repositorys, und die Ampel sagt, wie weit er heut
 | Bereich | Stand | Was das hier bedeutet |
 |---|---|---|
 | Repository-Prüfungen | 🟡 | Die Repository-Prüfung, die Prüfung der Links zwischen den Dokumenten und die Tests der Werkzeuge laufen in der CI und bestehen. |
-| Tests | 🟠 | 191 Tests der Werkzeuge bestehen auf einem Rechner, einige davon auf kleinen Spielzeug-Repositories; die Dokumente und ihre Aussagen werden von Hand und mit den Skripten gelesen und geprüft. |
+| Tests | 🟠 | 196 Tests der Werkzeuge bestehen auf einem Rechner, einige davon auf kleinen Spielzeug-Repositories; die Dokumente und ihre Aussagen werden von Hand und mit den Skripten gelesen und geprüft. |
 | Vertrag der Suite | 🟡 | Der Vertrag zwischen den Repositories liest jedes Manifest mit dem Parser des Updaters und meldet Abweichungen (Ports, README-Sprachen, gemeinsame Werkzeuge, Issue-Formulare); er läuft täglich in der CI als Warnung, und die Repositories, die er nennt, werden eines nach dem anderen nachgezogen. |
 | Werkzeuge für Version und Veröffentlichung | 🟠 | Die Skripte, die eine Version erhöhen, die Notizen schreiben und eine Veröffentlichung prüfen, und der wiederverwendbare Validierungs-Workflow sind an Spielzeug-Repositories getestet; noch kein Repository hat damit eine Version veröffentlicht. |
 | Arbeitsbereich und neue Repositories | 🟠 | Die Skripte, die auflisten und klonen, was ein Repository braucht, und die ein neues Repository anlegen, sind an Spielzeug-Repositories in einem temporären Ordner getestet; keines hat bisher einen echten Arbeitsbereich eingerichtet oder ein echtes Repository angelegt. |
@@ -132,7 +132,7 @@ Zum Lesen der Dokumente beginne mit [der Karte der Suite](docs/SUITE_MAP.md).
 
 ## 🧪 Tests
 
-Die Werkzeuge haben 191 Tests (`python -I -m unittest discover -s tools -p "test_*.py"`), und sie bestehen. Die CI führt die Repository-Prüfung (`tools/ci_validate.py`), die Prüfung der Links zwischen den Dokumenten (`tools/check_links.py`), die Prüfungen der beiden Bilder und diese Tests aus; ein täglicher Workflow führt den Vertrag der Suite aus. Die Dokumente selbst haben keinen weiteren Test: Was sie behaupten, wird durch die Fähigkeitsmatrix und durch Lesen ehrlich gehalten.
+Die Werkzeuge haben 196 Tests (`python -I -m unittest discover -s tools -p "test_*.py"`), und sie bestehen. Die CI führt die Repository-Prüfung (`tools/ci_validate.py`), die Prüfung der Links zwischen den Dokumenten (`tools/check_links.py`), die Prüfungen der beiden Bilder und diese Tests aus; ein täglicher Workflow führt den Vertrag der Suite aus. Die Dokumente selbst haben keinen weiteren Test: Was sie behaupten, wird durch die Fähigkeitsmatrix und durch Lesen ehrlich gehalten.
 
 ## 🏗️ Build und Veröffentlichung
 
