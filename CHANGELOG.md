@@ -4,6 +4,8 @@ All notable changes to this project are documented here.
 
 ## [Unreleased]
 
+- **The map of the suite shows the versions of the repositories:** the 28 rows of `docs/SUITE_MAP.md` that fell behind their manifests say the version each repository is at now, and the check of the constants of `tools/suite_contract.py` no longer stops when the manifest reader of EH3D-UPDATER imports a neighbour module: it loads the reader as a part of a package of its own.
+
 ## [0.0.9] - Reusable checks and the file of the project passport
 
 - **The public key of the releases:** `docs/RELEASE_KEY.md` holds the public half of the key that signs the releases (namespace, fingerprint, the file of allowed signers and the commands to check a download), so that every program can link to one place.
