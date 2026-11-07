@@ -4,9 +4,9 @@
     "_readme_svg.py": "5662a6805b",
     "banner_check.py": "f1066ba136",
     "changelog_pr_check.py": "d32b3c36ff",
-    "ci_validate.py": "b05abf02d6",
+    "ci_validate.py": "79c5d3053d",
     "make_architecture.py": "34ab83b324",
-    "make_structure.py": "11708254cc",
+    "make_structure.py": "354cdbb9b1",
     "pretty_run.py": "51a38eb42a",
     "status_lights.py": "146eb0ea53",
     "universal_readme_check.py": "27b5d13d42"
