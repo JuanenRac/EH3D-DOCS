@@ -64,16 +64,24 @@ def real_parser(workspace: Path):
     if not path.is_file():
         return None
     import importlib.util
+    import types
 
-    spec = importlib.util.spec_from_file_location("eh3d_contract_project_manifest", path)
+    # The module is loaded as a part of a package of its own, because it imports its neighbours with a relative import when it checks a pattern.
+    # The entries stay in sys.modules: the parser imports its neighbours when it is called, after this function has returned.
+    prefix = "eh3d_contract_project_manifest_pkg"
+    for name in [n for n in sys.modules if n == prefix or n.startswith(prefix + ".")]:
+        sys.modules.pop(name, None)
+    package = types.ModuleType(prefix)
+    package.__path__ = [str(path.parent)]
+    sys.modules[prefix] = package
+    spec = importlib.util.spec_from_file_location(prefix + ".project_manifest", path)
     module = importlib.util.module_from_spec(spec)
     sys.modules[spec.name] = module  # the dataclasses of the module look themselves up here
     try:
         spec.loader.exec_module(module)
     except Exception:  # noqa: BLE001 - a parser that does not load is not a finding about a manifest
-        return None
-    finally:
         sys.modules.pop(spec.name, None)
+        return None
     return getattr(module, "parse_manifest", None)
 
 
