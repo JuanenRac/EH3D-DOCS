@@ -210,6 +210,7 @@ README 和文本提供英语、西班牙语、法语、意大利语、德语、�
 
 * [套件地图](docs/SUITE_MAP.md)、[架构](docs/ARCHITECTURE.md)、[能力矩阵](docs/CAPABILITY_MATRIX.md)和[约定](docs/CONVENTIONS.md)。
 * [发布版本](docs/RELEASING.md)、[机器如何保持更新](docs/UPDATING.md)和[可复用的验证](docs/REUSABLE_VALIDATION.md)。
+* [从其他仓库使用共享 crate](https://github.com/JuanenRac/EH3D-COMMON/blob/main/docs/CONSUMING.md)：相邻文件夹、路径与版本行、CI 构建所用的标签以及 `min_common`。
 * [变更日志](CHANGELOG.md)
 
 ## 🤝 参与贡献与社区

@@ -4,6 +4,7 @@ All notable changes to this project are documented here.
 
 ## [Unreleased]
 
+- **The READMEs link the guide to use the shared crates from another repository:** the list of guides of the eight READMEs names `docs/CONSUMING.md` of EH3D-COMMON (the sibling folders, the path and version line, the tags the CI builds against and `min_common`).
 - **The validator checks the file tree:** `tools/ci_validate.py` (tools 5) runs the check of the tree of files of the eight READMEs and of the Repository Structure picture against `docs/structure.json` and the files of the repository, through `make_structure.run_in_ci` (tools 3, with five tests in `tools/test_make_structure_ci.py`); a repository without `docs/structure.json` passes. The copies of the other repositories take it with `tools/sync_shared_tools.py --write`.
 - **The convention of the build text:** `docs/CONVENTIONS.md` says that a program reads its version from a small JSON text embedded in its binary, with the keys, the values of `kind`, how a program makes it and that a program of another language writes the same keys in the same order.
 - **The map of the suite shows the versions of the repositories:** the 28 rows of `docs/SUITE_MAP.md` that fell behind their manifests say the version each repository is at now, and the check of the constants of `tools/suite_contract.py` no longer stops when the manifest reader of EH3D-UPDATER imports a neighbour module: it loads the reader as a part of a package of its own.

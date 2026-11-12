@@ -210,6 +210,7 @@ El README y los textos existen en inglés, español, francés, italiano, alemán
 
 * [El mapa de la suite](docs/SUITE_MAP.md), [la arquitectura](docs/ARCHITECTURE.md), [la matriz de capacidades](docs/CAPABILITY_MATRIX.md) y [las convenciones](docs/CONVENTIONS.md).
 * [Publicar una versión](docs/RELEASING.md), [cómo se mantienen actualizadas las máquinas](docs/UPDATING.md) y [la validación reutilizable](docs/REUSABLE_VALIDATION.md).
+* [Usar los crates compartidos desde otro repositorio](https://github.com/JuanenRac/EH3D-COMMON/blob/main/docs/CONSUMING.md): las carpetas hermanas, la línea de ruta y versión, las etiquetas contra las que compila la CI y `min_common`.
 * [Registro de cambios](CHANGELOG.md)
 
 ## 🤝 Contribuir y comunidad

@@ -210,6 +210,7 @@ README とテキストは、英語、スペイン語、フランス語、イタ�
 
 * [スイートの地図](docs/SUITE_MAP.md)、[アーキテクチャ](docs/ARCHITECTURE.md)、[機能マトリクス](docs/CAPABILITY_MATRIX.md)、[規約](docs/CONVENTIONS.md)。
 * [バージョンの公開](docs/RELEASING.md)、[機械を最新に保つ方法](docs/UPDATING.md)、[再利用できる検証](docs/REUSABLE_VALIDATION.md)。
+* [別のリポジトリから共有クレートを使う](https://github.com/JuanenRac/EH3D-COMMON/blob/main/docs/CONSUMING.md)：隣接フォルダー、パスとバージョンの行、CI がビルドに使うタグ、`min_common`。
 * [変更履歴](CHANGELOG.md)
 
 ## 🤝 コントリビュートとコミュニティ
