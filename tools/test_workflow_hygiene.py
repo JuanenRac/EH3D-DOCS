@@ -457,6 +457,11 @@ class SpeedRuleTests(unittest.TestCase):
         filtered = HEAVY_PLAIN.replace("  pull_request:\n", "  pull_request:\n    paths-ignore:\n      - 'docs/**'\n")
         self.assertNotIn("heavy-no-filter", rules(speed(filtered)))
 
+    def test_a_firmware_script_counts_as_a_heavy_job(self):
+        firmware = HEAVY_PLAIN.replace("./gradlew test", "./build_firmware.sh")
+        self.assertIn("heavy-no-filter", rules(speed(firmware)))
+        self.assertIn("heavy-no-filter", rules(speed(HEAVY_PLAIN.replace("./gradlew test", "sudo apt-get install gcc-arm-none-eabi"))))
+
     def test_skipped_jobs_need_a_job_that_always_runs(self):
         self.assertNotIn("no-gate", rules(speed(HEAVY_GATED)))
         without = HEAVY_GATED.replace("if: ${{ always() }}", "if: ${{ success() }}")

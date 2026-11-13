@@ -20,7 +20,7 @@ Speed rules (opt in with "speed": true in tools/hygiene_config.json, or --speed;
   macos-on-pr         a job on a macOS runner that starts on every pull request (it belongs to main, tags, the nightly run and a manual start; a pull request can ask for it with the label full-ci)
   cancel-main         `cancel-in-progress: true` as a plain value in a workflow that also runs on push (a newer push to main or a tag would cancel the one before it)
   no-branch-cancel    a workflow that runs on pull requests and never cancels a superseded run of a branch (expression: ref is not main and not a tag)
-  heavy-no-filter     a job with Gradle, Xcode, ESP-IDF, PlatformIO, Flutter builds or Renode on pull requests, with no paths filter and no changed-paths answer
+  heavy-no-filter     a job with Gradle, Xcode, ESP-IDF, PlatformIO, Flutter builds, Renode or an ARM firmware script on pull requests, with no paths filter and no changed-paths answer
   no-gate             skipped jobs (changed-paths answers) and no job that always runs after them, so a required check could wait forever
   ubuntu-latest-infra a job that measures a coverage floor or tests infrastructure (systemd, mosquitto, containers, AppArmor) on `ubuntu-latest`: the image moves to a newer Ubuntu and the counts of gcov
                       or the profiles of AppArmor change under it; pin `runs-on: ubuntu-24.04` with a comment (the other jobs may follow latest)
@@ -71,7 +71,7 @@ SECRET = re.compile(r"\$\{\{\s*secrets\.", re.I)
 PR_HEAD = re.compile(r"(pull_request\.head|head_ref|refs/pull/|github\.event\.pull_request\.merge_commit_sha)", re.I)
 RELEASE_WORDS = re.compile(r"(release|publish|deploy)", re.I)
 MACOS = re.compile(r"\bmacos-[\w.]+", re.I)
-HEAVY = re.compile(r"(gradlew|\bgradle\b|xcodebuild|swift test|idf\.py|espressif/idf|\bpio run\b|platformio|flutter build|renode)", re.I)
+HEAVY = re.compile(r"(gradlew|\bgradle\b|xcodebuild|swift test|idf\.py|espressif/idf|\bpio run\b|platformio|flutter build|renode|build_firmware|arm-none-eabi)", re.I)
 CANCEL = re.compile(r"^\s*cancel-in-progress:\s*(?P<val>.+?)\s*$")
 INFRA = re.compile(r"(mosquitto|systemd|systemctl|apparmor|\bdocker\b|podman|gcov|lcov|coverage_threshold|cov-fail-under|fail_under|coverage floor|npm run coverage)", re.I)
 UNION = re.compile(r"(?m)^\S*CHANGELOG\S*\s+(?:\S+\s+)*merge=union\b")
