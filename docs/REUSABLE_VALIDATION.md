@@ -100,6 +100,59 @@ jobs:
 
 A job skipped by `if` shows as skipped, not red; a rule that requires that job by name must accept a skipped one. `.github/workflows/test-changed-paths.yml` runs the decision rules on throw-away repositories (a change that touches the paths and one that does not, the label, a push, a manual run, the patterns) and one real call; the file also starts only when one of the two workflows changes.
 
+## A quicker CI without taking a check away
+
+The runners of GitHub are a shared queue, and a macOS job can wait for an hour. Four habits keep a repository's checks as they are and still keep the queue short; `python tools/workflow_hygiene.py --root . --speed` (or `"speed": true` in `tools/hygiene_config.json`) reports a workflow that does not follow them.
+
+1. **A macOS job does not start on every pull request.** It runs on a push to main, on a tag, on the scheduled run and on a manual start; a pull request can ask for it with the label `full-ci`.
+
+   ```yaml
+   macos:
+     if: ${{ github.event_name != 'pull_request' || contains(github.event.pull_request.labels.*.name, 'full-ci') }}
+     runs-on: macos-latest
+   ```
+
+   For a matrix, build the list of runners from the event: `os: ${{ fromJSON(github.event_name == 'pull_request' && '["ubuntu-latest","windows-latest"]' || '["ubuntu-latest","windows-latest","macos-latest"]') }}`.
+
+2. **A newer push to a branch cancels the run before it, and main and the tags are never cancelled.**
+
+   ```yaml
+   concurrency:
+     group: ${{ github.workflow }}-${{ github.ref }}
+     cancel-in-progress: ${{ github.ref != 'refs/heads/main' && !startsWith(github.ref, 'refs/tags/') }}
+   ```
+
+   A plain `cancel-in-progress: true` also cancels a push to main when the next one arrives, so a release workflow or a check of main could end up cancelled.
+
+3. **An expensive job (Gradle, Xcode, ESP-IDF, PlatformIO, a heavy build) runs when its paths changed.** Call `changed-paths.yml` as shown above and let main, the tags and the scheduled run force everything:
+
+   ```yaml
+   android:
+     needs: changes
+     if: ${{ github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/') || github.event_name == 'schedule' || needs.changes.outputs.matched == 'true' }}
+   ```
+
+   The label `full-ci` is given to `changed-paths.yml` as its `label` input, so a pull request can force the job too.
+
+4. **One check to require, which always runs.** A job skipped by a condition counts as passed, but a matrix job skipped that way keeps the name of the matrix, and a rule that requires it would wait for ever. The template of a new repository ends with a `ci-gate` job (`if: always()`, `needs` every other job) that fails only when a job failed or was cancelled; require that one check in the rules of the branch.
+
+   ```yaml
+   ci-gate:
+     name: CI gate
+     if: ${{ always() }}
+     needs: [validate, android]
+     runs-on: ubuntu-latest
+     timeout-minutes: 5
+     steps:
+       - env:
+           RESULTS: ${{ join(needs.*.result, ' ') }}
+         run: case " $RESULTS " in *" failure "*|*" cancelled "*) exit 1 ;; esac
+   ```
+
+A fifth habit concerns the runner image: `ubuntu-latest` moves to a newer Ubuntu without notice, and a job that measures a coverage floor (the branch counts of gcov change) or tests infrastructure (systemd, mosquitto, containers, AppArmor profiles) turns red for no change of the code. Pin `runs-on: ubuntu-24.04` on those jobs, with a comment saying why; the other jobs may follow `latest`. The rule `ubuntu-latest-infra` reports the ones that do not.
+
+The CHANGELOG has a sixth habit, in `.gitattributes`: `CHANGELOG.md merge=union` (and the same for `CHANGELOG_*.md` and `CHANGELOG.*.md`) makes git keep both sides when two branches add an entry at the same place. It applies to the merges and rebases that git does; the checks that read the CHANGELOG compare the set of entries, not their order, so they pass either way. If two branches edit the same entry, git keeps both versions and the duplicate must be removed by hand.
+
 ## Trying it in a pilot
 
 1. Give this repository a tag that holds `validate.yml` (a tag is a release step, so it is made when a version is published).
