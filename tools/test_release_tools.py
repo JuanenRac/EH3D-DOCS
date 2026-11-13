@@ -27,9 +27,9 @@ def run(module, args: list[str]) -> tuple[int, str]:
 
 
 def release_ready(root: Path, **kwargs) -> Path:
-    """A toy repository whose newest CHANGELOG section is the version of the manifest, with 3 entries, and an empty [Unreleased]."""
+    """A toy repository whose newest CHANGELOG section is the version of the manifest, with 5 entries, and an empty [Unreleased]."""
     repo = toy.make_repo(root, entries=0, **kwargs)
-    section = "".join(f"- **Change {i}:** something.\n" for i in range(3))
+    section = "".join(f"- **Change {i}:** something.\n" for i in range(5))
     toy.write(repo, "CHANGELOG.md", f"# Changelog\n\n## [Unreleased]\n\n## [0.0.9] - The ninth\n\n{section}\n## [0.0.8] - Older\n\n- **Old:** x.\n")
     toy.write(repo, "tools/ci_validate.py", "# a stand-in: the tests give the answer of the validator\n")
     return repo
@@ -53,7 +53,7 @@ class ReleaseNotesTests(unittest.TestCase):
             self.assertEqual(code, 1)
             self.assertIn("no section for 0.5.0", out)
 
-    def test_check_passes_with_three_entries_and_an_empty_unreleased(self) -> None:
+    def test_check_passes_with_five_entries_and_an_empty_unreleased(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             repo = release_ready(Path(tmp))
             self.assertEqual(run(rn, [str(repo), "--check"])[0], 0)
@@ -73,7 +73,7 @@ class ReleaseNotesTests(unittest.TestCase):
             self.assertEqual(code, 1)
             self.assertIn("'## [Unreleased]' still holds 2 entries", out)
 
-    def test_fewer_than_three_entries_is_a_warning_that_can_be_accepted(self) -> None:
+    def test_fewer_than_five_entries_is_a_warning_that_can_be_accepted(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             repo = toy.make_repo(Path(tmp), entries=0)
             code, out = run(rn, [str(repo), "--check"])

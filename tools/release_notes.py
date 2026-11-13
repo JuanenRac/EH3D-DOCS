@@ -12,7 +12,7 @@ VERSION is the one of the manifest when it is not given. Without options it prin
 and then the notes (the section of that version of CHANGELOG.md), which is what `gh release create --notes-file` takes.
 --check publishes nothing and prints nothing but the verdict: it fails (exit 1) when the CHANGELOG has no section for the
 version of the manifest or when [Unreleased] still holds entries that were not promoted; a section with fewer than
-3 entries is only a warning (exit 2), and --allow-short accepts it (exit 0)."""
+5 entries is only a warning (exit 2), and --allow-short accepts it (exit 0)."""
 from __future__ import annotations
 
 import argparse
@@ -24,7 +24,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import changelog_tools  # noqa: E402
 import version_places as vp  # noqa: E402
 
-MIN_ENTRIES = 3
+MIN_ENTRIES = 5
 HUB = Path(__file__).resolve().parents[1]
 
 
@@ -84,7 +84,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--title", action="store_true", help="print only the title")
     parser.add_argument("--notes", action="store_true", help="print only the notes")
     parser.add_argument("--check", action="store_true")
-    parser.add_argument("--allow-short", action="store_true", help="with --check: fewer than 3 entries is accepted")
+    parser.add_argument("--allow-short", action="store_true", help="with --check: fewer than 5 entries is accepted")
     args = parser.parse_args(argv)
     if hasattr(sys.stdout, "reconfigure"):
         sys.stdout.reconfigure(encoding="utf-8", errors="replace")

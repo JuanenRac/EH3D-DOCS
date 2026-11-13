@@ -11,7 +11,7 @@
 It checks, and prints one OK / WARN / SKIP / FAIL line for each:
   versions   the same version in every file that carries it (the manifest, Cargo, npm, Python, Gradle, project.yml, the eight
              README files) and in the newest section of the CHANGELOG
-  changelog  a section for that version, nothing left in [Unreleased], at least 3 entries (a warning; --allow-short accepts it)
+  changelog  a section for that version, nothing left in [Unreleased], at least 5 entries (a warning; --allow-short accepts it)
   readmes    the eight README files have the "Project status" table and show the same lights
   git        a clean working tree and no commit that is not on the remote
   tag        the tag vX.Y.Z of the release does not exist yet, here or on the remote
@@ -190,7 +190,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("repository")
     parser.add_argument("--workspace", type=Path)
     parser.add_argument("--no-ci", action="store_true", help="do not ask GitHub for the runs of the commit")
-    parser.add_argument("--allow-short", action="store_true", help="a CHANGELOG section with fewer than 3 entries is accepted")
+    parser.add_argument("--allow-short", action="store_true", help="a CHANGELOG section with fewer than 5 entries is accepted")
     args = parser.parse_args(argv)
     if hasattr(sys.stdout, "reconfigure"):
         sys.stdout.reconfigure(encoding="utf-8", errors="replace")
