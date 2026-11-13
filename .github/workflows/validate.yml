@@ -7,7 +7,8 @@ name: Validate (reusable)
 #     validate:
 #       uses: JuanenRac/EH3D-DOCS/.github/workflows/validate.yml@<tag>
 #
-# and adds its own jobs (cargo, npm, gradle) next to it. See docs/REUSABLE_VALIDATION.md.
+# and adds its own jobs (cargo, npm, gradle) next to it. See docs/REUSABLE_VALIDATION.md. The optional
+# inputs (isolated, os, timeout-minutes) default to what the workflow always did.
 
 on:
   workflow_call:
@@ -28,15 +29,37 @@ on:
         description: "Run the unit tests of tools/ (python -I -m unittest discover -s tools -p test_*.py)"
         type: boolean
         default: false
+      isolated:
+        description: "Run the Python checks with -I (isolated mode); false for a repository whose validator is of an older generation and needs its own folder on the path"
+        type: boolean
+        default: true
+      os:
+        description: "Runners to validate on, as a JSON list of runner labels (a list of two or more runs one job per runner)"
+        type: string
+        default: '["ubuntu-latest"]'
+      timeout-minutes:
+        description: "Minutes after which a validation job is stopped"
+        type: number
+        default: 15
 
 permissions:
   contents: read
 
 jobs:
   validate:
-    name: Validate the repository
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
+    # one runner keeps the name every repository already waits for; several add the runner to it
+    name: ${{ strategy.job-total > 1 && format('Validate the repository ({0})', matrix.os) || 'Validate the repository' }}
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: ${{ inputs.timeout-minutes }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: ${{ fromJSON(inputs.os) }}
+    defaults:
+      run:
+        shell: bash
+    env:
+      PYFLAGS: ${{ inputs.isolated && '-I' || '' }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -45,15 +68,15 @@ jobs:
         with:
           python-version: ${{ inputs.python-version }}
       - name: Manifest, documentation and language parity
-        run: python -I tools/ci_validate.py
+        run: python $PYFLAGS tools/ci_validate.py
       - name: Pictures of the README
         if: ${{ inputs.check-pictures }}
         run: |
-          python -I tools/make_architecture.py --check
-          python -I tools/make_structure.py --check --readmes
+          python $PYFLAGS tools/make_architecture.py --check
+          python $PYFLAGS tools/make_structure.py --check --readmes
       - name: Links between the documents
         if: ${{ inputs.check-links }}
-        run: python -I tools/check_links.py
+        run: python $PYFLAGS tools/check_links.py
       - name: Tests of the repository checks
         if: ${{ inputs.run-tool-tests }}
-        run: python -I -m unittest discover -s tools -p "test_*.py"
+        run: python $PYFLAGS -m unittest discover -s tools -p "test_*.py"

@@ -6,7 +6,7 @@ Every repository of the suite runs the same checks first: the manifest, the vers
 
 ## What it does
 
-One job, `validate`, on `ubuntu-latest` with these steps, in order:
+One job, `validate`, on `ubuntu-latest` (or on the runners named by `os`) with these steps, in order:
 
 1. Check out the repository that called it and set up Python.
 2. `python -I tools/ci_validate.py` (manifest, versions, licence, CHANGELOG, README files, forbidden words, tracked files, and the file tree: the text tree of every README and the Repository Structure picture against `docs/structure.json` and the files of the repository, through `make_structure.run_in_ci`).
@@ -24,6 +24,11 @@ The workflow runs the scripts **of the calling repository** (its own `tools/` fo
 | `check-pictures` | boolean | `true` | check the Architecture and Repository Structure pictures against `docs/architecture.json` and `docs/structure.json` |
 | `check-links` | boolean | `false` | run `tools/check_links.py` (the repository must have it) |
 | `run-tool-tests` | boolean | `false` | run the unit tests of `tools/` |
+| `isolated` | boolean | `true` | run the Python checks with `-I`; `false` for a repository whose validator is of an older generation and needs its own folder on the path |
+| `os` | string | `["ubuntu-latest"]` | the runners to validate on, as a JSON list; two or more run one job per runner and add the runner to the name of the check |
+| `timeout-minutes` | number | `15` | minutes after which a validation job is stopped |
+
+A call that names none of the last three behaves exactly as before: one Ubuntu job, isolated Python, the check named `validate / Validate the repository`. The three inputs are there for the repositories that could not call the workflow before (an updater whose validator runs without `-I`, a program that must be validated on Windows too). The file `.github/workflows/test-validate-inputs.yml` tries a call with the defaults and a call with the three inputs on GitHub; no repository has been moved to them yet.
 
 The workflow asks for `contents: read` only and has no secrets.
 
@@ -57,6 +62,43 @@ jobs:
 ```
 
 Replace `<tag>` with a tag or a commit SHA of this repository. A tag moves only when someone moves it, so a repository that wants a change to arrive only when it chooses should name a tag; a repository that wants every change at once could name `main`, but then a change here can turn the CI of every repository red at once, so use a tag.
+
+## Skipping an expensive job: `changed-paths.yml`
+
+A second reusable workflow, `.github/workflows/changed-paths.yml`, answers one question: does this change touch the paths that make a slow job (Windows, macOS, Gradle, firmware) worth running? It only reads the list of changed files (`contents: read`, a sparse checkout of two commits, 5 minutes at most) and has no secrets.
+
+| Input | Type | Default | Meaning |
+|---|---|---|---|
+| `paths` | string | (required) | globs, one per line: `**` crosses folders, `*` and `?` do not, a line starting with `!` removes what it matches, a name without wildcards also matches the folder of that name, `#` starts a comment |
+| `label` | string | empty | a pull request label that forces the answer `true` (for example `full-ci`) |
+
+| Output | Values |
+|---|---|
+| `matched` | `true` when the job should run, `false` when the change cannot affect it |
+| `reason` | `label`, `paths`, `no-paths`, `manual` (any event that is not a push, a pull request or a merge group: a manual or scheduled run always runs everything) or `unknown-base` |
+
+When it cannot find what the change is compared with (a push of several commits whose first parent is not in the clone, a new branch, a pull request checked out without its merge commit) it answers `true` with `unknown-base`: it never skips a job by mistake. A pull request is compared with its base branch, a push with the commit before it.
+
+```yaml
+jobs:
+  changes:
+    uses: JuanenRac/EH3D-DOCS/.github/workflows/changed-paths.yml@<tag>
+    with:
+      label: full-ci
+      paths: |
+        app/**
+        gradle/**
+        !app/docs/**
+
+  android:
+    needs: changes
+    if: ${{ needs.changes.outputs.matched == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "the slow job"
+```
+
+A job skipped by `if` shows as skipped, not red; a rule that requires that job by name must accept a skipped one. `.github/workflows/test-changed-paths.yml` runs the decision rules on throw-away repositories (a change that touches the paths and one that does not, the label, a push, a manual run, the patterns) and one real call; the file also starts only when one of the two workflows changes.
 
 ## Trying it in a pilot
 
