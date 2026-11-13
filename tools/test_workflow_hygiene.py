@@ -500,11 +500,34 @@ class SpeedRuleTests(unittest.TestCase):
             with contextlib.redirect_stdout(out):
                 self.assertEqual(wh.main(["--root", str(repo), "--check"]), 0)
 
+    def test_coverage_floor_and_infrastructure_jobs_pin_the_ubuntu_image(self):
+        latest = SPEED_BASE + """  coverage:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - run: npm run coverage
+  broker:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - run: sudo apt-get install --yes mosquitto
+  plain:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - run: echo build
+"""
+        names = sorted(f["message"].split("'")[1] for f in speed(latest) if f["rule"] == "ubuntu-latest-infra")
+        self.assertEqual(names, ["broker", "coverage"])   # the plain job may follow latest
+        pinned = latest.replace("runs-on: ubuntu-latest", "runs-on: ubuntu-24.04")
+        self.assertNotIn("ubuntu-latest-infra", rules(speed(pinned)))
+        self.assertNotIn("ubuntu-latest-infra", rules(check(latest)))   # off unless the speed rules are on
+
     def test_the_canonical_workflows_of_this_repository_follow_the_rules(self):
         root = Path(__file__).resolve().parents[1]
         if not (root / ".github" / "workflows").is_dir():
             self.skipTest("the workflows are not part of this checkout")
-        found = [f"{r}: {f['file']} {f['rule']}" for r in wh.scan(root, speed=True).values() for f in r["findings"] if f["rule"] in wh.SPEED_RULES]
+        found = [f"{name}: {f['file']} {f['rule']}" for name, r in wh.scan(root, speed=True).items() for f in r["findings"] if f["rule"] in wh.SPEED_RULES]
         self.assertEqual(found, [])
         template = root / "docs" / "templates" / "new_repo" / "ci.yml"
         if template.is_file():

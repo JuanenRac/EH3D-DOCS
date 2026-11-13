@@ -149,7 +149,9 @@ The runners of GitHub are a shared queue, and a macOS job can wait for an hour. 
          run: case " $RESULTS " in *" failure "*|*" cancelled "*) exit 1 ;; esac
    ```
 
-The CHANGELOG has a fifth habit, in `.gitattributes`: `CHANGELOG.md merge=union` (and the same for `CHANGELOG_*.md` and `CHANGELOG.*.md`) makes git keep both sides when two branches add an entry at the same place. It applies to the merges and rebases that git does; the checks that read the CHANGELOG compare the set of entries, not their order, so they pass either way. If two branches edit the same entry, git keeps both versions and the duplicate must be removed by hand.
+A fifth habit concerns the runner image: `ubuntu-latest` moves to a newer Ubuntu without notice, and a job that measures a coverage floor (the branch counts of gcov change) or tests infrastructure (systemd, mosquitto, containers, AppArmor profiles) turns red for no change of the code. Pin `runs-on: ubuntu-24.04` on those jobs, with a comment saying why; the other jobs may follow `latest`. The rule `ubuntu-latest-infra` reports the ones that do not.
+
+The CHANGELOG has a sixth habit, in `.gitattributes`: `CHANGELOG.md merge=union` (and the same for `CHANGELOG_*.md` and `CHANGELOG.*.md`) makes git keep both sides when two branches add an entry at the same place. It applies to the merges and rebases that git does; the checks that read the CHANGELOG compare the set of entries, not their order, so they pass either way. If two branches edit the same entry, git keeps both versions and the duplicate must be removed by hand.
 
 ## Trying it in a pilot
 

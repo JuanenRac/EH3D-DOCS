@@ -22,6 +22,8 @@ Speed rules (opt in with "speed": true in tools/hygiene_config.json, or --speed;
   no-branch-cancel    a workflow that runs on pull requests and never cancels a superseded run of a branch (expression: ref is not main and not a tag)
   heavy-no-filter     a job with Gradle, Xcode, ESP-IDF, PlatformIO, Flutter builds or Renode on pull requests, with no paths filter and no changed-paths answer
   no-gate             skipped jobs (changed-paths answers) and no job that always runs after them, so a required check could wait forever
+  ubuntu-latest-infra a job that measures a coverage floor or tests infrastructure (systemd, mosquitto, containers, AppArmor) on `ubuntu-latest`: the image moves to a newer Ubuntu and the counts of gcov
+                      or the profiles of AppArmor change under it; pin `runs-on: ubuntu-24.04` with a comment (the other jobs may follow latest)
   changelog-union     CHANGELOG.md without `merge=union` in .gitattributes (two pull requests that add an entry do not conflict)
 
 Usage:
@@ -54,8 +56,8 @@ OWN_OWNERS = ("juanenrac",)
 
 SEVERITY = {"prt-checkout": "high", "secret-in-run": "high", "unpinned-action": "medium", "no-permissions": "medium",
             "no-timeout": "low", "no-concurrency": "low",
-            "macos-on-pr": "medium", "cancel-main": "medium", "no-branch-cancel": "low", "heavy-no-filter": "low", "no-gate": "low", "changelog-union": "low"}
-SPEED_RULES = frozenset({"macos-on-pr", "cancel-main", "no-branch-cancel", "heavy-no-filter", "no-gate", "changelog-union"})
+            "macos-on-pr": "medium", "cancel-main": "medium", "no-branch-cancel": "low", "heavy-no-filter": "low", "no-gate": "low", "changelog-union": "low", "ubuntu-latest-infra": "medium"}
+SPEED_RULES = frozenset({"macos-on-pr", "cancel-main", "no-branch-cancel", "heavy-no-filter", "no-gate", "changelog-union", "ubuntu-latest-infra"})
 WEIGHT = {"high": 3, "medium": 2, "low": 1}
 SEV_ORDER = {"low": 0, "medium": 1, "high": 2}
 RULES = tuple(SEVERITY)
@@ -71,6 +73,7 @@ RELEASE_WORDS = re.compile(r"(release|publish|deploy)", re.I)
 MACOS = re.compile(r"\bmacos-[\w.]+", re.I)
 HEAVY = re.compile(r"(gradlew|\bgradle\b|xcodebuild|swift test|idf\.py|espressif/idf|\bpio run\b|platformio|flutter build|renode)", re.I)
 CANCEL = re.compile(r"^\s*cancel-in-progress:\s*(?P<val>.+?)\s*$")
+INFRA = re.compile(r"(mosquitto|systemd|systemctl|apparmor|\bdocker\b|podman|gcov|lcov|coverage_threshold|cov-fail-under|fail_under|coverage floor|npm run coverage)", re.I)
 UNION = re.compile(r"(?m)^\S*CHANGELOG\S*\s+(?:\S+\s+)*merge=union\b")
 RELEASE_CMDS = re.compile(r"(gh\s+release\s+(create|upload)|action-gh-release|npm\s+publish|twine\s+upload|cargo\s+publish|pypa/gh-action-pypi-publish)")
 
@@ -263,6 +266,9 @@ def speed_findings(wf: "Workflow", jobs: list[dict], add) -> None:
             for j, code, full in texts:
                 if j["uses"] is None and HEAVY.search(full):
                     add("heavy-no-filter", j["line"], f"job '{j['name']}' builds with Gradle, Xcode, ESP-IDF, PlatformIO, Flutter or Renode on every pull request, without a paths filter")
+    for j, code, full in texts:   # ubuntu-latest-infra
+        if j["uses"] is None and re.search(r"ubuntu-latest", code) and INFRA.search(full):
+            add("ubuntu-latest-infra", j["line"], f"job '{j['name']}' measures coverage or tests infrastructure on ubuntu-latest (pin ubuntu-24.04)")
     skipped = [j for j, _, _ in texts if "matched" in j["keys"].get("if", "")]   # no-gate
     if skipped and not any("always()" in j["keys"].get("if", "") for j in jobs):
         add("no-gate", skipped[0]["line"], f"{len(skipped)} job(s) can be skipped by the paths answer and no job runs always() after them (a required check would wait)")
@@ -465,7 +471,7 @@ def summarize(repos: dict) -> dict:
 
 def render_table(repos: dict, summary: dict, detail: bool = False) -> str:
     short = {"unpinned-action": "unpin", "no-timeout": "notmo", "no-permissions": "noperm", "no-concurrency": "nocon", "prt-checkout": "prt", "secret-in-run": "secret",
-             "macos-on-pr": "macpr", "cancel-main": "cnlmn", "no-branch-cancel": "nocnl", "heavy-no-filter": "heavy", "no-gate": "nogat", "changelog-union": "union"}
+             "macos-on-pr": "macpr", "cancel-main": "cnlmn", "no-branch-cancel": "nocnl", "heavy-no-filter": "heavy", "no-gate": "nogat", "changelog-union": "union", "ubuntu-latest-infra": "ubu"}
     found = {f["rule"] for x in repos.values() for f in x["findings"]}
     RULES = tuple(r for r in globals()["RULES"] if r not in SPEED_RULES or r in found)   # the speed columns appear only when they have something
     head = ["repo", "eco", "wf"] + [short[r] for r in RULES] + ["score"]
