@@ -345,7 +345,7 @@ class CiStepTests(unittest.TestCase):
             self.assertEqual(wh.run_in_ci(Path(d)), [])
 
 
-SPEED_BASE = f"""name: CI
+SPEED_BASE = """name: CI
 on:
   push:
     branches: [main]
@@ -353,8 +353,8 @@ on:
 permissions:
   contents: read
 concurrency:
-  group: ${{{{ github.workflow }}}}-${{{{ github.ref }}}}
-  cancel-in-progress: ${{{{ github.ref != 'refs/heads/main' && !startsWith(github.ref, 'refs/tags/') }}}}
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' && !startsWith(github.ref, 'refs/tags/') }}
 jobs:
 """
 MAC_PLAIN = SPEED_BASE + """  ios:
