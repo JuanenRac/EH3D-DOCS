@@ -5,7 +5,7 @@
     "banner_check.py": "f1066ba136",
     "changelog_pr_check.py": "d32b3c36ff",
     "ci_validate.py": "ed70950c8d",
-    "lessons_lint.py": "df9d9d899c",
+    "lessons_lint.py": "8f81ed5c3a",
     "make_architecture.py": "34ab83b324",
     "make_structure.py": "354cdbb9b1",
     "pretty_run.py": "51a38eb42a",

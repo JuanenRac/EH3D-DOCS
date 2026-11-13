@@ -348,5 +348,227 @@ class CiStep(unittest.TestCase):
             self.assertEqual(ll.run_in_ci(repo), [])
 
 
+import subprocess
+
+
+def git(cwd, *args):
+    return subprocess.run(["git", *args], cwd=cwd, capture_output=True, text=True, encoding="utf-8", timeout=60)
+
+
+NL = chr(10)
+BS = chr(92)
+# private words are built from pieces, so that this file does not contain them either
+PRIVATE_WORD = "SON" + "NET"
+TRAILER = "Co-Auth" + "ored-By: someone"
+
+
+def rules_of(res):
+    return sorted({f["rule"] for f in res["findings"]})
+
+
+class MoreFileRules(unittest.TestCase):
+    def test_mosquitto_started_from_the_system(self):
+        direct = "import subprocess" + NL + "subprocess.Popen(['mosquitto', '-c', 'x.conf'])" + NL
+        via_name = "import subprocess" + NL + "# mosquitto" + NL + "broker = find('x')" + NL + "subprocess.Popen([broker, '-c', 'x.conf'])" + NL
+        fixed = direct.replace("import subprocess", "import subprocess, shutil") + "shutil.copy2('a', 'b')" + NL
+        other = "import subprocess" + NL + "subprocess.run(['mosquitto_passwd', '-b', 'f', 'u', 'p'])" + NL
+        for src, expected in ((direct, 1), (via_name, 1), (fixed, 0), (other, 0)):
+            self.assertEqual(len(run({"t.py": src}, ["mosquitto-direct"])["findings"]), expected, src)
+        self.assertEqual(len(run({"t.py": direct.replace("x.conf'])", "x.conf'])  # lessons: ok")}, ["mosquitto-direct"])["findings"]), 0)
+
+    def test_mosquitto_in_shell_and_workflows(self):
+        self.assertEqual(len(run({"run.sh": "mosquitto -c /tmp/x.conf &" + NL}, ["mosquitto-direct"])["findings"]), 1)
+        self.assertEqual(len(run({"w.yml": "      - run: |" + NL + "          sudo mosquitto -c /tmp/x.conf &" + NL}, ["mosquitto-direct"])["findings"]), 1)
+        self.assertEqual(run({"run.sh": "cp $(which mosquitto) ./broker" + NL + "mosquitto -c x &" + NL}, ["mosquitto-direct"])["findings"], [])
+        self.assertEqual(run({"run.sh": "mosquitto_pub -t a -m b" + NL}, ["mosquitto-direct"])["findings"], [])
+
+    def test_memcmp_against_a_string_literal(self):
+        self.assertEqual(len(run({"a.c": 'if (memcmp(buf, "CLER", 4) == 0) {}' + NL}, ["memcmp-string-literal"])["findings"]), 1)
+        self.assertEqual(run({"a.c": "if (memcmp(buf, magic, 4) == 0) {}" + NL}, ["memcmp-string-literal"])["findings"], [])
+        self.assertEqual(run({"a.py": 'memcmp(a, "CLER")' + NL}, ["memcmp-string-literal"])["findings"], [])   # only C and C++
+
+    def test_a_regex_whose_backslash_became_a_control_character(self):
+        broken = "import re" + NL + 're.sub("' + BS + 'bold' + BS + 'b", "x", text)' + NL
+        raw = "import re" + NL + 're.sub(r"' + BS + 'bold' + BS + 'b", "x", text)' + NL
+        self.assertEqual(len(run({"a.py": broken}, ["regex-control-char"])["findings"]), 1)
+        self.assertEqual(run({"a.py": raw}, ["regex-control-char"])["findings"], [])
+        self.assertEqual(run({"a.py": "import re" + NL + 're.compile("a' + BS + 'nb")' + NL}, ["regex-control-char"])["findings"], [])   # newline and tab are fine
+
+    def test_catalog_register(self):
+        files = {f"locales/{lang}.json": {"k": "text"} for lang in ll.LANGS}
+        self.assertEqual(run(files, ["catalog-register"])["findings"], [])
+        files["locales/fr.json"] = {"k": "Choisis ton fichier", "ok": "Choisissez votre fichier"}
+        files["locales/de.json"] = {"k": "Prüfe dein Netz", "ok": "Prüfen Sie Ihr Netz", "p": "{du} und {{dir}}"}
+        files["locales/pt.json"] = {"k": "Verifica o teu cabo", "ok": "Verifique o cabo"}
+        res = run(files, ["catalog-register"])
+        self.assertEqual(sorted(f["file"] for f in res["findings"]), ["locales/de.json", "locales/fr.json", "locales/pt.json"])
+        self.assertTrue(all("1 texts" in f["message"] for f in res["findings"]), res["findings"])   # placeholders and formal texts are not counted
+
+    def test_typescript_apis_newer_than_the_target(self):
+        ts = "const last = items.at(-1);" + NL + "const a = s.replaceAll('a', 'b');" + NL
+        self.assertEqual(len(run({"tsconfig.json": '{"compilerOptions": {"target": "ES2020"}}', "src/a.ts": ts}, ["ts-es2020-api"])["findings"]), 2)
+        self.assertEqual(run({"tsconfig.json": '{"compilerOptions": {"target": "ES2022"}}', "src/a.ts": ts}, ["ts-es2020-api"])["findings"], [])
+        self.assertEqual(run({"src/a.ts": ts}, ["ts-es2020-api"])["findings"], [])   # without a tsconfig that says ES2020 nothing is claimed
+        self.assertEqual(run({"tsconfig.json": '{"compilerOptions": {"lib": ["ES2020"]}}', "src/a.d.ts": ts}, ["ts-es2020-api"])["findings"], [])
+
+    def test_e2e_locator_made_of_tag_names(self):
+        bad = "await page.locator('header select').click();" + NL
+        good = "await page.getByTestId('lang').click();" + NL + "await page.locator('#id').click();" + NL + "await page.locator('header select.big').click();" + NL
+        self.assertEqual(len(run({"e2e/a.spec.ts": bad}, ["e2e-broad-locator"])["findings"]), 1)
+        self.assertEqual(run({"e2e/a.spec.ts": good}, ["e2e-broad-locator"])["findings"], [])
+        self.assertEqual(run({"src/a.ts": bad}, ["e2e-broad-locator"])["findings"], [])   # only e2e files
+
+    def test_forbidden_literal_from_the_settings(self):
+        cfg = {"lessons_lint": {"forbidden": [{"pattern": r"127" + BS + r".0" + BS + r".0" + BS + r".1:8080", "message": "use the current port", "globs": ["src/*"]}]}}
+        files = {"src/a.py": "url = '127.0.0.1:8080'" + NL, "docs/a.md": "127.0.0.1:8080" + NL, "tools/hygiene_config.json": cfg}
+        with Repo(files) as repo:
+            res = ll.lint_repo(repo, ["forbidden-literal"], config=ll.CONFIG_FILE)
+        self.assertEqual([f["file"] for f in res["findings"]], ["src/a.py"])
+        self.assertEqual(res["findings"][0]["message"], "use the current port")
+
+    def test_worktree_name(self):
+        with Repo({"x.project.json": {"name": "ELSEWHERE", "version": "1.0.0"}}) as repo:
+            self.assertEqual(rules_of(ll.lint_repo(repo, ["worktree-name"])), ["worktree-name"])
+        with Repo({"x.project.json": {"name": "toy", "version": "1.0.0"}}) as repo:
+            self.assertEqual(ll.lint_repo(repo, ["worktree-name"])["findings"], [])
+
+    def test_shell_script_without_the_executable_bit(self):
+        with Repo({"run.sh": "#!/bin/sh" + NL + "echo hi" + NL, "plain.sh": "echo hi" + NL}) as repo:
+            git(repo, "init", "-q")
+            git(repo, "add", "run.sh", "plain.sh")
+            self.assertEqual([f["file"] for f in ll.lint_repo(repo, ["shell-not-executable"])["findings"]], ["run.sh"])
+            git(repo, "update-index", "--chmod=+x", "run.sh")
+            self.assertEqual(ll.lint_repo(repo, ["shell-not-executable"])["findings"], [])
+        with Repo({"run.sh": "#!/bin/sh" + NL}) as repo:
+            self.assertEqual(ll.lint_repo(repo, ["shell-not-executable"])["findings"], [])   # not a repository: nothing to say
+
+
+G = ("-c", "user.name=t", "-c", "user.email=t@example.org")
+
+
+def commit(repo, message, *paths):
+    git(repo, *G, "add", *paths)
+    return git(repo, *G, "commit", "-q", "-m", message)
+
+
+class PrecheckTests(unittest.TestCase):
+    def make(self, files):
+        """A repository with a first commit on main, which the changes of the tests are compared with."""
+        ctx = Repo(files)
+        repo = ctx.__enter__()
+        git(repo, "init", "-q", "-b", "main")
+        commit(repo, "first", *files)
+        git(repo, "checkout", "-q", "-b", "work")
+        self.addCleanup(ctx.__exit__, None, None, None)
+        return repo
+
+    def pre(self, repo, **kw):
+        return ll.precheck_repo(repo, "main", config=ll.CONFIG_FILE, **kw)
+
+    def test_a_clean_change_passes(self):
+        repo = self.make({"a.py": "x = 1" + NL})
+        (repo / "a.py").write_text("x = 2" + NL, encoding="utf-8")
+        res = self.pre(repo)
+        self.assertEqual(res["findings"], [])
+        self.assertEqual(res["base"], "main")
+
+    def test_the_file_rules_only_count_in_what_the_change_touches(self):
+        old = "import subprocess" + NL + "subprocess.run(['a'])" + NL
+        repo = self.make({"legacy.py": old, "mem.c": 'int f(){ return memcmp(a, "AB", 2); }' + NL})
+        self.assertEqual(self.pre(repo)["findings"], [])   # what was already there is not the business of this change
+        (repo / "new.py").write_text(old, encoding="utf-8")
+        (repo / "legacy.py").write_text(old + "subprocess.run(['b'])" + NL, encoding="utf-8")
+        res = self.pre(repo)
+        self.assertEqual(sorted((f["file"], f["line"]) for f in res["findings"]), [("legacy.py", 3), ("new.py", 2)])
+
+    def test_private_words_and_assistant_trailers(self):
+        repo = self.make({"a.md": "text" + NL})
+        (repo / "a.md").write_text("text" + NL + f"see the {PRIVATE_WORD} folder" + NL + "and " + "AR" + "0105 too" + NL, encoding="utf-8")
+        res = self.pre(repo)
+        self.assertEqual([f["rule"] for f in res["findings"]], ["private-reference", "private-reference"])
+        self.assertTrue(all(f["line"] in (2, 3) for f in res["findings"]))
+        commit(repo, "Fix a thing" + NL + NL + TRAILER, "a.md")
+        res = self.pre(repo)
+        self.assertIn("commit-trailer", rules_of(res))
+        self.assertNotIn("a.md:1", [f"{f['file']}:{f['line']}" for f in res["findings"]])
+
+    def test_tests_added_without_the_counts(self):
+        repo = self.make({"README.md": "# x" + NL})
+        (repo / "tests").mkdir()
+        (repo / "tests" / "test_a.py").write_text("def test_one():" + NL + "    pass" + NL, encoding="utf-8")
+        self.assertEqual(rules_of(self.pre(repo)), ["test-count-stale"])
+        (repo / "README.md").write_text("# x" + NL + "12 tests" + NL, encoding="utf-8")
+        self.assertEqual(self.pre(repo)["findings"], [])
+
+    def test_generated_text_edited_by_hand(self):
+        readme = "# x" + NL + "<!-- urtc-section:glance -->" + NL + "generated line" + NL + "## Prose" + NL + "free text" + NL
+        repo = self.make({"README.md": readme, "data/glance.json": "{}" + NL, "spec/readme/sections.json": "{}" + NL})
+        (repo / "README.md").write_text(readme.replace("generated line", "edited line"), encoding="utf-8")
+        self.assertEqual(rules_of(self.pre(repo)), ["generated-hand-edit"])
+        (repo / "spec" / "readme" / "sections.json").write_text('{"a": 1}' + NL, encoding="utf-8")   # the source changed too
+        self.assertEqual(self.pre(repo)["findings"], [])
+        git(repo, "checkout", "-q", "--", "README.md", "spec/readme/sections.json")
+        (repo / "README.md").write_text(readme.replace("free text", "other prose"), encoding="utf-8")   # prose outside the generated block
+        self.assertEqual(self.pre(repo)["findings"], [])
+        git(repo, "checkout", "-q", "--", "README.md")
+        (repo / "data" / "glance.json").write_text('{"a": 1}' + NL, encoding="utf-8")
+        self.assertEqual(rules_of(self.pre(repo)), ["generated-hand-edit"])
+
+    def test_branch_behind_the_base(self):
+        repo = self.make({"a.txt": "1" + NL})
+        git(repo, "checkout", "-q", "main")
+        (repo / "b.txt").write_text("2" + NL, encoding="utf-8")
+        commit(repo, "main moves", "b.txt")
+        git(repo, "checkout", "-q", "work")
+        res = self.pre(repo)
+        self.assertEqual(rules_of(res), ["stacked-or-behind"])
+        self.assertIn("1 commits behind", res["findings"][0]["message"])
+
+    def test_a_branch_stacked_on_another_one(self):
+        repo = self.make({"a.txt": "1" + NL})
+        bare = repo.parent / "remote.git"
+        git(repo.parent, "init", "-q", "--bare", "-b", "main", str(bare))
+        git(repo, "remote", "add", "origin", str(bare))
+        git(repo, "push", "-q", "origin", "main")
+        (repo / "a.txt").write_text("2" + NL, encoding="utf-8")
+        commit(repo, "work of the first branch", "a.txt")
+        git(repo, "push", "-q", "origin", "work")
+        git(repo, "checkout", "-q", "-b", "second")
+        (repo / "b.txt").write_text("3" + NL, encoding="utf-8")
+        commit(repo, "work of the second", "b.txt")
+        git(repo, "fetch", "-q", "origin")
+        res = ll.precheck_repo(repo, "origin/main", config=ll.CONFIG_FILE)
+        self.assertIn("stacked-or-behind", rules_of(res))
+        self.assertIn("origin/work", " ".join(f["message"] for f in res["findings"]))
+        git(repo, "checkout", "-q", "work")
+        self.assertEqual(ll.precheck_repo(repo, "origin/main", config=ll.CONFIG_FILE)["findings"], [])   # its own remote copy is not another branch
+
+    def test_the_commands_of_the_workflows_are_listed(self):
+        wf = "jobs:" + NL + "  a:" + NL + "    steps:" + NL + "      - run: ruff check --select F,E9,B src tools" + NL + "      - run: python -m mypy src" + NL + "      - run: cargo fmt --check" + NL
+        repo = self.make({".github/workflows/ci.yml": wf})
+        res = self.pre(repo)
+        self.assertEqual(res["run_before_push"], ["ruff check --select F,E9,B src tools", "python -m mypy src", "cargo fmt --check"])
+
+    def test_the_cli_exit_codes_and_the_final_line(self):
+        repo = self.make({"a.md": "text" + NL})
+        cli = Cli()
+        code, out, _ = cli.call("--repo", str(repo), "--precheck", "--base", "main")
+        self.assertEqual(code, 0)
+        self.assertIn("PRECHECK=PASS new=0", out)
+        (repo / "a.md").write_text("text" + NL + PRIVATE_WORD + NL, encoding="utf-8")
+        code, out, _ = cli.call("--repo", str(repo), "--precheck", "--base", "main")
+        self.assertEqual(code, 1)
+        self.assertIn("PRECHECK=FAIL new=1", out)
+        code, out, err = cli.call("--repo", str(repo), "--precheck", "--base", "main", "--json")
+        self.assertEqual(code, 1)
+        self.assertEqual(json.loads(out)["findings"][0]["rule"], "private-reference")
+        self.assertIn("PRECHECK=FAIL", err)
+
+    def test_the_new_rules_are_not_part_of_the_default_set(self):
+        self.assertFalse(set(ll.FILE_RULES + ll.PRECHECK_RULES) & set(ll.RULES))
+        self.assertEqual(set(ll.ALL_RULES), set(ll.RULES) | set(ll.FILE_RULES) | set(ll.PRECHECK_RULES))
+        self.assertEqual(Cli().call("--repo", ".", "--rules", "nope")[0], 2)
+
+
 if __name__ == "__main__":
     unittest.main()
