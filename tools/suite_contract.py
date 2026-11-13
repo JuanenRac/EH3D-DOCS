@@ -15,7 +15,7 @@ The checks:
     manifests   every eh3d.project.json is JSON with a name that is the folder and a version of dotted numbers, and the parser of EH3D-UPDATER (when it is there) accepts it
     tools       every repository holds the shared ci_validate.py of this one (same tools version in the header, same code)
     paths       a dependency of a Cargo.toml on a sibling by path says which version of it the program needs (`version = ">=0.0.1", path = "../EH3D-X"`)
-    versions    the version that SUITE_MAP.md gives for a repository is the one in its manifest
+    versions    the version that SUITE_MAP.md gives for a repository is its newest release (its manifest, with no release tag)
     ports       the screens and the server agree on the port of the server
     templates   every repository has the issue forms and the pull-request template that docs/suite.json lists (github_templates); only warnings
     translations a section of a translated README that is older than the same section of the English one (from the history of git; only warnings)
@@ -126,6 +126,22 @@ def check_paths(workspace: Path) -> list[Finding]:
 ROW = re.compile(r"^\|\s*\[(EH3D-[A-Z0-9-]+)\]\([^)]*\)\s*\|[^|]*\|[^|]*\|\s*([^|]*?)\s*\|")
 
 
+def shown_version(repo: Path) -> str | None:
+    """The version the map shows for a repository: the newest release it has published (its newest `v<version>` tag), and the version of its manifest when it has no tag, because a manifest that is ahead of the releases is work not published yet."""
+    import subprocess
+
+    manifest = manifest_of(repo) if repo.is_dir() else None
+    fallback = manifest.get("version") if manifest else None
+    try:
+        done = subprocess.run(["git", "-C", str(repo), "tag", "--list", "v*"], capture_output=True, text=True, timeout=20)
+        tags = [x[1:] for x in done.stdout.split() if VERSION.match(x[1:])]
+    except (OSError, subprocess.SubprocessError):
+        tags = []
+    if tags:
+        return max(tags, key=lambda v: tuple(int(n) for n in v.split(".")) + (0,) * (4 - v.count(".") - 1))
+    return fallback if isinstance(fallback, str) else None
+
+
 def check_versions(workspace: Path) -> list[Finding]:
     out: list[Finding] = []
     here = workspace / "EH3D-DOCS" / "docs" / "SUITE_MAP.md"
@@ -137,11 +153,11 @@ def check_versions(workspace: Path) -> list[Finding]:
             continue
         name, shown = m.group(1), m.group(2)
         repo = workspace / name
-        manifest = manifest_of(repo) if repo.is_dir() else None
-        if manifest is None or not VERSION.match(shown):
+        version = shown_version(repo) if repo.is_dir() else None
+        if version is None or not VERSION.match(shown):
             continue
-        if manifest.get("version") != shown:
-            out.append(Finding("versions", name, "WARNING", f"SUITE_MAP says {shown} and the manifest says {manifest.get('version')}"))
+        if version != shown:
+            out.append(Finding("versions", name, "WARNING", f"SUITE_MAP says {shown} and the newest release (or the manifest, with no release) says {version}"))
     return out
 
 
@@ -150,7 +166,7 @@ CELLS = re.compile(r"^(\|\s*\[(EH3D-[A-Z0-9-]+)\]\([^)]*\)\s*\|[^|]*\|[^|]*\|)(\
 
 
 def write_map(workspace: Path, write: bool = True) -> list[str]:
-    """Puts in the Release column of SUITE_MAP.md the version of the manifest of each repository that is in the workspace, and nothing else: the words of the map are a person's.
+    """Puts in the Release column of SUITE_MAP.md the newest published release of each repository (its manifest version when it has no release tag) that is in the workspace, and nothing else: the words of the map are a person's.
     Returns what changed, as `<repository>: <old> -> <new>`; with `write` false it changes nothing."""
     here = workspace / "EH3D-DOCS" / "docs" / "SUITE_MAP.md"
     if not here.is_file():
@@ -165,8 +181,7 @@ def write_map(workspace: Path, write: bool = True) -> list[str]:
             continue
         name, shown = m.group(2), m.group(4)
         repo = workspace / name
-        manifest = manifest_of(repo) if repo.is_dir() else None
-        version = manifest.get("version") if manifest else None
+        version = shown_version(repo) if repo.is_dir() else None
         if not isinstance(version, str) or not VERSION.match(version) or version == shown:
             continue
         lines[i] = f"{m.group(1)}{m.group(3)}{version}{m.group(5)}{m.group(6)}"
@@ -361,7 +376,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--workspace", type=Path, default=HERE.parents[1], help="the folder that holds the repositories (default: the one that holds this one)")
     parser.add_argument("--only", choices=sorted(CHECKS), help="run a single check")
     parser.add_argument("--strict", action="store_true", help="warnings fail too")
-    parser.add_argument("--write-map", action="store_true", help="put the versions of the manifests in the Release column of SUITE_MAP.md and stop (nothing else of the map changes)")
+    parser.add_argument("--write-map", action="store_true", help="put the newest published release of each repository (the manifest version when it has no tag) in the Release column of SUITE_MAP.md and stop (nothing else of the map changes)")
     args = parser.parse_args(argv)
     if args.write_map:
         changed = write_map(args.workspace)
