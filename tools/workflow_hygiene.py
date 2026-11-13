@@ -251,7 +251,7 @@ def speed_findings(wf: "Workflow", jobs: list[dict], add) -> None:
                 guard = " ".join([j["keys"].get("if", "")] + [ln for ln in code.splitlines() if "event_name" in ln or "pull_request" in ln])
                 if not re.search(r"(event_name|pull_request|\.matched|full-ci)", guard):
                     add("macos-on-pr", j["line"], f"job '{j['name']}' runs on a macOS runner in every pull request")
-    cancels = [(i + 1, CANCEL.match(code).group("val").strip("\"'")) for i, code in wf.code_lines() if CANCEL.match(code)]
+    cancels = [(i + 1, m.group("val").strip("\"'")) for i, code in wf.code_lines() if (m := CANCEL.match(code))]
     if "push" in trig:   # cancel-main
         for line, val in cancels:
             if val.lower() == "true":
