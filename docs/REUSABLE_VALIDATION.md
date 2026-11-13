@@ -71,3 +71,41 @@ What to look at in the pilot: that `tools/ci_validate.py` finds the repository's
 - It cannot be run from a local checkout: the only test is a real run on GitHub, and only three repositories have done it.
 - The name of the check changes (`validate / Validate the repository`), which matters wherever a rule requires a check by name.
 - A repository whose `ci.yml` runs `ci_validate` with environment variables or in another folder needs an input for it first.
+
+## The supply-chain workflow
+
+`.github/workflows/supply-chain.yml` is a second reusable workflow, for the files of a release: a bill of materials in the CycloneDX format, signed provenance attestations for the files (`actions/attest`) and the bill attached to the **draft** release. It is an opt-in capability and it is **not switched on in any release**: the input `enabled` is `false` by default, and with it off every job is skipped, so calling the workflow reads, writes and signs nothing.
+
+The calling workflow builds the files, uploads them as one artifact (a flat list of files, no folders) and calls the workflow in a job of its own:
+
+```yaml
+  supply-chain:
+    needs: build
+    uses: JuanenRac/EH3D-DOCS/.github/workflows/supply-chain.yml@<full commit>
+    permissions:
+      contents: write
+      id-token: write
+      attestations: write
+    with:
+      enabled: true
+      artifact: release-files
+      name: ${{ github.event.repository.name }}
+      version: "1.2.3"
+      tools-ref: <the same full commit>
+      attach-to-release: true
+      release-tag: v1.2.3
+```
+
+| Input | Type | Default | Meaning |
+|---|---|---|---|
+| `enabled` | boolean | `false` | the switch: nothing runs while it is false |
+| `artifact` | string | (required) | the artifact of the calling workflow that holds the files of the release |
+| `name` | string | (required) | the name of the release in the bill (the repository) |
+| `version` | string | (required) | the version of the release in the bill |
+| `tools-ref` | string | `main` | the commit of this repository whose `tools/make_release_sbom.py` writes the bill; name the same commit as in `uses` |
+| `attach-to-release` | boolean | `false` | attach the bill to the draft release named by `release-tag` |
+| `release-tag` | string | empty | the tag of the draft release that gets the bill |
+
+Three jobs: `sbom` writes `sbom.cdx.json` (the SHA-256 of every file, the same bytes for the same files) and uploads it as the artifact `<artifact>-sbom`; `attest` makes the provenance attestation of the files and attests the bill against them, and it is the only job with `id-token` and `attestations`; `attach` (only with `attach-to-release`) adds the bill to a draft release found by its tag and fails when the release is already published. The default permission of the workflow is `contents: read`, and the permissions a job asks for must be given by the calling job, as in the example. Every action is pinned to a full commit with its version in a comment. The attestations come in addition to the signature of the release files, which does not change.
+
+`.github/workflows/supply-chain-test.yml` tries it on example files: on a pull request it writes the bill for them and checks that the reusable workflow starts and skips its jobs; started by hand with `exercise` on it also makes the bill and the attestations of the example files. To switch the capability on in a release, add the job above to the release workflow of a repository with `enabled: true` and look at the attestations of the first run before the next one.
