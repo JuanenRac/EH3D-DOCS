@@ -4,6 +4,7 @@ All notable changes to this project are documented here.
 
 ## [Unreleased]
 
+- **A release is meant to hold at least 5 entries:** `release_notes.py` and `prerelease_check.py` warn below five entries of a CHANGELOG section (it was three), and `docs/RELEASING.md` and the tests say so.
 - **The release column of the map of the suite is the one of the manifests again:** `docs/SUITE_MAP.md` was written with `suite_contract.py --write-map` after the releases of the core and of the CAM programs, so the 29 rows that said an older version now say the one the manifest says.
 - **The READMEs link the guide to use the shared crates from another repository:** the list of guides of the eight READMEs names `docs/CONSUMING.md` of EH3D-COMMON (the sibling folders, the path and version line, the tags the CI builds against and `min_common`).
 - **The validator checks the file tree:** `tools/ci_validate.py` (tools 5) runs the check of the tree of files of the eight READMEs and of the Repository Structure picture against `docs/structure.json` and the files of the repository, through `make_structure.run_in_ci` (tools 3, with five tests in `tools/test_make_structure_ci.py`); a repository without `docs/structure.json` passes. The copies of the other repositories take it with `tools/sync_shared_tools.py --write`.

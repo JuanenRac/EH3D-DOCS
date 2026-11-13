@@ -8,7 +8,7 @@ Every number of the version goes from 0 to 9 and carries to the one before it: `
 
 ## Step by step
 
-1. **Put the entries in the CHANGELOG.** Every change of the repository is one line under `## [Unreleased]` of its `CHANGELOG.md`, in English. A release is meant to hold at least 3 entries.
+1. **Put the entries in the CHANGELOG.** Every change of the repository is one line under `## [Unreleased]` of its `CHANGELOG.md`, in English. A release is meant to hold at least 5 entries.
 2. **See what would change.**
 
    ```
@@ -32,7 +32,7 @@ Every number of the version goes from 0 to 9 and carries to the one before it: `
    python tools/prerelease_check.py EH3D-SERVER
    ```
 
-   It prints `OK`, `WARN`, `SKIP` or `FAIL` for the versions of all the files, the CHANGELOG, the eight README files (the status table with the same lights), the git tree (clean, nothing unpushed), the repository's own `ci_validate`, and the GitHub Actions runs of the commit (they must exist and be green; without `gh` it says it skipped them). It publishes nothing. `--no-ci` does not ask GitHub; `--allow-short` accepts a CHANGELOG section with fewer than 3 entries.
+   It prints `OK`, `WARN`, `SKIP` or `FAIL` for the versions of all the files, the CHANGELOG, the eight README files (the status table with the same lights), the git tree (clean, nothing unpushed), the repository's own `ci_validate`, and the GitHub Actions runs of the commit (they must exist and be green; without `gh` it says it skipped them). It publishes nothing. `--no-ci` does not ask GitHub; `--allow-short` accepts a CHANGELOG section with fewer than 5 entries.
 7. **Take the notes of the release.**
 
    ```
@@ -41,7 +41,7 @@ Every number of the version goes from 0 to 9 and carries to the one before it: `
    python tools/release_notes.py EH3D-SERVER --title
    ```
 
-   `--check` fails when the CHANGELOG has no section for the version of the manifest or `[Unreleased]` still holds entries. Fewer than 3 entries exits with 2 and a warning (`--allow-short` accepts it). Then publish with `gh release create vX.Y.Z --title "<the title>" --notes-file notes.md <files>`; the scripts do not publish.
+   `--check` fails when the CHANGELOG has no section for the version of the manifest or `[Unreleased]` still holds entries. Fewer than 5 entries exits with 2 and a warning (`--allow-short` accepts it). Then publish with `gh release create vX.Y.Z --title "<the title>" --notes-file notes.md <files>`; the scripts do not publish.
 
 ## The packages of the services, and signing them
 
@@ -63,7 +63,7 @@ A release without the `.sig` is refused by every machine that turned the check o
 
 ## When to publish
 
-A release is meant to hold **at least 3 entries** under `[Unreleased]`; `release_notes.py --check` exits with 2 when there are fewer, and `--allow-short` accepts it for an emergency. Raise the version by batches, not for each change: the odometer carries (`0.0.9` becomes `0.1.0`), and every release is a GitHub release with its notes, not only a tag. The documents (README files in eight languages, the changelog, the counts of tests and the status table) are brought up to date in the same step as the version.
+A release is meant to hold **at least 5 entries** under `[Unreleased]`; `release_notes.py --check` exits with 2 when there are fewer, and `--allow-short` accepts it for an emergency. Raise the version by batches, not for each change: the odometer carries (`0.0.9` becomes `0.1.0`), and every release is a GitHub release with its notes, not only a tag. The documents (README files in eight languages, the changelog, the counts of tests and the status table) are brought up to date in the same step as the version.
 
 ## Other reports
 
