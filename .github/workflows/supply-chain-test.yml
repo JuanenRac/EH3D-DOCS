@@ -1,0 +1,80 @@
+name: Supply chain (test)
+
+# Tries supply-chain.yml on example files. On a pull request or a push the capability stays off (enabled false): the run checks that the bill of materials is written
+# for the example files and that the reusable workflow starts and skips its jobs. Started by hand with `exercise` on, it also runs the bill, the attestations of the
+# example files and nothing else: it never attaches anything to a release.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/supply-chain.yml"
+      - ".github/workflows/supply-chain-test.yml"
+      - "tools/make_release_sbom.py"
+  pull_request:
+    paths:
+      - ".github/workflows/supply-chain.yml"
+      - ".github/workflows/supply-chain-test.yml"
+      - "tools/make_release_sbom.py"
+  workflow_dispatch:
+    inputs:
+      exercise:
+        description: "Run the bill and the attestations on the example files (writes attestations for them)"
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  example-files:
+    name: Example release files
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: "3.12"
+      - name: Make the example files
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir example-release
+          printf 'first example file\n' > example-release/example-one.txt
+          printf 'second example file\n' > example-release/example-two.txt
+      - name: The bill of materials of the example files
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -I tools/make_release_sbom.py --name example --version 0.0.0 --out "$RUNNER_TEMP/example.cdx.json" example-release
+          python -I -c "import json,sys; d=json.load(open(sys.argv[1])); assert d['bomFormat']=='CycloneDX' and len(d['components'])==2, d" "$RUNNER_TEMP/example.cdx.json"
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: example-release
+          path: example-release
+          if-no-files-found: error
+
+  supply-chain:
+    name: Reusable supply chain
+    needs: example-files
+    # a pull request from a fork has no write token, and the reusable workflow asks for it
+    if: ${{ github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository }}
+    uses: ./.github/workflows/supply-chain.yml
+    permissions:
+      contents: write
+      id-token: write
+      attestations: write
+    with:
+      enabled: ${{ github.event_name == 'workflow_dispatch' && inputs.exercise }}
+      artifact: example-release
+      name: example
+      version: "0.0.0"
+      tools-ref: ${{ github.sha }}
+      attach-to-release: false
