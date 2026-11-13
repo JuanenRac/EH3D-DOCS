@@ -345,5 +345,172 @@ class CiStepTests(unittest.TestCase):
             self.assertEqual(wh.run_in_ci(Path(d)), [])
 
 
+SPEED_BASE = f"""name: CI
+on:
+  push:
+    branches: [main]
+  pull_request:
+permissions:
+  contents: read
+concurrency:
+  group: ${{{{ github.workflow }}}}-${{{{ github.ref }}}}
+  cancel-in-progress: ${{{{ github.ref != 'refs/heads/main' && !startsWith(github.ref, 'refs/tags/') }}}}
+jobs:
+"""
+MAC_PLAIN = SPEED_BASE + """  ios:
+    runs-on: macos-latest
+    timeout-minutes: 30
+    steps:
+      - run: echo build
+"""
+MAC_GUARDED = SPEED_BASE + """  ios:
+    if: ${{ github.event_name != 'pull_request' || contains(github.event.pull_request.labels.*.name, 'full-ci') }}
+    runs-on: macos-latest
+    timeout-minutes: 30
+    steps:
+      - run: echo build
+"""
+MAC_MATRIX_PLAIN = SPEED_BASE + """  tests:
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 30
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    steps:
+      - run: echo hi
+"""
+MAC_MATRIX_GUARDED = SPEED_BASE + """  tests:
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 30
+    strategy:
+      matrix:
+        os: ${{ fromJSON(github.event_name == 'pull_request' && '["ubuntu-latest"]' || '["ubuntu-latest","macos-latest"]') }}
+    steps:
+      - run: echo hi
+"""
+HEAVY_PLAIN = SPEED_BASE + """  android:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - run: ./gradlew test
+"""
+HEAVY_GATED = (SPEED_BASE + """  changes:
+    uses: JuanenRac/EH3D-DOCS/.github/workflows/changed-paths.yml@3d3c42e5aac5ba805825da76410c181273ba90b1
+    with:
+      paths: app/**
+  android:
+    needs: changes
+    if: ${{ github.ref == 'refs/heads/main' || needs.changes.outputs.matched == 'true' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - run: ./gradlew test
+  ci-gate:
+    if: ${{ always() }}
+    needs: [android]
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - run: echo ok
+""")
+
+
+def speed(text, name="ci.yml"):
+    return wh.check_workflow(Path(name), text, speed=True)
+
+
+class SpeedRuleTests(unittest.TestCase):
+    """The rules that keep the queue of the runners short without taking a check away."""
+
+    def test_speed_rules_are_off_unless_asked_for(self):
+        self.assertEqual(rules(check(MAC_PLAIN)), [])
+        self.assertIn("macos-on-pr", rules(speed(MAC_PLAIN)))
+
+    def test_macos_job_needs_a_guard_on_the_event(self):
+        self.assertIn("macos-on-pr", rules(speed(MAC_PLAIN)))
+        self.assertNotIn("macos-on-pr", rules(speed(MAC_GUARDED)))
+        self.assertIn("macos-on-pr", rules(speed(MAC_MATRIX_PLAIN)))
+        self.assertNotIn("macos-on-pr", rules(speed(MAC_MATRIX_GUARDED)))
+
+    def test_macos_without_a_pull_request_trigger_is_fine(self):
+        text = MAC_PLAIN.replace("  pull_request:\n", "")
+        self.assertNotIn("macos-on-pr", rules(speed(text)))
+
+    def test_a_plain_cancel_in_progress_true_cancels_main(self):
+        plain = MAC_GUARDED.replace("${{ github.ref != 'refs/heads/main' && !startsWith(github.ref, 'refs/tags/') }}", "true")
+        self.assertIn("cancel-main", rules(speed(plain)))
+        self.assertNotIn("cancel-main", rules(speed(MAC_GUARDED)))
+        only_pr = plain.replace("  push:\n    branches: [main]\n", "")
+        self.assertNotIn("cancel-main", rules(speed(only_pr)))   # a workflow that never runs on main may cancel freely
+
+    def test_a_pull_request_workflow_must_cancel_a_superseded_branch_run(self):
+        none = MAC_GUARDED.replace("concurrency:\n  group: ${{ github.workflow }}-${{ github.ref }}\n  cancel-in-progress: ${{ github.ref != 'refs/heads/main' && !startsWith(github.ref, 'refs/tags/') }}\n", "")
+        self.assertIn("no-branch-cancel", rules(speed(none)))
+        never = MAC_GUARDED.replace("${{ github.ref != 'refs/heads/main' && !startsWith(github.ref, 'refs/tags/') }}", "false")
+        self.assertIn("no-branch-cancel", rules(speed(never)))
+        self.assertNotIn("no-branch-cancel", rules(speed(MAC_GUARDED)))
+        self.assertNotIn("no-branch-cancel", rules(speed(none.replace("pull_request:", "workflow_dispatch:"))))   # no pull request: nothing to cancel
+
+    def test_a_heavy_job_needs_a_paths_filter_or_a_changed_paths_answer(self):
+        self.assertIn("heavy-no-filter", rules(speed(HEAVY_PLAIN)))
+        self.assertNotIn("heavy-no-filter", rules(speed(HEAVY_GATED)))
+        filtered = HEAVY_PLAIN.replace("  pull_request:\n", "  pull_request:\n    paths-ignore:\n      - 'docs/**'\n")
+        self.assertNotIn("heavy-no-filter", rules(speed(filtered)))
+
+    def test_skipped_jobs_need_a_job_that_always_runs(self):
+        self.assertNotIn("no-gate", rules(speed(HEAVY_GATED)))
+        without = HEAVY_GATED.replace("if: ${{ always() }}", "if: ${{ success() }}")
+        self.assertIn("no-gate", rules(speed(without)))
+
+    def test_changelog_union_is_read_from_gitattributes(self):
+        with tempfile.TemporaryDirectory() as d:
+            repo = Path(d) / "R"
+            (repo / ".github" / "workflows").mkdir(parents=True)
+            (repo / ".github" / "workflows" / "ci.yml").write_text(MAC_GUARDED, encoding="utf-8")
+            (repo / "CHANGELOG.md").write_text("# Changelog\n", encoding="utf-8")
+            found = [f["rule"] for r in wh.scan(repo, speed=True).values() for f in r["findings"]]
+            self.assertEqual(found, ["changelog-union"])
+            (repo / ".gitattributes").write_text("* text=auto\nCHANGELOG.md merge=union\n", encoding="utf-8")
+            found = [f["rule"] for r in wh.scan(repo, speed=True).values() for f in r["findings"]]
+            self.assertEqual(found, [])
+
+    def test_a_repository_turns_the_speed_rules_on_in_its_settings(self):
+        with tempfile.TemporaryDirectory() as d:
+            repo = Path(d) / "R"
+            (repo / ".github" / "workflows").mkdir(parents=True)
+            (repo / "tools").mkdir()
+            (repo / ".github" / "workflows" / "ci.yml").write_text(MAC_PLAIN, encoding="utf-8")
+            self.assertEqual([f for r in wh.scan(repo).values() for f in r["findings"]], [])
+            (repo / "tools" / "hygiene_config.json").write_text(json.dumps({"workflow_hygiene": {"speed": True}}), encoding="utf-8")
+            self.assertIn("macos-on-pr", [f["rule"] for r in wh.scan(repo).values() for f in r["findings"]])
+            self.assertTrue(wh.run_in_ci(repo))   # and the validation of the repository fails on it
+
+    def test_command_line_speed_flag_and_rule_selection(self):
+        with tempfile.TemporaryDirectory() as d:
+            repo = Path(d) / "R"
+            (repo / ".github" / "workflows").mkdir(parents=True)
+            (repo / ".github" / "workflows" / "ci.yml").write_text(MAC_PLAIN, encoding="utf-8")
+            for args in (("--speed",), ("--rules", "macos-on-pr")):
+                out, err = io.StringIO(), io.StringIO()
+                with contextlib.redirect_stdout(out), contextlib.redirect_stderr(err):
+                    code = wh.main(["--root", str(repo), "--check", *args])
+                self.assertEqual(code, 1, args)
+                self.assertIn("WORKFLOW_HYGIENE=FAIL", out.getvalue())
+            out = io.StringIO()
+            with contextlib.redirect_stdout(out):
+                self.assertEqual(wh.main(["--root", str(repo), "--check"]), 0)
+
+    def test_the_canonical_workflows_of_this_repository_follow_the_rules(self):
+        root = Path(__file__).resolve().parents[1]
+        if not (root / ".github" / "workflows").is_dir():
+            self.skipTest("the workflows are not part of this checkout")
+        found = [f"{r}: {f['file']} {f['rule']}" for r in wh.scan(root, speed=True).values() for f in r["findings"] if f["rule"] in wh.SPEED_RULES]
+        self.assertEqual(found, [])
+        template = root / "docs" / "templates" / "new_repo" / "ci.yml"
+        if template.is_file():
+            self.assertEqual([f["rule"] for f in speed(template.read_text(encoding="utf-8"), "ci.yml") if f["rule"] in wh.SPEED_RULES], [])
+            self.assertIn("always()", template.read_text(encoding="utf-8"))
+
+
 if __name__ == "__main__":
     unittest.main()
