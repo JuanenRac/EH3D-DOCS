@@ -52,11 +52,13 @@ class ReusableWorkflowTests(unittest.TestCase):
     def test_the_guide_shows_how_to_call_it_with_a_tag(self) -> None:
         self.assertIn("uses: JuanenRac/EH3D-DOCS/.github/workflows/validate.yml@<tag>", self.guide)
 
-    def test_the_steps_are_those_of_the_ci_of_this_repository(self) -> None:
+    def test_the_ci_of_this_repository_calls_the_reusable_workflow_with_all_its_checks(self) -> None:
         ci = (ROOT / ".github" / "workflows" / "ci.yml").read_text(encoding="utf-8")
+        self.assertIn("uses: ./.github/workflows/validate.yml", ci)
+        for option in ("check-pictures: true", "check-links: true", "run-tool-tests: true"):
+            self.assertIn(option, ci)
         for command in ("python -I tools/ci_validate.py", "python -I tools/make_architecture.py --check", "python -I tools/make_structure.py --check --readmes",
                         "python -I tools/check_links.py", 'python -I -m unittest discover -s tools -p "test_*.py"'):
-            self.assertIn(command, ci)
             self.assertIn(command, self.text)
 
 

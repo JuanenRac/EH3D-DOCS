@@ -14,10 +14,21 @@ permissions:
   contents: read
 
 jobs:
+  # The checks every repository of the suite runs, held once in EH3D-DOCS as a reusable workflow; the reference is a full
+  # commit, so a change there reaches this repository only when this line is moved.
   validate:
-    name: Validate the repository
+    uses: ./.github/workflows/validate.yml
+    with:
+      python-version: "3.12"
+      check-pictures: true
+      check-links: true
+      run-tool-tests: true
+
+  changelog:
+    name: The change has a line in the CHANGELOG
+    if: ${{ github.event_name == 'pull_request' && !contains(github.event.pull_request.labels.*.name, 'no-changelog') }}
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -26,20 +37,21 @@ jobs:
       - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
         with:
           python-version: "3.12"
-      - name: Manifest, documentation and language parity
-        run: python -I tools/ci_validate.py
-      - name: Pictures of the README
-        run: |
-          python -I tools/make_architecture.py --check
-          python -I tools/make_structure.py --check --readmes
-      - name: Links between the documents
-        run: python -I tools/check_links.py
-      - name: Tests of the repository checks
-        run: python -I -m unittest discover -s tools -p "test_*.py"
-      - name: Registry of container codes
-        run: python -I -m unittest discover -s registry -p "test_*.py"
       - name: The change has a line in the CHANGELOG
-        if: ${{ github.event_name == 'pull_request' && !contains(github.event.pull_request.labels.*.name, 'no-changelog') }}
         env:
           BASE_REF: ${{ github.base_ref }}
         run: python -I tools/changelog_pr_check.py --base "origin/$BASE_REF"
+
+  registry:
+    name: Registry of container codes
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: "3.12"
+      - name: Registry of container codes
+        run: python -I -m unittest discover -s registry -p "test_*.py"
