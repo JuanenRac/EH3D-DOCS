@@ -4,6 +4,7 @@ All notable changes to this project are documented here.
 
 ## [Unreleased]
 
+- **The map and the READMEs say what the electronic design repositories are today:** nine of them (the test laboratory, the verifier, manufacturing profiles, the history of a design, the project passport, the component database, the thermal laboratory, the bridge to laboratory measurements and the explorer of alternatives) have early code and a first release, so the map, the architecture notes, the capability matrix and the eight READMEs count 38 published repositories and 2 planned ones, and the release of ELECTRO-HOBBY-3D-UPDATER is the newest one.
 - **A release is meant to hold at least 5 entries:** `release_notes.py` and `prerelease_check.py` warn below five entries of a CHANGELOG section (it was three), and `docs/RELEASING.md` and the tests say so.
 - **The release column of the map of the suite is the one of the manifests again:** `docs/SUITE_MAP.md` was written with `suite_contract.py --write-map` after the releases of the core and of the CAM programs, so the 29 rows that said an older version now say the one the manifest says.
 - **The READMEs link the guide to use the shared crates from another repository:** the list of guides of the eight READMEs names `docs/CONSUMING.md` of EH3D-COMMON (the sibling folders, the path and version line, the tags the CI builds against and `min_common`).
