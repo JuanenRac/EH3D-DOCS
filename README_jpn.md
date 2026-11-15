@@ -12,7 +12,7 @@
   <img src="https://img.shields.io/badge/License-GPL%203.0--or--later-blue.svg" alt="GPL 3.0 or later">
   <img src="https://img.shields.io/badge/Stack-Markdown%20%2B%20Python-blue.svg" alt="Markdown and Python">
   <img src="https://img.shields.io/badge/Languages-8-00E5FF.svg" alt="Languages">
-  <img src="https://img.shields.io/badge/Version-0.0.9-0f6cbd.svg" alt="Version">
+  <img src="https://img.shields.io/badge/Version-0.1.0-0f6cbd.svg" alt="Version">
   <img src="https://img.shields.io/badge/Maturity-functional-4CAF50.svg" alt="Maturity">
 </p>
 
@@ -28,9 +28,9 @@
 
 | | |
 |---|---|
-| バージョン | `0.0.9` |
+| バージョン | `0.1.0` |
 | 成熟度 | 機能する |
-| テスト | 196 |
+| テスト | 306 |
 | 技術スタック | Markdown と Python 3.10+ のツール |
 | 実機での動作 | 該当なし：ドキュメント |
 
@@ -45,7 +45,7 @@
 | 領域 | 状態 | ここでの意味 |
 |---|---|---|
 | リポジトリ チェック | 🟡 | リポジトリ チェック、ドキュメント間のリンク チェック、ツールのテストは CI で実行され、通っています。 |
-| テスト | 🟠 | ツールの 196 件のテストがコンピューター上で通っており、その一部は小さな試験用リポジトリで行っています。ドキュメントとその主張は、手作業とスクリプトで読み、確認します。 |
+| テスト | 🟠 | ツールの 306 件のテストがコンピューター上で通っており、その一部は小さな試験用リポジトリで行っています。ドキュメントとその主張は、手作業とスクリプトで読み、確認します。 |
 | スイートの契約 | 🟡 | リポジトリ間の契約は、Updater のパーサーで各マニフェストを読み、ずれ（ポート、README の言語、共有ツール、課題フォーム）を警告します。CI で毎日警告として実行され、名前が挙がったリポジトリは 1 つずつ更新していきます。 |
 | バージョンとリリースのツール | 🟠 | バージョンを上げ、ノートを書き、リリースを確認するスクリプトと、再利用できる検証ワークフローは、試験用リポジトリでテスト済みです。これらでリリースを公開したリポジトリはまだありません。 |
 | 作業領域と新しいリポジトリ | 🟠 | リポジトリに必要なものを一覧して複製するスクリプトと、新しいリポジトリを作るスクリプトは、一時フォルダー内の試験用リポジトリでテスト済みです。どちらも、実際の作業領域の準備や実際のリポジトリの作成にはまだ使われていません。 |
@@ -132,7 +132,7 @@ python -I -m unittest discover -s tools -p "test_*.py"
 
 ## 🧪 テスト
 
-ツールには 196 件のテストがあり（`python -I -m unittest discover -s tools -p "test_*.py"`）、通っています。CI はリポジトリ チェック（`tools/ci_validate.py`）、ドキュメント間のリンク チェック（`tools/check_links.py`）、2 つの図のチェック、これらのテストを実行し、毎日のワークフローがスイートの契約を実行します。ドキュメント自体にはこれ以外のテストはなく、主張は機能マトリクスと読み返しによって正直に保たれます。
+ツールには 306 件のテストがあり（`python -I -m unittest discover -s tools -p "test_*.py"`）、通っています。CI はリポジトリ チェック（`tools/ci_validate.py`）、ドキュメント間のリンク チェック（`tools/check_links.py`）、2 つの図のチェック、これらのテストを実行し、毎日のワークフローがスイートの契約を実行します。ドキュメント自体にはこれ以外のテストはなく、主張は機能マトリクスと読み返しによって正直に保たれます。
 
 ## 🏗️ ビルドとリリース
 

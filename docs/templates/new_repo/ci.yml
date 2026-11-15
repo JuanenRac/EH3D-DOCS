@@ -8,7 +8,8 @@ on:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+  # a newer push to a branch replaces the run before it; the runs of main and of the tags are never cancelled
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' && !startsWith(github.ref, 'refs/tags/') }}
 
 permissions:
   contents: read
@@ -41,3 +42,19 @@ jobs:
         env:
           BASE_REF: ${{ github.base_ref }}
         run: python -I tools/changelog_pr_check.py --base "origin/$BASE_REF"
+
+  # The one check to require in the rules of the branch. It always runs, fails when a job failed or was cancelled and accepts a job that was
+  # skipped on purpose (the changelog check on a push, an expensive job whose paths did not change), so it never waits for a job that did not start.
+  ci-gate:
+    name: CI gate
+    if: ${{ always() }}
+    needs: [validate, changelog]
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Every job ran, or was skipped on purpose
+        env:
+          RESULTS: ${{ join(needs.*.result, ' ') }}
+        run: |
+          echo "results: $RESULTS"
+          case " $RESULTS " in *" failure "*|*" cancelled "*) exit 1 ;; esac
