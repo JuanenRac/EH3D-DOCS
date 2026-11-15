@@ -1,0 +1,153 @@
+name: Supply chain (reusable, opt-in)
+
+# A bill of materials (CycloneDX) and signed provenance attestations for the files of a release, and the bill attached to the DRAFT release. It is an opt-in capability:
+# with `enabled` false (the default) every job is skipped and nothing is read, written or signed. A repository calls it from its release workflow, after the job that
+# builds the files and uploads them as one artifact:
+#
+#   jobs:
+#     supply-chain:
+#       uses: JuanenRac/EH3D-DOCS/.github/workflows/supply-chain.yml@<full commit>
+#       permissions:
+#         contents: write
+#         id-token: write
+#         attestations: write
+#       with:
+#         enabled: true
+#         artifact: release-files
+#         name: ${{ github.event.repository.name }}
+#         version: "1.2.3"
+#
+# See docs/REUSABLE_VALIDATION.md ("The supply-chain workflow"). The permissions of the attestation (id-token, attestations) exist only in the job `attest`.
+
+on:
+  workflow_call:
+    inputs:
+      enabled:
+        description: "Run the jobs; false (the default) skips all of them"
+        type: boolean
+        default: false
+      artifact:
+        description: "Name of the artifact of the calling workflow that holds the files of the release (flat, no folders)"
+        type: string
+        required: true
+      name:
+        description: "Name of the release in the bill of materials (the repository)"
+        type: string
+        required: true
+      version:
+        description: "Version of the release in the bill of materials"
+        type: string
+        required: true
+      tools-ref:
+        description: "Commit of JuanenRac/EH3D-DOCS whose tools/make_release_sbom.py writes the bill; use the same commit the caller names in `uses`"
+        type: string
+        default: main
+      attach-to-release:
+        description: "Attach the bill to the DRAFT release named by release-tag (never to a published one)"
+        type: boolean
+        default: false
+      release-tag:
+        description: "Tag of the draft release that gets the bill (needed by attach-to-release)"
+        type: string
+        default: ""
+
+permissions:
+  contents: read
+
+jobs:
+  sbom:
+    name: Bill of materials
+    if: ${{ inputs.enabled }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: JuanenRac/EH3D-DOCS
+          ref: ${{ inputs.tools-ref }}
+          path: supply-chain-tools
+          persist-credentials: false
+          sparse-checkout: tools/make_release_sbom.py
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: "3.12"
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: ${{ inputs.artifact }}
+          path: release-files
+      - name: The files are flat
+        shell: bash
+        run: |
+          set -euo pipefail
+          if find release-files -mindepth 1 -type d | grep -q .; then
+            echo "::error::the artifact holds folders; a release is a flat list of files"
+            exit 1
+          fi
+          find release-files -type f | grep -q . || { echo "::error::the artifact holds no files"; exit 1; }
+      - name: Write the bill of materials
+        shell: bash
+        env:
+          RELEASE_NAME: ${{ inputs.name }}
+          RELEASE_VERSION: ${{ inputs.version }}
+        run: python -I supply-chain-tools/tools/make_release_sbom.py --name "$RELEASE_NAME" --version "$RELEASE_VERSION" --out sbom.cdx.json release-files
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: ${{ inputs.artifact }}-sbom
+          path: sbom.cdx.json
+          if-no-files-found: error
+
+  attest:
+    name: Provenance attestations
+    needs: sbom
+    if: ${{ inputs.enabled }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      id-token: write
+      attestations: write
+    steps:
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: ${{ inputs.artifact }}
+          path: release-files
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: ${{ inputs.artifact }}-sbom
+          path: sbom
+      - name: Provenance of the files
+        uses: actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6 # v4.2.2
+        with:
+          subject-path: release-files/*
+      - name: The bill of materials, attested against the files
+        uses: actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6 # v4.2.2
+        with:
+          subject-path: release-files/*
+          sbom-path: sbom/sbom.cdx.json
+
+  attach:
+    name: Attach the bill to the draft release
+    needs: sbom
+    if: ${{ inputs.enabled && inputs.attach-to-release }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: ${{ inputs.artifact }}-sbom
+          path: sbom
+      - name: Only a draft release gets the bill
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          TAG: ${{ inputs.release-tag }}
+        run: |
+          set -euo pipefail
+          [ -n "$TAG" ] || { echo "::error::release-tag is empty"; exit 1; }
+          id=$(gh api "repos/$REPO/releases" --paginate -q ".[] | select(.tag_name == \"$TAG\" and .draft == true) | .id" | head -n 1)
+          [ -n "$id" ] || { echo "::error::no DRAFT release has the tag $TAG (a published release is never changed from here)"; exit 1; }
+          # a draft is not found by its tag, so the file goes to the release by its id
+          gh api --method POST -H "Content-Type: application/json" "https://uploads.github.com/repos/$REPO/releases/$id/assets?name=sbom.cdx.json" --input sbom/sbom.cdx.json
