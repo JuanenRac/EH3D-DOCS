@@ -5,6 +5,7 @@ All notable changes to this project are documented here.
 ## [Unreleased]
 
 - **A reusable supply-chain workflow, off by default:** `.github/workflows/supply-chain.yml` writes a CycloneDX bill of materials of the files of a release (`tools/make_release_sbom.py`, the same bytes for the same files), makes signed provenance attestations with `actions/attest` in the only job that has `id-token` and `attestations`, and can attach the bill to a draft release; the input `enabled` is false by default so no release uses it yet, every action is pinned to a full commit, and `supply-chain-test.yml` tries it on example files with fourteen tests in `tools/test_make_release_sbom.py`. The guide `docs/REUSABLE_VALIDATION.md` says how a release would switch it on.
+- **The validation of the CI is the reusable one of the documentation hub:** the job `validate` calls the reusable `validate.yml` of this repository and what the repository checks besides it is in jobs of their own, with the check of the CHANGELOG.
 
 ## [0.1.0] - Pre-push precheck and speed rules for the workflow checks
 
