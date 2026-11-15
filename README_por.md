@@ -12,13 +12,13 @@
   <img src="https://img.shields.io/badge/License-GPL%203.0--or--later-blue.svg" alt="GPL 3.0 or later">
   <img src="https://img.shields.io/badge/Stack-Markdown%20%2B%20Python-blue.svg" alt="Markdown and Python">
   <img src="https://img.shields.io/badge/Languages-8-00E5FF.svg" alt="Languages">
-  <img src="https://img.shields.io/badge/Version-0.0.9-0f6cbd.svg" alt="Version">
+  <img src="https://img.shields.io/badge/Version-0.1.0-0f6cbd.svg" alt="Version">
   <img src="https://img.shields.io/badge/Maturity-functional-4CAF50.svg" alt="Maturity">
 </p>
 
 ---
 
-**Verificação de honestidade - o que funciona hoje:** documentos e as ferramentas da suite, que correm num computador e em mais lado nenhum (a verificação do repositório e os desenhadores das imagens que cada repositório leva, o contrato entre os repositórios, os scripts que sobem uma versão e preparam uma publicação, o script que prepara um espaço de trabalho e o que cria um repositório novo). A suite está nos primeiros passos: estão publicados vinte e nove repositórios (as bibliotecas, os programas Bungard, o servidor e o Studio, os nós e os ecrãs táteis, as aplicações de telemóvel, os programas de CAM e de utilidade, os atualizadores e este), um foi iniciado com código e testes e sem versão publicada (o laboratório de testes do projeto de conceção eletrónica) e dez estão apenas previstos (o comando para ecrãs táteis pequenos e nove repositórios do projeto de conceção eletrónica e das suas pontes). Tudo o que está publicado foi testado num computador e as interfaces falam 37 idiomas; de toda a suite só o protocolo série do EH3D-DRILLPRO moveu uma máquina real (a referência e os movimentos de cada eixo numa Bungard CCD MTC), e nenhum trabalho completo correu ainda numa máquina. 14 testes cobrem a verificação do repositório.
+**Verificação de honestidade - o que funciona hoje:** documentos e as ferramentas da suite, que correm num computador e em mais lado nenhum (a verificação do repositório e os desenhadores das imagens que cada repositório leva, o contrato entre os repositórios, os scripts que sobem uma versão e preparam uma publicação, o script que prepara um espaço de trabalho e o que cria um repositório novo). A suite está nos primeiros passos: estão publicados trinta e oito repositórios (as bibliotecas, os programas Bungard, o servidor e o Studio, os nós e os ecrãs táteis, as aplicações de telemóvel, os programas de CAM e de utilidade, os atualizadores, este e nove bibliotecas e ferramentas iniciais do projeto de conceção eletrónica, cada uma com uma primeira versão e código inicial) e dois estão apenas previstos (o comando para ecrãs táteis pequenos e o adaptador para o HYDRA-UMC). Tudo o que está publicado foi testado num computador e as interfaces falam 37 idiomas; de toda a suite só o protocolo série do EH3D-DRILLPRO moveu uma máquina real (a referência e os movimentos de cada eixo numa Bungard CCD MTC), e nenhum trabalho completo correu ainda numa máquina. 14 testes cobrem a verificação do repositório.
 
 ---
 
@@ -28,9 +28,9 @@
 
 | | |
 |---|---|
-| Versão | `0.0.9` |
+| Versão | `0.1.0` |
 | Maturidade | Funcional |
-| Testes | 196 |
+| Testes | 306 |
 | Tecnologias | Markdown, com ferramentas em Python 3.10+ |
 | Em hardware real | Não se aplica: documentação |
 
@@ -45,11 +45,11 @@ Cada linha é uma parte deste repositório e a luz diz até onde chega hoje. É 
 | Área | Estado | O que significa aqui |
 |---|---|---|
 | Verificações do repositório | 🟡 | A verificação do repositório, a das ligações entre os documentos e os testes das ferramentas correm na CI e passam. |
-| Testes | 🟠 | 196 testes das ferramentas passam num computador, alguns sobre pequenos repositórios de brincar; os documentos e as afirmações que contêm são lidos e verificados à mão e pelos scripts. |
+| Testes | 🟠 | 306 testes das ferramentas passam num computador, alguns sobre pequenos repositórios de brincar; os documentos e as afirmações que contêm são lidos e verificados à mão e pelos scripts. |
 | Contrato da suite | 🟡 | O contrato entre os repositórios lê cada manifesto com o analisador do Updater e avisa dos desvios (portas, idiomas do README, ferramentas partilhadas, formulários de problemas); corre todos os dias na CI como simples aviso, e os repositórios que nomeia são postos em dia um a um. |
 | Ferramentas de versão e publicação | 🟠 | Os scripts que sobem uma versão, escrevem as notas e verificam uma publicação, e o fluxo de validação reutilizável, estão testados em repositórios de brincar; nenhum repositório publicou ainda uma versão com eles. |
 | Espaço de trabalho e repositórios novos | 🟠 | Os scripts que listam e clonam o que um repositório precisa e que criam um repositório novo estão testados em repositórios de brincar numa pasta temporária; nenhum preparou ainda um espaço de trabalho real nem criou um repositório real. |
-| Mapa e matriz de capacidades | 🟡 | O mapa da suite, as notas de arquitetura e a matriz de capacidades cobrem os quarenta repositórios: os vinte e nove publicados com a versão de cada um, um iniciado (código com testes e sem versão publicada) e dez previstos (um âmbito escrito e nenhum código); são escritos à mão e podem ficar atrás dos repositórios. |
+| Mapa e matriz de capacidades | 🟡 | O mapa da suite, as notas de arquitetura e a matriz de capacidades cobrem os quarenta repositórios: os trinta e oito publicados com a versão de cada um (nove deles são bibliotecas e ferramentas iniciais com código e testes) e dois previstos (um âmbito escrito e nenhum código); são escritos à mão e podem ficar atrás dos repositórios. |
 | Hardware real | 🟡 | Não se aplica: documentação, nada aqui corre em hardware. |
 | Documentação | 🟡 | README em oito idiomas, verificado em cada alteração contra o manifesto e o registo de alterações. |
 
@@ -132,7 +132,7 @@ Para ler os documentos, comece pelo [mapa da suite](docs/SUITE_MAP.md).
 
 ## 🧪 Testes
 
-As ferramentas têm 196 testes (`python -I -m unittest discover -s tools -p "test_*.py"`), e passam. A CI executa a verificação do repositório (`tools/ci_validate.py`), a das ligações entre os documentos (`tools/check_links.py`), as verificações das duas imagens e esses testes; um fluxo diário executa o contrato da suite. Os documentos não têm mais testes do que esses: o que afirmam é mantido honesto pela matriz de capacidades e pela leitura.
+As ferramentas têm 306 testes (`python -I -m unittest discover -s tools -p "test_*.py"`), e passam. A CI executa a verificação do repositório (`tools/ci_validate.py`), a das ligações entre os documentos (`tools/check_links.py`), as verificações das duas imagens e esses testes; um fluxo diário executa o contrato da suite. Os documentos não têm mais testes do que esses: o que afirmam é mantido honesto pela matriz de capacidades e pela leitura.
 
 ## 🏗️ Compilação e publicação
 
@@ -204,7 +204,7 @@ O README e os textos existem em inglês, espanhol, francês, italiano, alemão, 
 * [EH3D-SERVER](https://github.com/JuanenRac/EH3D-SERVER) e [EH3D-NODE-BUNGARD](https://github.com/JuanenRac/EH3D-NODE-BUNGARD): o centro dos programas e o nó que chega à máquina
 * [EH3D-STUDIO](https://github.com/JuanenRac/EH3D-STUDIO), [EH3D-NODE-BUNGARD-HMI](https://github.com/JuanenRac/EH3D-NODE-BUNGARD-HMI) e [EH3D-NODE-BUNGARD-AUX](https://github.com/JuanenRac/EH3D-NODE-BUNGARD-AUX): o painel de configuração do servidor (com as suas atualizações a partir do GitHub), o ecrã tátil da máquina e o nó da cabeça de furação (câmara por RTSP e ONVIF, laser que mede a mesa, velocidade e temperatura do fuso)
 * [EH3D-UPDATER](https://github.com/JuanenRac/EH3D-UPDATER) e [ELECTRO-HOBBY-3D-UPDATER](https://github.com/JuanenRac/ELECTRO-HOBBY-3D-UPDATER): instalam e atualizam os repositórios
-* [EH3D-PHOENIX-PCB](https://github.com/JuanenRac/EH3D-PHOENIX-PCB) e o [EH3D-PHOENIX-CAD](https://github.com/JuanenRac/EH3D-PHOENIX-CAD) (conceção eletrónica e mecânica, ambas com uma primeira versão) e os outros nove repositórios do projeto de conceção eletrónica e das suas pontes (o laboratório, o verificador, o laboratório térmico, o adaptador para o HYDRA-UMC): iniciados ou previstos, sem versão publicada
+* [EH3D-PHOENIX-PCB](https://github.com/JuanenRac/EH3D-PHOENIX-PCB) e o [EH3D-PHOENIX-CAD](https://github.com/JuanenRac/EH3D-PHOENIX-CAD) (conceção eletrónica e mecânica, ambas com uma primeira versão) e os outros nove repositórios do projeto de conceção eletrónica e das suas pontes (o laboratório, o verificador, o laboratório térmico, o adaptador para o HYDRA-UMC): todos com uma primeira versão de código inicial, exceto o adaptador para o HYDRA-UMC, apenas previsto
 
 ## 📚 Documentação
 

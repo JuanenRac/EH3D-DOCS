@@ -1,0 +1,38 @@
+name: Test validate inputs
+
+# Tries the reusable validate.yml on GitHub: a call that names no input (it must behave as it always did) and
+# a call that names the optional ones (isolated, os, timeout-minutes). Only a real run shows that the name of the
+# check and the runners are what the guide says. No repository calls the optional inputs yet.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/validate.yml"
+      - ".github/workflows/test-validate-inputs.yml"
+  pull_request:
+    paths:
+      - ".github/workflows/validate.yml"
+      - ".github/workflows/test-validate-inputs.yml"
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
+
+permissions:
+  contents: read
+
+jobs:
+  defaults:
+    name: Call with the defaults
+    uses: ./.github/workflows/validate.yml
+
+  optional:
+    name: Call with the optional inputs
+    uses: ./.github/workflows/validate.yml
+    with:
+      isolated: false
+      os: '["ubuntu-latest", "ubuntu-24.04"]'
+      timeout-minutes: 20
+      check-links: true

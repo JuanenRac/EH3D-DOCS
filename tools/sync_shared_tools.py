@@ -37,6 +37,8 @@ SHARED = (
     "banner_check.py",
     "changelog_pr_check.py",
     "pretty_run.py",
+    "workflow_hygiene.py",
+    "lessons_lint.py",
 )
 
 

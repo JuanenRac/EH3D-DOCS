@@ -115,6 +115,28 @@ class SuiteContractTests(unittest.TestCase):
             _, found = self.run_in(root, only="versions")
             self.assertEqual(found, [])
 
+    def test_the_map_shows_the_newest_release_and_not_a_manifest_that_is_ahead(self) -> None:
+        import shutil
+        import subprocess
+
+        if shutil.which("git") is None:
+            self.skipTest("git is not installed")
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            make(root, "EH3D-COMMON", version="0.1.0")
+            repo = root / "EH3D-COMMON"
+            git = ["git", "-c", "user.name=t", "-c", "user.email=t@example.invalid"]
+            subprocess.run(["git", "init", "-q", str(repo)], check=True)
+            subprocess.run(git + ["-C", str(repo), "commit", "-q", "--allow-empty", "-m", "x"], check=True)
+            for tag in ("v0.0.9", "v0.0.10"):
+                subprocess.run(["git", "-C", str(repo), "tag", tag], check=True)
+            make(root, "EH3D-DOCS", version="0.0.4")
+            docs = root / "EH3D-DOCS" / "docs"
+            docs.mkdir()
+            (docs / "SUITE_MAP.md").write_text("| [EH3D-COMMON](https://example.invalid/EH3D-COMMON) | Library | Published | 0.0.8 | x |\n", encoding="utf-8")
+            self.assertEqual(CONTRACT.write_map(root), ["EH3D-COMMON: 0.0.8 -> 0.0.10"])
+            self.assertEqual(CONTRACT.write_map(root), [])
+
     def test_the_screens_and_the_server_agree_on_the_port(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
