@@ -4,6 +4,8 @@ All notable changes to this project are documented here.
 
 ## [Unreleased]
 
+- **The validation of the CI is the reusable one of the documentation hub:** the job `validate` calls the reusable `validate.yml` of this repository and what the repository checks besides it is in jobs of their own, with the check of the CHANGELOG.
+
 ## [0.1.0] - Pre-push precheck and speed rules for the workflow checks
 
 - **A precheck before every push, and nine more rules in the lessons lint:** `python tools/lessons_lint.py --repo . --precheck` reports the new findings of the files and lines a change touches, the rules of the change itself (a generated README block or `data/glance.json` edited by hand, tests added without the counts, a branch behind its base or stacked on another one, private words in added lines or in a commit message), the new findings of the workflow checks and the exact linters the workflows of the repository run. The new file rules (the MQTT broker started from the system program, `memcmp` against a string literal, a regular expression whose backslash became a control character, texts of a catalogue in the familiar form, TypeScript APIs newer than ES2020, e2e locators made of tag names, forbidden text from the settings, a worktree not named like its repository, a shell script without the executable bit) are not part of the default set of the validation.
