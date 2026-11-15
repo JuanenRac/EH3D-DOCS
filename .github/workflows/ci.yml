@@ -18,7 +18,7 @@ jobs:
   validate:
     name: Validate the repository
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -35,8 +35,11 @@ jobs:
           python -I tools/make_structure.py --check --readmes
       - name: Links between the documents
         run: python -I tools/check_links.py
-      - name: Tests of the repository checks
-        run: python -I -m unittest discover -s tools -p "test_*.py"
+      - name: Tests of the repository checks, with a floor of coverage
+        run: |
+          python -m pip install --disable-pip-version-check coverage==7.6.10
+          python -I -m coverage run --source=tools -m unittest discover -s tools -p "test_*.py"
+          python -I -m coverage report --omit="tools/test_*.py" --ignore-errors --skip-empty --fail-under=85
       - name: Registry of container codes
         run: python -I -m unittest discover -s registry -p "test_*.py"
       - name: The change has a line in the CHANGELOG
