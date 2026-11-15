@@ -56,3 +56,20 @@ jobs:
           python-version: "3.12"
       - name: Registry of container codes
         run: python -I -m unittest discover -s registry -p "test_*.py"
+
+  coverage:
+    name: Coverage of the tools
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: "3.12"
+      - name: The tests of the tools cover at least 85 % of the code of the tools
+        run: |
+          python -m pip install --disable-pip-version-check coverage==7.6.10
+          python -I -m coverage run --source=tools -m unittest discover -s tools -p "test_*.py"
+          python -I -m coverage report --omit="tools/test_*.py" --ignore-errors --skip-empty --fail-under=85
