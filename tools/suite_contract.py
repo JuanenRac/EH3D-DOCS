@@ -15,7 +15,7 @@ The checks:
     manifests   every eh3d.project.json is JSON with a name that is the folder and a version of dotted numbers, and the parser of EH3D-UPDATER (when it is there) accepts it
     tools       every repository holds the shared ci_validate.py of this one (same tools version in the header, same code)
     paths       a dependency of a Cargo.toml on a sibling by path says which version of it the program needs (`version = ">=0.0.1", path = "../EH3D-X"`)
-    versions    the version that SUITE_MAP.md gives for a repository is its newest release (its manifest, with no release tag)
+    versions    the version that SUITE_MAP.md gives for a repository is its newest release (its manifest, with no release tag); behind a release tag it is an ERROR
     ports       the screens and the server agree on the port of the server
     templates   every repository has the issue forms and the pull-request template that docs/suite.json lists (github_templates); only warnings
     translations a section of a translated README that is older than the same section of the English one (from the history of git; only warnings)
@@ -126,19 +126,27 @@ def check_paths(workspace: Path) -> list[Finding]:
 ROW = re.compile(r"^\|\s*\[(EH3D-[A-Z0-9-]+)\]\([^)]*\)\s*\|[^|]*\|[^|]*\|\s*([^|]*?)\s*\|")
 
 
-def shown_version(repo: Path) -> str | None:
-    """The version the map shows for a repository: the newest release it has published (its newest `v<version>` tag), and the version of its manifest when it has no tag, because a manifest that is ahead of the releases is work not published yet."""
+def released_version(repo: Path) -> str | None:
+    """The newest release a repository has published (its newest `v<version>` tag), or None when it has no tag."""
     import subprocess
 
-    manifest = manifest_of(repo) if repo.is_dir() else None
-    fallback = manifest.get("version") if manifest else None
     try:
         done = subprocess.run(["git", "-C", str(repo), "tag", "--list", "v*"], capture_output=True, text=True, timeout=20)
         tags = [x[1:] for x in done.stdout.split() if VERSION.match(x[1:])]
     except (OSError, subprocess.SubprocessError):
-        tags = []
-    if tags:
-        return max(tags, key=lambda v: tuple(int(n) for n in v.split(".")) + (0,) * (4 - v.count(".") - 1))
+        return None
+    if not tags:
+        return None
+    return max(tags, key=lambda v: tuple(int(n) for n in v.split(".")) + (0,) * (4 - v.count(".") - 1))
+
+
+def shown_version(repo: Path) -> str | None:
+    """The version the map shows for a repository: the newest release it has published (its newest `v<version>` tag), and the version of its manifest when it has no tag, because a manifest that is ahead of the releases is work not published yet."""
+    manifest = manifest_of(repo) if repo.is_dir() else None
+    fallback = manifest.get("version") if manifest else None
+    released = released_version(repo)
+    if released is not None:
+        return released
     return fallback if isinstance(fallback, str) else None
 
 
@@ -157,7 +165,9 @@ def check_versions(workspace: Path) -> list[Finding]:
         if version is None or not VERSION.match(shown):
             continue
         if version != shown:
-            out.append(Finding("versions", name, "WARNING", f"SUITE_MAP says {shown} and the newest release (or the manifest, with no release) says {version}"))
+            # a map that is behind a release that exists is an error (it is written with --write-map); behind a manifest that has no release yet it is only drifting
+            level = "ERROR" if released_version(repo) is not None else "WARNING"
+            out.append(Finding("versions", name, level, f"SUITE_MAP says {shown} and the newest release (or the manifest, with no release) says {version}"))
     return out
 
 
