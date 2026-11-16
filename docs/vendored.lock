@@ -9,7 +9,7 @@
     "make_architecture.py": "34ab83b324",
     "make_structure.py": "354cdbb9b1",
     "pretty_run.py": "51a38eb42a",
-    "status_lights.py": "146eb0ea53",
+    "status_lights.py": "139d4d72c0",
     "universal_readme_check.py": "27b5d13d42",
     "workflow_hygiene.py": "aa828760e9"
   }

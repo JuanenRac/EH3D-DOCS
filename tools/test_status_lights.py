@@ -433,5 +433,20 @@ class ApplyTests(unittest.TestCase):
         self.assertEqual(code, 2)
 
 
+class MaturityTests(unittest.TestCase):
+    def test_a_badge_or_row_that_disagrees_with_the_manifest_is_a_problem(self) -> None:
+        badge = '<img src="https://img.shields.io/badge/Maturity-{m}-FFB020.svg" alt="Maturity">\n'
+        with tempfile.TemporaryDirectory() as raw:
+            root = make_repo(Path(raw) / "Toy", {"maturity": "functional"})
+            self.assertEqual(sl.maturity_problems(root, {"maturity": "functional"}), [])
+            (root / "README_deu.md").write_bytes((badge.format(m="scaffolding") + table()).encode("utf-8"))
+            (root / "README.md").write_bytes((badge.format(m="functional") + "| Maturity | Scaffolding |\n" + table()).encode("utf-8"))
+            found = sl.maturity_problems(root, {"maturity": "functional"})
+            self.assertEqual(len(found), 2)
+            self.assertTrue(any("README_deu.md" in line and "scaffolding" in line for line in found))
+            self.assertTrue(any("README.md" in line and "row" in line for line in found))
+            self.assertEqual(sl.maturity_problems(root, {}), [])
+
+
 if __name__ == "__main__":
     unittest.main()
