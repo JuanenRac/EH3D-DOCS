@@ -134,8 +134,14 @@ class SuiteContractTests(unittest.TestCase):
             docs = root / "EH3D-DOCS" / "docs"
             docs.mkdir()
             (docs / "SUITE_MAP.md").write_text("| [EH3D-COMMON](https://example.invalid/EH3D-COMMON) | Library | Published | 0.0.8 | x |\n", encoding="utf-8")
+            # behind a tag that exists the map is an error, until it is written
+            ok, found = self.run_in(root, only="versions")
+            self.assertFalse(ok)
+            self.assertEqual([f.level for f in found], ["ERROR"])
             self.assertEqual(CONTRACT.write_map(root), ["EH3D-COMMON: 0.0.8 -> 0.0.10"])
             self.assertEqual(CONTRACT.write_map(root), [])
+            ok, found = self.run_in(root, only="versions")
+            self.assertTrue(ok)
 
     def test_the_screens_and_the_server_agree_on_the_port(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:

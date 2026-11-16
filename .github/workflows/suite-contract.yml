@@ -1,7 +1,7 @@
 name: EH3D suite contract
 
-# Checks the relations between the repositories that no repository can check alone (tools/suite_contract.py). It starts as a warning: the job does not stop the
-# repository; the list of what is wrong is in the summary of the run. Once the known exceptions (docs/suite_contract_allow.txt) are gone it can be made blocking.
+# Checks the relations between the repositories that no repository can check alone (tools/suite_contract.py). An ERROR of the check makes the run fail, so a map of the
+# suite that is behind a published release turns the run red until `--write-map` brings it up to date; the warnings only go to the summary of the run.
 on:
   schedule:
     - cron: "41 5 * * *"
@@ -19,7 +19,6 @@ jobs:
     name: The repositories fit each other
     runs-on: ubuntu-latest
     timeout-minutes: 15
-    continue-on-error: true
     steps:
       - name: Check out this repository next to the others
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1

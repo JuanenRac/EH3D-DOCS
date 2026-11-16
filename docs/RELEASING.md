@@ -61,6 +61,16 @@ The version inside the package is the one the odometer gave: raise it (step 3) *
 
 A release without the `.sig` is refused by every machine that turned the check on. Nothing in the workflows signs for you: the owner signs with the key of releases after the workflow has published the package (the server 0.1.1 and Studio 0.1.0 are signed this way), and the private half never leaves the machine of the owner. The steps for making a key are in `docs/DEPLOY.md` of EH3D-SERVER.
 
+
+## Signing the binaries of the desktop programs
+
+The workflow `release-binaries.yml` of every desktop program publishes each file with its `.sha256`, and nothing signs for you: the owner signs after the workflow has published, with the key of releases, the same way as the packages of the services.
+
+1. Download the files of the release to the machine that has the private key of releases (`gh release download vX.Y.Z --repo JuanenRac/<repository>`).
+2. Sign each binary: `ssh-keygen -Y sign -f <private key of releases> -n eh3d-release <file>`. This makes `<file>.sig`.
+3. Upload the `.sig` files to the same release (`gh release upload vX.Y.Z <file>.sig`).
+4. Check them before telling anybody to download: `python tools/verify_release.py --repo <repository> --signers allowed_signers` (the signers file is the one on [RELEASE_KEY.md](RELEASE_KEY.md)), or `--all` for the twelve desktop programs. It checks every sum and every signature, and a binary without a `.sig` is a failure.
+
 ## When to publish
 
 A release is meant to hold **at least 5 entries** under `[Unreleased]`; `release_notes.py --check` exits with 2 when there are fewer, and `--allow-short` accepts it for an emergency. Raise the version by batches, not for each change: the odometer carries (`0.0.9` becomes `0.1.0`), and every release is a GitHub release with its notes, not only a tag. The documents (README files in eight languages, the changelog, the counts of tests and the status table) are brought up to date in the same step as the version.
