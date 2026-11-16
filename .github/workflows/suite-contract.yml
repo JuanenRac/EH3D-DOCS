@@ -34,7 +34,12 @@ jobs:
           # the repositories named in the map of the suite; one that is not published yet is skipped
           for name in $(grep -o '^| \[EH3D-[A-Z0-9-]*\]' EH3D-DOCS/docs/SUITE_MAP.md | grep -o 'EH3D-[A-Z0-9-]*' | sort -u); do
             [ "$name" = "EH3D-DOCS" ] && continue
-            git clone --depth 1 --quiet "https://github.com/JuanenRac/$name.git" "$name" || echo "not published: $name"
+            if git clone --depth 1 --quiet "https://github.com/JuanenRac/$name.git" "$name"; then
+              # the tags too, or the newest release of a repository would be read as its manifest version
+              git -C "$name" fetch --quiet --depth 1 --tags origin || echo "no tags for $name"
+            else
+              echo "not published: $name"
+            fi
           done
       - name: Run the checks
         run: |
