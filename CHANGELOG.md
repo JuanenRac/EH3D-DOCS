@@ -4,6 +4,8 @@ All notable changes to this project are documented here.
 
 ## [Unreleased]
 
+## [0.1.1] - A check that the map follows the published releases, a floor of coverage and a reusable supply-chain workflow
+
 - **The check of the status lights also compares the maturity:** `tools/status_lights.py --check` fails when the Maturity badge of any of the eight READMEs, or the Maturity row of the English one, says something other than the `maturity` of the manifest; a test covers it.
 - **A map that is behind a published release is an error, and there is a way to check the signatures of the desktop programs:** `tools/suite_contract.py` reports a SUITE_MAP row that is behind the newest release tag of its repository as an ERROR (behind a manifest with no release yet it stays a warning), and the workflow `suite-contract.yml` no longer continues on error, so it is red until `--write-map` brings the map up to date. `docs/RELEASING.md` has the steps to sign the binaries of the desktop programs, and `tools/verify_release.py` checks the sum and the signature of the packages of a folder, of one release or of the twelve desktop programs. Tests cover both.
 - **The map of the suite shows the newest published release of each repository, and the check of the map reads the tags:** the Release column of nine repositories is brought up to the tag they have, and the workflow that checks the repositories against the map fetches the tags after its shallow clones, so a repository with work not yet published is no longer compared with its manifest version by mistake.
