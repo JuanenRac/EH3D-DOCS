@@ -4,6 +4,8 @@ All notable changes to this project are documented here.
 
 ## [Unreleased]
 
+- **The map of the suite follows the newest release of each repository:** the version column of the map is brought up to the releases that are published, so the check of the map passes again.
+
 ## [0.1.1] - A check that the map follows the published releases, a floor of coverage and a reusable supply-chain workflow
 
 - **The check of the status lights also compares the maturity:** `tools/status_lights.py --check` fails when the Maturity badge of any of the eight READMEs, or the Maturity row of the English one, says something other than the `maturity` of the manifest; a test covers it.
