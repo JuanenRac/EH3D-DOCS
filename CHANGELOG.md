@@ -4,6 +4,8 @@ All notable changes to this project are documented here.
 
 ## [Unreleased]
 
+## [0.1.2] - Common guides of the suite and the map and the matrix up to the published releases
+
 - **Guides that the repositories link to instead of repeating:** `docs/DOCKING.md` (panels and menus of the programs), `docs/CLIENT_SYNC.md` (the contract of the settings of the server and the parity guard of the clients), `docs/ERROR_CODES.md` (the families of codes and how the tables of Studio, Android, iOS, the touch screens and the Rust programs are kept in step), `docs/GERBER_MIGRATION.md` (one reader for Gerber and Excellon, the corpus and the 2D geometry), `docs/MATERIALS_DATA.md` (the shared databases of materials and how to add data to them) and `docs/GLOSSARY.md` (the names of the suite).
 - **The rules of the whole suite are written once:** `docs/DESIGN_RULES.md` holds the safety and security rules (a visible switch with a conservative default for every option of security, safe degradation), the three kinds of evidence (`simulator`, `bench`, `field`), the rule that a tuned parameter lives in a configuration file, the scope of the pick and place program (printed boards only), the eight languages and the licences.
 - **The release chain and the lessons of the CI:** `docs/RELEASE_CHAIN.md` says that what is compiled and signed is the tip of main, that the version is raised before the build, that the binaries are built in GitHub Actions and signed on the machine of the maintainer, what may be released and the rules that the red CIs of the repositories taught.
