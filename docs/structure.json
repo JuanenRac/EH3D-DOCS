@@ -124,6 +124,123 @@
           }
         },
         {
+          "name": "DOCKING.md",
+          "desc": {
+            "en": "the panels and menus frame of the programs",
+            "es": "el marco de paneles y menús de los programas",
+            "de": "der Rahmen für Panels und Menüs der Programme",
+            "fr": "le cadre des panneaux et des menus des programmes",
+            "it": "il telaio di pannelli e menu dei programmi",
+            "ja": "プログラム共通のパネルとメニューの枠組み",
+            "zh": "程序共用的面板与菜单框架",
+            "pt": "a moldura de painéis e menus dos programas"
+          }
+        },
+        {
+          "name": "CLIENT_SYNC.md",
+          "desc": {
+            "en": "the settings contract and the clients that follow it",
+            "es": "el contrato de ajustes y los clientes que lo siguen",
+            "de": "der Einstellungsvertrag und die Clients, die ihm folgen",
+            "fr": "le contrat des réglages et les clients qui le suivent",
+            "it": "il contratto delle impostazioni e i client che lo seguono",
+            "ja": "設定コントラクトとそれに従うクライアント",
+            "zh": "设置契约及遵循它的客户端",
+            "pt": "o contrato das definições e os clientes que o seguem"
+          }
+        },
+        {
+          "name": "ERROR_CODES.md",
+          "desc": {
+            "en": "the families of codes and the tables of the clients",
+            "es": "las familias de códigos y las tablas de los clientes",
+            "de": "die Codefamilien und die Tabellen der Clients",
+            "fr": "les familles de codes et les tables des clients",
+            "it": "le famiglie di codici e le tabelle dei client",
+            "ja": "コード体系とクライアントの対応表",
+            "zh": "代码系列与各客户端的对照表",
+            "pt": "as famílias de códigos e as tabelas dos clientes"
+          }
+        },
+        {
+          "name": "GERBER_MIGRATION.md",
+          "desc": {
+            "en": "one Gerber and Excellon reader and our 2D geometry",
+            "es": "un solo lector de Gerber y Excellon y nuestra geometría 2D",
+            "de": "ein Gerber- und Excellon-Leser und unsere 2D-Geometrie",
+            "fr": "un seul lecteur Gerber et Excellon et notre géométrie 2D",
+            "it": "un solo lettore Gerber ed Excellon e la nostra geometria 2D",
+            "ja": "Gerber/Excellon リーダーの一本化と独自の2D幾何",
+            "zh": "统一的Gerber和Excellon读取器与自有2D几何",
+            "pt": "um só leitor de Gerber e Excellon e a nossa geometria 2D"
+          }
+        },
+        {
+          "name": "MATERIALS_DATA.md",
+          "desc": {
+            "en": "shared databases and how to add data to them",
+            "es": "las bases de datos comunes y cómo aportar datos",
+            "de": "gemeinsame Datenbanken und wie man Daten beisteuert",
+            "fr": "les bases de données communes et comment y ajouter des données",
+            "it": "i database comuni e come aggiungervi dati",
+            "ja": "共通データベースとデータの追加方法",
+            "zh": "共用数据库及如何添加数据",
+            "pt": "as bases de dados comuns e como lhes acrescentar dados"
+          }
+        },
+        {
+          "name": "RELEASE_CHAIN.md",
+          "desc": {
+            "en": "from main to a signed binary, and the lessons of the CI",
+            "es": "de main a un binario firmado, y las lecciones del CI",
+            "de": "von main zur signierten Binärdatei und die Lehren der CI",
+            "fr": "de main au binaire signé, et les leçons de la CI",
+            "it": "da main al binario firmato e le lezioni della CI",
+            "ja": "mainから署名済みバイナリまで、およびCIの教訓",
+            "zh": "从main到签名二进制，以及CI的经验教训",
+            "pt": "do main ao binário assinado e as lições do CI"
+          }
+        },
+        {
+          "name": "DESIGN_RULES.md",
+          "desc": {
+            "en": "the design rules of the whole suite: safety, evidence, data",
+            "es": "las reglas de diseño de toda la suite: seguridad, evidencia, datos",
+            "de": "die Entwurfsregeln der ganzen Suite: Sicherheit, Nachweis, Daten",
+            "fr": "les règles de conception de toute la suite : sécurité, preuve, données",
+            "it": "le regole di progetto dell'intera suite: sicurezza, evidenza, dati",
+            "ja": "スイート全体の設計規則：安全、証拠、データ",
+            "zh": "整个套件的设计规则：安全、证据、数据",
+            "pt": "as regras de projeto de toda a suite: segurança, evidência, dados"
+          }
+        },
+        {
+          "name": "DOCS_TEMPLATE.md",
+          "desc": {
+            "en": "the five documents of every repository, and who lacks them",
+            "es": "los cinco documentos de cada repositorio y a quién le faltan",
+            "de": "die fünf Dokumente jedes Repositorys und wem sie fehlen",
+            "fr": "les cinq documents de chaque dépôt et à qui ils manquent",
+            "it": "i cinque documenti di ogni repository e a chi mancano",
+            "ja": "各リポジトリの5つの文書と未整備のもの",
+            "zh": "每个仓库的五份文档以及缺少者",
+            "pt": "os cinco documentos de cada repositório e a quem faltam"
+          }
+        },
+        {
+          "name": "GLOSSARY.md",
+          "desc": {
+            "en": "the names of the suite, one line each",
+            "es": "los nombres de la suite, una línea cada uno",
+            "de": "die Namen der Suite, je eine Zeile",
+            "fr": "les noms de la suite, une ligne chacun",
+            "it": "i nomi della suite, una riga ciascuno",
+            "ja": "スイートの名称を一行ずつ",
+            "zh": "套件中的名称，每个一行",
+            "pt": "os nomes da suite, uma linha cada"
+          }
+        },
+        {
           "name": "suite.json",
           "desc": {
             "en": "the constants of the suite",

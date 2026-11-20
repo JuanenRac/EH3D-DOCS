@@ -63,6 +63,7 @@
 * **スイートの契約：** `tools/suite_contract.py` は、単独のリポジトリでは確認できない関係を確認します。すべてのマニフェストが Updater のパーサーで読めてフォルダー名を持つこと、パスで隣のリポジトリに依存する場合に必要なバージョンを示すこと、地図のバージョンがマニフェストと一致すること、画面とサーバーがポートで一致すること、共有バリデーターがどこでも同じであること、`docs/suite.json` が値を繰り返している場所と一致すること、すべてのリポジトリに課題フォームがあること。警告のみです。
 * **バージョン、リリース、新しい作業：** `bump_version.py`、`release_notes.py`、`prerelease_check.py`、`readme_staleness.py`、`vendored_tools_report.py`（[docs/RELEASING.md](docs/RELEASING.md)）、再利用できる検証ワークフロー（[docs/REUSABLE_VALIDATION.md](docs/REUSABLE_VALIDATION.md)）、リポジトリに必要なものを取得する `bootstrap_workspace.py`、新しいリポジトリを作る `new_repo.py`。`bump_version.py` は、最小バージョンを要求する内部依存関係、ワークスペースのパッケージの `Cargo.lock` の項目、ファミリー全体のアップデーターのマニフェストも更新します。
 * **更新の方法：** 作業場の CM5 は**リリース経由**で更新されます（EH3D-SERVER の `deploy/eh3d-update.py` が GitHub のリリースを `/opt` にダウンロードします）。EH3D-UPDATER は**開発用 PC 向けで、git 経由**です（[docs/UPDATING.md](docs/UPDATING.md)）。
+* **共通ガイド：** 複数のリポジトリが共有する内容をここに一度だけ書き、各リポジトリはそこへリンクします。プログラムのパネル枠組み、設定コントラクトとそれに従うクライアント、エラーコードとその対応表、Gerber/Excellon リーダーの一本化、共通データベース、リリースの流れとCIの教訓、設計規則、各リポジトリの5つの文書、名称の用語集です。
 
 ## 🧩 EH3D での役割
 
@@ -158,6 +159,15 @@ EH3D-DOCS/
 │   ├── RELEASING.md                             スクリプトでバージョンを上げて公開する
 │   ├── REUSABLE_VALIDATION.md                   各リポジトリが呼び出せる検証ワークフロー
 │   ├── VENDORED_TOOLS_REPORT.md                 各リポジトリにコピーされた、使われていないツール
+│   ├── DOCKING.md                               プログラム共通のパネルとメニューの枠組み
+│   ├── CLIENT_SYNC.md                           設定コントラクトとそれに従うクライアント
+│   ├── ERROR_CODES.md                           コード体系とクライアントの対応表
+│   ├── GERBER_MIGRATION.md                      Gerber/Excellon リーダーの一本化と独自の2D幾何
+│   ├── MATERIALS_DATA.md                        共通データベースとデータの追加方法
+│   ├── RELEASE_CHAIN.md                         mainから署名済みバイナリまで、およびCIの教訓
+│   ├── DESIGN_RULES.md                          スイート全体の設計規則：安全、証拠、データ
+│   ├── DOCS_TEMPLATE.md                         各リポジトリの5つの文書と未整備のもの
+│   ├── GLOSSARY.md                              スイートの名称を一行ずつ
 │   ├── suite.json                               スイートの定数
 │   ├── suite_contract_allow.txt                 契約の既知の例外
 │   ├── templates/                               新しいリポジトリのテンプレート
@@ -210,6 +220,7 @@ README とテキストは、英語、スペイン語、フランス語、イタ�
 
 * [スイートの地図](docs/SUITE_MAP.md)、[アーキテクチャ](docs/ARCHITECTURE.md)、[機能マトリクス](docs/CAPABILITY_MATRIX.md)、[規約](docs/CONVENTIONS.md)。
 * [バージョンの公開](docs/RELEASING.md)、[機械を最新に保つ方法](docs/UPDATING.md)、[再利用できる検証](docs/REUSABLE_VALIDATION.md)。
+* 共通ガイド：[パネルとメニュー](docs/DOCKING.md)、[設定コントラクトとクライアント](docs/CLIENT_SYNC.md)、[エラーコード](docs/ERROR_CODES.md)、[Gerberリーダーの一本化](docs/GERBER_MIGRATION.md)、[共通データ](docs/MATERIALS_DATA.md)、[リリースの流れとCIの教訓](docs/RELEASE_CHAIN.md)、[設計規則](docs/DESIGN_RULES.md)、[リポジトリの5つの文書](docs/DOCS_TEMPLATE.md)、[用語集](docs/GLOSSARY.md)。
 * [別のリポジトリから共有クレートを使う](https://github.com/JuanenRac/EH3D-COMMON/blob/main/docs/CONSUMING.md)：隣接フォルダー、パスとバージョンの行、CI がビルドに使うタグ、`min_common`。
 * [変更履歴](CHANGELOG.md)
 

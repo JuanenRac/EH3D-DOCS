@@ -63,6 +63,7 @@
 * **套件契约：** `tools/suite_contract.py` 检查任何单个仓库都无法自行检查的关系：每个清单都能被 Updater 的解析器读取并带有其文件夹的名称，按路径依赖同级仓库时要写明所需版本，地图中的版本与清单一致，屏幕和服务器在端口上一致，共享验证器处处相同，`docs/suite.json` 与重复其取值的位置一致，并且每个仓库都有问题表单。它只发出警告。
 * **版本、发布与新工作：** `bump_version.py`、`release_notes.py`、`prerelease_check.py`、`readme_staleness.py` 和 `vendored_tools_report.py`（[docs/RELEASING.md](docs/RELEASING.md)），可复用的验证工作流（[docs/REUSABLE_VALIDATION.md](docs/REUSABLE_VALIDATION.md)），用于获取仓库所需内容的 `bootstrap_workspace.py`，以及用于创建新仓库的 `new_repo.py`。`bump_version.py` 还会更新要求最低版本的内部依赖、工作区各软件包在 `Cargo.lock` 中的条目，以及整个家族更新器的清单。
 * **如何更新：** 车间的 CM5 **通过发布版本**更新（EH3D-SERVER 的 `deploy/eh3d-update.py` 把 GitHub 的发布版本下载到 `/opt`）；EH3D-UPDATER 供**开发电脑使用，通过 git**（[docs/UPDATING.md](docs/UPDATING.md)）。
+* **通用指南：** 多个仓库共用的内容在这里只写一次，各仓库链接到这里：程序的面板框架、设置契约及遵循它的客户端、错误代码及其对照表、迁移到统一的 Gerber 和 Excellon 读取器、共用数据库、发布链与 CI 的经验教训、设计规则、每个仓库的五份文档以及名称术语表。
 
 ## 🧩 在 EH3D 中的角色
 
@@ -158,6 +159,15 @@ EH3D-DOCS/
 │   ├── RELEASING.md                             用脚本提升版本并发布
 │   ├── REUSABLE_VALIDATION.md                   各仓库可调用的验证工作流
 │   ├── VENDORED_TOOLS_REPORT.md                 复制到各仓库但无人使用的工具
+│   ├── DOCKING.md                               程序共用的面板与菜单框架
+│   ├── CLIENT_SYNC.md                           设置契约及遵循它的客户端
+│   ├── ERROR_CODES.md                           代码系列与各客户端的对照表
+│   ├── GERBER_MIGRATION.md                      统一的Gerber和Excellon读取器与自有2D几何
+│   ├── MATERIALS_DATA.md                        共用数据库及如何添加数据
+│   ├── RELEASE_CHAIN.md                         从main到签名二进制，以及CI的经验教训
+│   ├── DESIGN_RULES.md                          整个套件的设计规则：安全、证据、数据
+│   ├── DOCS_TEMPLATE.md                         每个仓库的五份文档以及缺少者
+│   ├── GLOSSARY.md                              套件中的名称，每个一行
 │   ├── suite.json                               套件常量
 │   ├── suite_contract_allow.txt                 契约的已知例外
 │   ├── templates/                               新仓库的模板
@@ -210,6 +220,7 @@ README 和文本提供英语、西班牙语、法语、意大利语、德语、�
 
 * [套件地图](docs/SUITE_MAP.md)、[架构](docs/ARCHITECTURE.md)、[能力矩阵](docs/CAPABILITY_MATRIX.md)和[约定](docs/CONVENTIONS.md)。
 * [发布版本](docs/RELEASING.md)、[机器如何保持更新](docs/UPDATING.md)和[可复用的验证](docs/REUSABLE_VALIDATION.md)。
+* 通用指南：[面板与菜单](docs/DOCKING.md)、[设置契约与客户端](docs/CLIENT_SYNC.md)、[错误代码](docs/ERROR_CODES.md)、[统一的 Gerber 读取器](docs/GERBER_MIGRATION.md)、[共用数据](docs/MATERIALS_DATA.md)、[发布链与 CI 经验](docs/RELEASE_CHAIN.md)、[设计规则](docs/DESIGN_RULES.md)、[仓库的五份文档](docs/DOCS_TEMPLATE.md)和[术语表](docs/GLOSSARY.md)。
 * [从其他仓库使用共享 crate](https://github.com/JuanenRac/EH3D-COMMON/blob/main/docs/CONSUMING.md)：相邻文件夹、路径与版本行、CI 构建所用的标签以及 `min_common`。
 * [变更日志](CHANGELOG.md)
 

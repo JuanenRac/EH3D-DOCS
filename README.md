@@ -63,6 +63,7 @@ Each line is one part of this repository and the light says how far it is today.
 * **The suite contract:** `tools/suite_contract.py` checks the relations that no repository can check by itself: every manifest is readable with the parser of the Updater and carries the name of its folder, a dependency on a sibling by path says which version it needs, the versions of the map are the manifests', the screens and the server agree on the port, the shared validator is the same everywhere, `docs/suite.json` matches the places that repeat its values, and every repository has the issue forms. It only warns.
 * **Versions, releases and new work:** `bump_version.py`, `release_notes.py`, `prerelease_check.py`, `readme_staleness.py` and `vendored_tools_report.py` ([docs/RELEASING.md](docs/RELEASING.md)), a reusable validation workflow ([docs/REUSABLE_VALIDATION.md](docs/REUSABLE_VALIDATION.md)), `bootstrap_workspace.py` to fetch what a repository needs and `new_repo.py` to make a new repository. `bump_version.py` also raises the internal dependencies that ask for a minimum version, the `Cargo.lock` entries of the packages of a workspace and the manifest of the updater of the whole family.
 * **How it is updated:** the CM5 of the workshop is updated **by releases** (`deploy/eh3d-update.py` of EH3D-SERVER downloads the release of GitHub into `/opt`); EH3D-UPDATER is for **development PCs, by git** ([docs/UPDATING.md](docs/UPDATING.md)).
+* **The common guides:** what several repositories share is written here once and the repositories link to it: the docking frame of the programs, the settings contract and the clients that follow it, the error codes and their tables, the move to one Gerber and Excellon reader, the shared databases, the release chain and the lessons of the CI, the design rules, the five documents of every repository and the glossary of names.
 
 ## 🧩 Role in EH3D
 
@@ -158,6 +159,15 @@ EH3D-DOCS/
 │   ├── RELEASING.md                             raise a version and publish a release with the scripts
 │   ├── REUSABLE_VALIDATION.md                   the validation workflow that the repositories can call
 │   ├── VENDORED_TOOLS_REPORT.md                 the tools copied into the repositories that nothing uses
+│   ├── DOCKING.md                               the panels and menus frame of the programs
+│   ├── CLIENT_SYNC.md                           the settings contract and the clients that follow it
+│   ├── ERROR_CODES.md                           the families of codes and the tables of the clients
+│   ├── GERBER_MIGRATION.md                      one Gerber and Excellon reader and our 2D geometry
+│   ├── MATERIALS_DATA.md                        shared databases and how to add data to them
+│   ├── RELEASE_CHAIN.md                         from main to a signed binary, and the lessons of the CI
+│   ├── DESIGN_RULES.md                          the design rules of the whole suite: safety, evidence, data
+│   ├── DOCS_TEMPLATE.md                         the five documents of every repository, and who lacks them
+│   ├── GLOSSARY.md                              the names of the suite, one line each
 │   ├── suite.json                               the constants of the suite
 │   ├── suite_contract_allow.txt                 the known exceptions of the contract
 │   ├── templates/                               the template of a new repository
@@ -210,6 +220,7 @@ README and texts exist in English, Spanish, French, Italian, German, Chinese, Ja
 
 * [The map of the suite](docs/SUITE_MAP.md), [the architecture](docs/ARCHITECTURE.md), [the capability matrix](docs/CAPABILITY_MATRIX.md) and [the conventions](docs/CONVENTIONS.md).
 * [Releasing a version](docs/RELEASING.md), [how the machines are kept up to date](docs/UPDATING.md) and [the reusable validation](docs/REUSABLE_VALIDATION.md).
+* The common guides: [panels and menus](docs/DOCKING.md), [settings contract and clients](docs/CLIENT_SYNC.md), [error codes](docs/ERROR_CODES.md), [one Gerber reader](docs/GERBER_MIGRATION.md), [shared data](docs/MATERIALS_DATA.md), [release chain and CI lessons](docs/RELEASE_CHAIN.md), [design rules](docs/DESIGN_RULES.md), [the five documents of a repository](docs/DOCS_TEMPLATE.md) and [the glossary](docs/GLOSSARY.md).
 * [Using the shared crates from another repository](https://github.com/JuanenRac/EH3D-COMMON/blob/main/docs/CONSUMING.md): the sibling folders, the path and version line, the tags the CI builds against and `min_common`.
 * [Changelog](CHANGELOG.md)
 

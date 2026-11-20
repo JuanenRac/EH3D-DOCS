@@ -63,6 +63,7 @@ Cada línea es una parte de este repositorio y la luz dice hasta dónde llega ho
 * **El contrato de la suite:** `tools/suite_contract.py` comprueba las relaciones que ningún repositorio puede comprobar por sí solo: cada manifiesto se lee con el analizador del Updater y lleva el nombre de su carpeta, una dependencia de un hermano por ruta dice qué versión necesita, las versiones del mapa son las de los manifiestos, las pantallas y el servidor coinciden en el puerto, el validador compartido es el mismo en todas partes, `docs/suite.json` coincide con los sitios que repiten sus valores y cada repositorio tiene los formularios de incidencias. Solo avisa.
 * **Versiones, publicaciones y trabajo nuevo:** `bump_version.py`, `release_notes.py`, `prerelease_check.py`, `readme_staleness.py` y `vendored_tools_report.py` ([docs/RELEASING.md](docs/RELEASING.md)), un flujo de validación reutilizable ([docs/REUSABLE_VALIDATION.md](docs/REUSABLE_VALIDATION.md)), `bootstrap_workspace.py` para traer lo que necesita un repositorio y `new_repo.py` para crear un repositorio nuevo. `bump_version.py` también sube las dependencias internas que piden una versión mínima, las entradas de `Cargo.lock` de los paquetes de un espacio de trabajo y el manifiesto del actualizador de toda la familia.
 * **Cómo se actualiza:** la CM5 del taller se actualiza **por releases** (`deploy/eh3d-update.py` de EH3D-SERVER descarga la release de GitHub a `/opt`); EH3D-UPDATER es para los **PC de desarrollo, por git** ([docs/UPDATING.md](docs/UPDATING.md)).
+* **Las guías comunes:** lo que comparten varios repositorios se escribe aquí una sola vez y los repositorios lo enlazan: el marco de paneles de los programas, el contrato de ajustes y los clientes que lo siguen, los códigos de error y sus tablas, el paso a un solo lector de Gerber y Excellon, las bases de datos comunes, la cadena de publicación y las lecciones del CI, las reglas de diseño, los cinco documentos de cada repositorio y el glosario de nombres.
 
 ## 🧩 Papel en EH3D
 
@@ -158,6 +159,15 @@ EH3D-DOCS/
 │   ├── RELEASING.md                             subir una versión y publicar con los scripts
 │   ├── REUSABLE_VALIDATION.md                   el flujo de validación que pueden llamar los repositorios
 │   ├── VENDORED_TOOLS_REPORT.md                 las herramientas copiadas en los repositorios que nadie usa
+│   ├── DOCKING.md                               el marco de paneles y menús de los programas
+│   ├── CLIENT_SYNC.md                           el contrato de ajustes y los clientes que lo siguen
+│   ├── ERROR_CODES.md                           las familias de códigos y las tablas de los clientes
+│   ├── GERBER_MIGRATION.md                      un solo lector de Gerber y Excellon y nuestra geometría 2D
+│   ├── MATERIALS_DATA.md                        las bases de datos comunes y cómo aportar datos
+│   ├── RELEASE_CHAIN.md                         de main a un binario firmado, y las lecciones del CI
+│   ├── DESIGN_RULES.md                          las reglas de diseño de toda la suite: seguridad, evidencia, datos
+│   ├── DOCS_TEMPLATE.md                         los cinco documentos de cada repositorio y a quién le faltan
+│   ├── GLOSSARY.md                              los nombres de la suite, una línea cada uno
 │   ├── suite.json                               las constantes de la suite
 │   ├── suite_contract_allow.txt                 las excepciones conocidas del contrato
 │   ├── templates/                               la plantilla de un repositorio nuevo
@@ -210,6 +220,7 @@ El README y los textos existen en inglés, español, francés, italiano, alemán
 
 * [El mapa de la suite](docs/SUITE_MAP.md), [la arquitectura](docs/ARCHITECTURE.md), [la matriz de capacidades](docs/CAPABILITY_MATRIX.md) y [las convenciones](docs/CONVENTIONS.md).
 * [Publicar una versión](docs/RELEASING.md), [cómo se mantienen actualizadas las máquinas](docs/UPDATING.md) y [la validación reutilizable](docs/REUSABLE_VALIDATION.md).
+* Las guías comunes: [paneles y menús](docs/DOCKING.md), [contrato de ajustes y clientes](docs/CLIENT_SYNC.md), [códigos de error](docs/ERROR_CODES.md), [un solo lector de Gerber](docs/GERBER_MIGRATION.md), [datos comunes](docs/MATERIALS_DATA.md), [cadena de publicación y lecciones del CI](docs/RELEASE_CHAIN.md), [reglas de diseño](docs/DESIGN_RULES.md), [los cinco documentos de un repositorio](docs/DOCS_TEMPLATE.md) y [el glosario](docs/GLOSSARY.md).
 * [Usar los crates compartidos desde otro repositorio](https://github.com/JuanenRac/EH3D-COMMON/blob/main/docs/CONSUMING.md): las carpetas hermanas, la línea de ruta y versión, las etiquetas contra las que compila la CI y `min_common`.
 * [Registro de cambios](CHANGELOG.md)
 

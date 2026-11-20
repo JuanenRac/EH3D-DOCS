@@ -63,6 +63,7 @@ Ogni riga è una parte di questo repository e il semaforo dice a che punto è og
 * **Il contratto della suite:** `tools/suite_contract.py` controlla le relazioni che nessun repository può controllare da solo: ogni manifesto è leggibile con il parser dell'Updater e porta il nome della sua cartella, una dipendenza da un fratello per percorso dice quale versione serve, le versioni della mappa sono quelle dei manifesti, gli schermi e il server concordano sulla porta, il validatore condiviso è lo stesso ovunque, `docs/suite.json` corrisponde ai punti che ne ripetono i valori e ogni repository ha i moduli per le segnalazioni. Si limita ad avvisare.
 * **Versioni, rilasci e lavoro nuovo:** `bump_version.py`, `release_notes.py`, `prerelease_check.py`, `readme_staleness.py` e `vendored_tools_report.py` ([docs/RELEASING.md](docs/RELEASING.md)), un workflow di validazione riutilizzabile ([docs/REUSABLE_VALIDATION.md](docs/REUSABLE_VALIDATION.md)), `bootstrap_workspace.py` per prendere ciò che serve a un repository e `new_repo.py` per creare un nuovo repository. `bump_version.py` aggiorna anche le dipendenze interne che chiedono una versione minima, le voci di `Cargo.lock` dei pacchetti di un workspace e il manifesto dell'aggiornatore dell'intera famiglia.
 * **Come si aggiorna:** la CM5 dell'officina si aggiorna **con le release** (`deploy/eh3d-update.py` di EH3D-SERVER scarica la release di GitHub in `/opt`); EH3D-UPDATER è per i **PC di sviluppo, con git** ([docs/UPDATING.md](docs/UPDATING.md)).
+* **Le guide comuni:** ciò che più repository condividono è scritto qui una sola volta e i repository vi rimandano: il telaio dei pannelli dei programmi, il contratto delle impostazioni e i client che lo seguono, i codici di errore e le loro tabelle, il passaggio a un solo lettore Gerber ed Excellon, i database comuni, la catena di rilascio e le lezioni della CI, le regole di progetto, i cinque documenti di ogni repository e il glossario dei nomi.
 
 ## 🧩 Ruolo in EH3D
 
@@ -158,6 +159,15 @@ EH3D-DOCS/
 │   ├── RELEASING.md                             alzare una versione e pubblicare con gli script
 │   ├── REUSABLE_VALIDATION.md                   il workflow di validazione che i repository possono richiamare
 │   ├── VENDORED_TOOLS_REPORT.md                 gli strumenti copiati nei repository che nessuno usa
+│   ├── DOCKING.md                               il telaio di pannelli e menu dei programmi
+│   ├── CLIENT_SYNC.md                           il contratto delle impostazioni e i client che lo seguono
+│   ├── ERROR_CODES.md                           le famiglie di codici e le tabelle dei client
+│   ├── GERBER_MIGRATION.md                      un solo lettore Gerber ed Excellon e la nostra geometria 2D
+│   ├── MATERIALS_DATA.md                        i database comuni e come aggiungervi dati
+│   ├── RELEASE_CHAIN.md                         da main al binario firmato e le lezioni della CI
+│   ├── DESIGN_RULES.md                          le regole di progetto dell'intera suite: sicurezza, evidenza, dati
+│   ├── DOCS_TEMPLATE.md                         i cinque documenti di ogni repository e a chi mancano
+│   ├── GLOSSARY.md                              i nomi della suite, una riga ciascuno
 │   ├── suite.json                               le costanti della suite
 │   ├── suite_contract_allow.txt                 le eccezioni note del contratto
 │   ├── templates/                               il modello di un nuovo repository
@@ -210,6 +220,7 @@ Il README e i testi esistono in inglese, spagnolo, francese, italiano, tedesco, 
 
 * [La mappa della suite](docs/SUITE_MAP.md), [l'architettura](docs/ARCHITECTURE.md), [la matrice delle capacità](docs/CAPABILITY_MATRIX.md) e [le convenzioni](docs/CONVENTIONS.md).
 * [Pubblicare una versione](docs/RELEASING.md), [come si mantengono aggiornate le macchine](docs/UPDATING.md) e [la validazione riutilizzabile](docs/REUSABLE_VALIDATION.md).
+* Le guide comuni: [pannelli e menu](docs/DOCKING.md), [contratto delle impostazioni e client](docs/CLIENT_SYNC.md), [codici di errore](docs/ERROR_CODES.md), [un solo lettore Gerber](docs/GERBER_MIGRATION.md), [dati comuni](docs/MATERIALS_DATA.md), [catena di rilascio e lezioni della CI](docs/RELEASE_CHAIN.md), [regole di progetto](docs/DESIGN_RULES.md), [i cinque documenti di un repository](docs/DOCS_TEMPLATE.md) e [il glossario](docs/GLOSSARY.md).
 * [Usare i crate condivisi da un altro repository](https://github.com/JuanenRac/EH3D-COMMON/blob/main/docs/CONSUMING.md): le cartelle vicine, la riga di percorso e versione, i tag con cui compila la CI e `min_common`.
 * [Registro delle modifiche](CHANGELOG.md)
 
