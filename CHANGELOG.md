@@ -4,6 +4,8 @@ All notable changes to this project are documented here.
 
 ## [Unreleased]
 
+- **Requirements with identifiers and tests that name them:** `docs/REQUIREMENTS.md` is the register of what the program must do, one row for each capability with an identifier (`DOCS-001` on), its state (planned, prototype, implemented or validated), how far it is (done, partial, pending or blocked), its evidence and the test that shows it; a capability that is not written names the test that will show it. `tools/test_requirements.py` reads the table and fails when a test does not exist, when a state does not agree with the progress or the evidence, when `docs/STATUS.md` does not say the same numbers, when a README does not link the documents or when a document holds a date or a private reference. The five documents of the family (`docs/SCOPE.md`, `docs/REQUIREMENTS.md`, `docs/STATUS.md`, `docs/NOT_YET.md` and `AGENTS.md`) are in the repository and are linked from the eight READMEs.
+
 ## [0.1.2] - Common guides of the suite and the map and the matrix up to the published releases
 
 - **Guides that the repositories link to instead of repeating:** `docs/DOCKING.md` (panels and menus of the programs), `docs/CLIENT_SYNC.md` (the contract of the settings of the server and the parity guard of the clients), `docs/ERROR_CODES.md` (the families of codes and how the tables of Studio, Android, iOS, the touch screens and the Rust programs are kept in step), `docs/GERBER_MIGRATION.md` (one reader for Gerber and Excellon, the corpus and the 2D geometry), `docs/MATERIALS_DATA.md` (the shared databases of materials and how to add data to them) and `docs/GLOSSARY.md` (the names of the suite).

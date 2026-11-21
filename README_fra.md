@@ -30,7 +30,7 @@
 |---|---|
 | Version | `0.1.2` |
 | Maturité | Fonctionnel |
-| Tests | 574 |
+| Tests | 583 |
 | Pile technique | Markdown, avec des outils en Python 3.10+ |
 | Sur du matériel réel | Sans objet : documentation |
 
@@ -45,7 +45,7 @@ Chaque ligne est une partie de ce dépôt et le feu dit où elle en est aujourd'
 | Domaine | État | Ce que cela veut dire ici |
 |---|---|---|
 | Contrôles du dépôt | 🟡 | Le contrôle du dépôt, celui des liens entre les documents et les tests des outils tournent dans la CI et réussissent. |
-| Tests | 🟠 | 574 tests des outils réussissent sur un ordinateur, certains sur de petits dépôts jouets ; les documents et les affirmations qu'ils contiennent sont lus et vérifiés à la main et par les scripts. |
+| Tests | 🟠 | 583 tests des outils réussissent sur un ordinateur, certains sur de petits dépôts jouets ; les documents et les affirmations qu'ils contiennent sont lus et vérifiés à la main et par les scripts. |
 | Contrat de la suite | 🟡 | Le contrat entre les dépôts lit chaque manifeste avec l'analyseur de l'Updater et signale les dérives (ports, langues du README, outils partagés, formulaires de tickets) ; il tourne chaque jour dans la CI comme simple avertissement, et les dépôts qu'il nomme sont remis à jour un par un. |
 | Outils de version et de publication | 🟠 | Les scripts qui montent une version, écrivent les notes et vérifient une publication, ainsi que le workflow de validation réutilisable, sont testés sur des dépôts jouets ; aucun dépôt n'a encore publié de version avec eux. |
 | Espace de travail et nouveaux dépôts | 🟠 | Les scripts qui listent et clonent ce dont un dépôt a besoin et qui créent un nouveau dépôt sont testés sur des dépôts jouets dans un dossier temporaire ; aucun n'a encore préparé un vrai espace de travail ni créé un vrai dépôt. |
@@ -133,7 +133,7 @@ Pour lire les documents, commence par [la carte de la suite](docs/SUITE_MAP.md).
 
 ## 🧪 Tests
 
-Les outils ont 574 tests (`python -I -m unittest discover -s tools -p "test_*.py"`), et ils réussissent. La CI exécute le contrôle du dépôt (`tools/ci_validate.py`), celui des liens entre les documents (`tools/check_links.py`), les contrôles des deux images et ces tests ; un workflow quotidien exécute le contrat de la suite. Les documents n'ont pas d'autre test : ce qu'ils affirment est tenu honnête par la matrice des capacités et par leur relecture. La CI mesure en plus la part du code des outils que ces tests exécutent et échoue en dessous de 85 %.
+Les outils ont 583 tests (`python -I -m unittest discover -s tools -p "test_*.py"`), et ils réussissent. La CI exécute le contrôle du dépôt (`tools/ci_validate.py`), celui des liens entre les documents (`tools/check_links.py`), les contrôles des deux images et ces tests ; un workflow quotidien exécute le contrat de la suite. Les documents n'ont pas d'autre test : ce qu'ils affirment est tenu honnête par la matrice des capacités et par leur relecture. La CI mesure en plus la part du code des outils que ces tests exécutent et échoue en dessous de 85 %.
 
 ## 🏗️ Compilation et publication
 
@@ -151,6 +151,10 @@ La version se trouve dans le fichier `VERSION` et dans `eh3d.project.json`, et c
 ```text
 EH3D-DOCS/
 ├── docs/
+│   ├── NOT_YET.md                               de bonnes idées hors de cette version, avec pourquoi et quand
+│   ├── REQUIREMENTS.md                          le registre des exigences : état, preuve et test de chacune
+│   ├── SCOPE.md                                 but, limites et ce qu'il ne décide jamais
+│   ├── STATUS.md                                ce qui existe, ce qui manque et ce qui reste ouvert
 │   ├── SUITE_MAP.md                             chaque dépôt et s'il existe déjà
 │   ├── ARCHITECTURE.md                          les couches et les règles
 │   ├── CAPABILITY_MATRIX.md                     ce qui a été testé et ce qui a tourné sur une machine
@@ -179,6 +183,7 @@ EH3D-DOCS/
 ├── eh3d.project.json                            manifeste : version, rôle, maturité et commande de compilation
 ├── VERSION                                      la version des documents
 ├── CHANGELOG.md                                 ce qui a changé dans chaque version
+├── AGENTS.md                                    les règles pour qui modifie le dépôt
 ├── SECURITY.md SUPPORT.md                       signaler une vulnérabilité et poser des questions
 └── CONTRIBUTING.md CODE_OF_CONDUCT.md LICENSE   contribuer, code de conduite et licence
 ```
@@ -223,6 +228,11 @@ Le README et les textes existent en anglais, espagnol, français, italien, allem
 * Les guides communs : [panneaux et menus](docs/DOCKING.md), [contrat des réglages et clients](docs/CLIENT_SYNC.md), [codes d'erreur](docs/ERROR_CODES.md), [un seul lecteur Gerber](docs/GERBER_MIGRATION.md), [données communes](docs/MATERIALS_DATA.md), [chaîne de publication et leçons de la CI](docs/RELEASE_CHAIN.md), [règles de conception](docs/DESIGN_RULES.md), [les cinq documents d'un dépôt](docs/DOCS_TEMPLATE.md) et [le glossaire](docs/GLOSSARY.md).
 * [Utiliser les crates partagés depuis un autre dépôt](https://github.com/JuanenRac/EH3D-COMMON/blob/main/docs/CONSUMING.md) : les dossiers voisins, la ligne de chemin et de version, les étiquettes contre lesquelles la CI compile et `min_common`.
 * [Journal des modifications](CHANGELOG.md)
+* [Périmètre](docs/SCOPE.md): à quoi sert le programme, ce qu'il ne fera pas et ce qu'il ne décide jamais.
+* [Exigences](docs/REQUIREMENTS.md): le registre des capacités, l'état de chacune et le test qui la montre.
+* [État](docs/STATUS.md): ce qui existe, ce qui manque et ce qui reste ouvert.
+* [Pas encore](docs/NOT_YET.md): de bonnes idées laissées de côté dans cette version.
+* [Règles pour modifier le dépôt](AGENTS.md): les règles pour qui modifie le dépôt.
 
 ## 🤝 Contribuer et communauté
 

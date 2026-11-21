@@ -30,7 +30,7 @@
 |---|---|
 | Version | `0.1.2` |
 | Maturity | Functional |
-| Tests | 574 |
+| Tests | 583 |
 | Stack | Markdown, with Python 3.10+ tools |
 | On real hardware | Not applicable: documentation |
 
@@ -45,7 +45,7 @@ Each line is one part of this repository and the light says how far it is today.
 | Area | State | What it means here |
 |---|---|---|
 | Repository checks | 🟡 | The repository check, the check of the links between the documents and the tests of the tools run in CI and pass. |
-| Tests | 🟠 | 574 tests of the tools pass on a computer, some of them on small toy repositories; the documents and the claims in them are read and checked by hand and by the scripts. |
+| Tests | 🟠 | 583 tests of the tools pass on a computer, some of them on small toy repositories; the documents and the claims in them are read and checked by hand and by the scripts. |
 | Suite contract | 🟡 | The contract between the repositories reads every manifest with the parser of the Updater and warns about drift (ports, README languages, shared tools, issue forms); it runs every day in CI as a warning, and the repositories it names are brought up to date one by one. |
 | Version and release tools | 🟠 | The scripts that raise a version, write the notes and check a release, and the reusable validation workflow, are tested on toy repositories; no repository has published a release with them yet. |
 | Workspace and new repositories | 🟠 | The scripts that list and clone what a repository needs and that make a new repository are tested on toy repositories in a temporary folder; neither has set up a real workspace or created a real repository yet. |
@@ -133,7 +133,7 @@ To read the documents, start with [the map of the suite](docs/SUITE_MAP.md).
 
 ## 🧪 Testing
 
-The tools have 574 tests (`python -I -m unittest discover -s tools -p "test_*.py"`), and they pass. The CI runs the repository check (`tools/ci_validate.py`), the check of the links between the documents (`tools/check_links.py`), the checks of the two pictures and those tests; a daily workflow runs the suite contract. The documents themselves have no test beyond that: what they claim is kept honest by the capability matrix and by reading them. The CI also measures how much of the code of the tools these tests run and fails when it falls below 85 %.
+The tools have 583 tests (`python -I -m unittest discover -s tools -p "test_*.py"`), and they pass. The CI runs the repository check (`tools/ci_validate.py`), the check of the links between the documents (`tools/check_links.py`), the checks of the two pictures and those tests; a daily workflow runs the suite contract. The documents themselves have no test beyond that: what they claim is kept honest by the capability matrix and by reading them. The CI also measures how much of the code of the tools these tests run and fails when it falls below 85 %.
 
 ## 🏗️ Build & Release
 
@@ -151,6 +151,10 @@ The version lives in the `VERSION` file and in `eh3d.project.json`, and each ver
 ```text
 EH3D-DOCS/
 ├── docs/
+│   ├── NOT_YET.md                               good ideas that are left out of this version, with why and when
+│   ├── REQUIREMENTS.md                          the register of requirements: state, evidence and the test of each
+│   ├── SCOPE.md                                 purpose, limits and what it never decides
+│   ├── STATUS.md                                what exists, what is missing and what is still open
 │   ├── SUITE_MAP.md                             every repository and whether it exists yet
 │   ├── ARCHITECTURE.md                          the layers and the rules
 │   ├── CAPABILITY_MATRIX.md                     what has been tested and what has been run on a machine
@@ -179,6 +183,7 @@ EH3D-DOCS/
 ├── eh3d.project.json                            manifest: version, role, maturity and build command
 ├── VERSION                                      the version of the documents
 ├── CHANGELOG.md                                 what changed in each version
+├── AGENTS.md                                    the rules for anyone who changes the repository
 ├── SECURITY.md SUPPORT.md                       how to report a vulnerability and where to ask
 └── CONTRIBUTING.md CODE_OF_CONDUCT.md LICENSE   how to contribute, the code of conduct and the licence
 ```
@@ -223,6 +228,11 @@ README and texts exist in English, Spanish, French, Italian, German, Chinese, Ja
 * The common guides: [panels and menus](docs/DOCKING.md), [settings contract and clients](docs/CLIENT_SYNC.md), [error codes](docs/ERROR_CODES.md), [one Gerber reader](docs/GERBER_MIGRATION.md), [shared data](docs/MATERIALS_DATA.md), [release chain and CI lessons](docs/RELEASE_CHAIN.md), [design rules](docs/DESIGN_RULES.md), [the five documents of a repository](docs/DOCS_TEMPLATE.md) and [the glossary](docs/GLOSSARY.md).
 * [Using the shared crates from another repository](https://github.com/JuanenRac/EH3D-COMMON/blob/main/docs/CONSUMING.md): the sibling folders, the path and version line, the tags the CI builds against and `min_common`.
 * [Changelog](CHANGELOG.md)
+* [Scope](docs/SCOPE.md): what the program is for, what it will not do and what it never decides.
+* [Requirements](docs/REQUIREMENTS.md): the register of capabilities, the state of each and the test that shows it.
+* [Status](docs/STATUS.md): what exists, what is missing and what is still open.
+* [Not yet](docs/NOT_YET.md): good ideas that are left out of this version.
+* [Rules for changing the repository](AGENTS.md): the rules for anyone who changes the repository.
 
 ## 🤝 Contributing & Community
 

@@ -30,7 +30,7 @@
 |---|---|
 | Version | `0.1.2` |
 | Reifegrad | Funktionsfähig |
-| Tests | 574 |
+| Tests | 583 |
 | Technologie-Stack | Markdown, mit Python-3.10+-Werkzeugen |
 | Auf echter Hardware | Nicht zutreffend: Dokumentation |
 
@@ -45,7 +45,7 @@ Jede Zeile ist ein Teil dieses Repositorys, und die Ampel sagt, wie weit er heut
 | Bereich | Stand | Was das hier bedeutet |
 |---|---|---|
 | Repository-Prüfungen | 🟡 | Die Repository-Prüfung, die Prüfung der Links zwischen den Dokumenten und die Tests der Werkzeuge laufen in der CI und bestehen. |
-| Tests | 🟠 | 574 Tests der Werkzeuge bestehen auf einem Rechner, einige davon auf kleinen Spielzeug-Repositories; die Dokumente und ihre Aussagen werden von Hand und mit den Skripten gelesen und geprüft. |
+| Tests | 🟠 | 583 Tests der Werkzeuge bestehen auf einem Rechner, einige davon auf kleinen Spielzeug-Repositories; die Dokumente und ihre Aussagen werden von Hand und mit den Skripten gelesen und geprüft. |
 | Vertrag der Suite | 🟡 | Der Vertrag zwischen den Repositories liest jedes Manifest mit dem Parser des Updaters und meldet Abweichungen (Ports, README-Sprachen, gemeinsame Werkzeuge, Issue-Formulare); er läuft täglich in der CI als Warnung, und die Repositories, die er nennt, werden eines nach dem anderen nachgezogen. |
 | Werkzeuge für Version und Veröffentlichung | 🟠 | Die Skripte, die eine Version erhöhen, die Notizen schreiben und eine Veröffentlichung prüfen, und der wiederverwendbare Validierungs-Workflow sind an Spielzeug-Repositories getestet; noch kein Repository hat damit eine Version veröffentlicht. |
 | Arbeitsbereich und neue Repositories | 🟠 | Die Skripte, die auflisten und klonen, was ein Repository braucht, und die ein neues Repository anlegen, sind an Spielzeug-Repositories in einem temporären Ordner getestet; keines hat bisher einen echten Arbeitsbereich eingerichtet oder ein echtes Repository angelegt. |
@@ -133,7 +133,7 @@ Zum Lesen der Dokumente beginne mit [der Karte der Suite](docs/SUITE_MAP.md).
 
 ## 🧪 Tests
 
-Die Werkzeuge haben 574 Tests (`python -I -m unittest discover -s tools -p "test_*.py"`), und sie bestehen. Die CI führt die Repository-Prüfung (`tools/ci_validate.py`), die Prüfung der Links zwischen den Dokumenten (`tools/check_links.py`), die Prüfungen der beiden Bilder und diese Tests aus; ein täglicher Workflow führt den Vertrag der Suite aus. Die Dokumente selbst haben keinen weiteren Test: Was sie behaupten, wird durch die Fähigkeitsmatrix und durch Lesen ehrlich gehalten. Die CI misst außerdem, wie viel vom Code der Werkzeuge diese Tests ausführen, und schlägt unter 85 % fehl.
+Die Werkzeuge haben 583 Tests (`python -I -m unittest discover -s tools -p "test_*.py"`), und sie bestehen. Die CI führt die Repository-Prüfung (`tools/ci_validate.py`), die Prüfung der Links zwischen den Dokumenten (`tools/check_links.py`), die Prüfungen der beiden Bilder und diese Tests aus; ein täglicher Workflow führt den Vertrag der Suite aus. Die Dokumente selbst haben keinen weiteren Test: Was sie behaupten, wird durch die Fähigkeitsmatrix und durch Lesen ehrlich gehalten. Die CI misst außerdem, wie viel vom Code der Werkzeuge diese Tests ausführen, und schlägt unter 85 % fehl.
 
 ## 🏗️ Build und Veröffentlichung
 
@@ -151,6 +151,10 @@ Die Version steht in der Datei `VERSION` und in `eh3d.project.json`, und jede Ve
 ```text
 EH3D-DOCS/
 ├── docs/
+│   ├── NOT_YET.md                               gute Ideen außerhalb dieser Version, mit Grund und Zeitpunkt
+│   ├── REQUIREMENTS.md                          das Register der Anforderungen: Stand, Nachweis und Test jeder einzelnen
+│   ├── SCOPE.md                                 Zweck, Grenzen und was es nie entscheidet
+│   ├── STATUS.md                                was es gibt, was fehlt und was offen ist
 │   ├── SUITE_MAP.md                             jedes Repository und ob es schon existiert
 │   ├── ARCHITECTURE.md                          die Schichten und die Regeln
 │   ├── CAPABILITY_MATRIX.md                     was getestet wurde und was auf einer Maschine lief
@@ -179,6 +183,7 @@ EH3D-DOCS/
 ├── eh3d.project.json                            Manifest: Version, Rolle, Reifegrad und Build-Befehl
 ├── VERSION                                      die Version der Dokumente
 ├── CHANGELOG.md                                 was sich in jeder Version geändert hat
+├── AGENTS.md                                    die Regeln für alle, die das Repository ändern
 ├── SECURITY.md SUPPORT.md                       Schwachstellen melden und Fragen stellen
 └── CONTRIBUTING.md CODE_OF_CONDUCT.md LICENSE   Mitwirken, Verhaltenskodex und Lizenz
 ```
@@ -223,6 +228,11 @@ README und Texte gibt es auf Englisch, Spanisch, Französisch, Italienisch, Deut
 * Die gemeinsamen Leitfäden: [Panels und Menüs](docs/DOCKING.md), [Einstellungsvertrag und Clients](docs/CLIENT_SYNC.md), [Fehlercodes](docs/ERROR_CODES.md), [ein Gerber-Leser](docs/GERBER_MIGRATION.md), [gemeinsame Daten](docs/MATERIALS_DATA.md), [Release-Kette und CI-Lehren](docs/RELEASE_CHAIN.md), [Entwurfsregeln](docs/DESIGN_RULES.md), [die fünf Dokumente eines Repositorys](docs/DOCS_TEMPLATE.md) und [das Glossar](docs/GLOSSARY.md).
 * [Die gemeinsamen Crates aus einem anderen Repository verwenden](https://github.com/JuanenRac/EH3D-COMMON/blob/main/docs/CONSUMING.md): die Nachbarordner, die Zeile mit Pfad und Version, die Tags, gegen die die CI baut, und `min_common`.
 * [Änderungsprotokoll](CHANGELOG.md)
+* [Umfang](docs/SCOPE.md): wofür das Programm da ist, was es nicht tut und was es nie entscheidet.
+* [Anforderungen](docs/REQUIREMENTS.md): das Register der Fähigkeiten, der Stand jeder einzelnen und der Test, der sie zeigt.
+* [Stand](docs/STATUS.md): was es gibt, was fehlt und was noch offen ist.
+* [Noch nicht](docs/NOT_YET.md): gute Ideen, die in dieser Version fehlen.
+* [Regeln für Änderungen am Repository](AGENTS.md): die Regeln für alle, die das Repository ändern.
 
 ## 🤝 Mitwirken und Community
 

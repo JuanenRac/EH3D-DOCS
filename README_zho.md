@@ -30,7 +30,7 @@
 |---|---|
 | 版本 | `0.1.2` |
 | 成熟度 | 可用 |
-| 测试 | 574 |
+| 测试 | 583 |
 | 技术栈 | Markdown，附带 Python 3.10+ 工具 |
 | 真实硬件 | 不适用：文档 |
 
@@ -45,7 +45,7 @@
 | 领域 | 状态 | 在这里的含义 |
 |---|---|---|
 | 仓库检查 | 🟡 | 仓库检查、文档之间的链接检查以及工具的测试都在 CI 中运行并通过。 |
-| 测试 | 🟠 | 工具的 574 个测试在计算机上通过，其中一些在小型玩具仓库上运行；文档及其中的说法靠手工和脚本阅读与核对。 |
+| 测试 | 🟠 | 工具的 583 个测试在计算机上通过，其中一些在小型玩具仓库上运行；文档及其中的说法靠手工和脚本阅读与核对。 |
 | 套件契约 | 🟡 | 仓库之间的契约用 Updater 的解析器读取每个清单，并对偏差发出警告（端口、README 语言、共享工具、问题表单）；它每天在 CI 中作为警告运行，被点名的仓库会逐个更新。 |
 | 版本与发布工具 | 🟠 | 提升版本、撰写说明和检查发布的脚本，以及可复用的验证工作流，都在玩具仓库上测试过；还没有任何仓库用它们发布过版本。 |
 | 工作区与新仓库 | 🟠 | 列出并克隆仓库所需内容的脚本和创建新仓库的脚本，都在临时文件夹中的玩具仓库上测试过；两者都还没有建立过真实的工作区或创建过真实的仓库。 |
@@ -133,7 +133,7 @@ python -I -m unittest discover -s tools -p "test_*.py"
 
 ## 🧪 测试
 
-工具有 574 个测试（`python -I -m unittest discover -s tools -p "test_*.py"`），并且都通过。CI 运行仓库检查（`tools/ci_validate.py`）、文档之间的链接检查（`tools/check_links.py`）、两张图片的检查和这些测试；每日工作流运行套件契约。文档本身除此之外没有测试：它们的说法靠能力矩阵和人工阅读来保持诚实。CI 还会测量这些测试执行了工具代码的多少，低于 85% 即失败。
+工具有 583 个测试（`python -I -m unittest discover -s tools -p "test_*.py"`），并且都通过。CI 运行仓库检查（`tools/ci_validate.py`）、文档之间的链接检查（`tools/check_links.py`）、两张图片的检查和这些测试；每日工作流运行套件契约。文档本身除此之外没有测试：它们的说法靠能力矩阵和人工阅读来保持诚实。CI 还会测量这些测试执行了工具代码的多少，低于 85% 即失败。
 
 ## 🏗️ 构建与发布
 
@@ -151,6 +151,10 @@ python -I -m unittest discover -s tools -p "test_*.py"
 ```text
 EH3D-DOCS/
 ├── docs/
+│   ├── NOT_YET.md                               本版本暂不包含的好想法及其原因和时机
+│   ├── REQUIREMENTS.md                          需求登记表：每项的状态、证据和测试
+│   ├── SCOPE.md                                 用途、界限及永不决定的事
+│   ├── STATUS.md                                已有的、缺少的和仍未决定的
 │   ├── SUITE_MAP.md                             每个仓库及其是否已存在
 │   ├── ARCHITECTURE.md                          分层和规则
 │   ├── CAPABILITY_MATRIX.md                     已测试的内容和在机床上运行过的内容
@@ -179,6 +183,7 @@ EH3D-DOCS/
 ├── eh3d.project.json                            清单：版本、角色、成熟度和构建命令
 ├── VERSION                                      文档的版本
 ├── CHANGELOG.md                                 每个版本的变更
+├── AGENTS.md                                    修改本仓库的人需要遵守的规则
 ├── SECURITY.md SUPPORT.md                       如何报告漏洞及在哪里提问
 └── CONTRIBUTING.md CODE_OF_CONDUCT.md LICENSE   参与贡献、行为准则和许可证
 ```
@@ -223,6 +228,11 @@ README 和文本提供英语、西班牙语、法语、意大利语、德语、�
 * 通用指南：[面板与菜单](docs/DOCKING.md)、[设置契约与客户端](docs/CLIENT_SYNC.md)、[错误代码](docs/ERROR_CODES.md)、[统一的 Gerber 读取器](docs/GERBER_MIGRATION.md)、[共用数据](docs/MATERIALS_DATA.md)、[发布链与 CI 经验](docs/RELEASE_CHAIN.md)、[设计规则](docs/DESIGN_RULES.md)、[仓库的五份文档](docs/DOCS_TEMPLATE.md)和[术语表](docs/GLOSSARY.md)。
 * [从其他仓库使用共享 crate](https://github.com/JuanenRac/EH3D-COMMON/blob/main/docs/CONSUMING.md)：相邻文件夹、路径与版本行、CI 构建所用的标签以及 `min_common`。
 * [变更日志](CHANGELOG.md)
+* [范围](docs/SCOPE.md)： 程序的用途、不做什么，以及永远不由它决定的事。
+* [需求](docs/REQUIREMENTS.md)： 功能登记表、每项的状态以及证明它的测试。
+* [状态](docs/STATUS.md)： 已有的、缺少的和仍未决定的。
+* [暂不包含](docs/NOT_YET.md)： 本版本暂不包含的好想法。
+* [修改仓库的规则](AGENTS.md)： 修改本仓库的人需要遵守的规则。
 
 ## 🤝 参与贡献与社区
 

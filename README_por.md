@@ -30,7 +30,7 @@
 |---|---|
 | Versão | `0.1.2` |
 | Maturidade | Funcional |
-| Testes | 574 |
+| Testes | 583 |
 | Tecnologias | Markdown, com ferramentas em Python 3.10+ |
 | Em hardware real | Não se aplica: documentação |
 
@@ -45,7 +45,7 @@ Cada linha é uma parte deste repositório e a luz diz até onde chega hoje. É 
 | Área | Estado | O que significa aqui |
 |---|---|---|
 | Verificações do repositório | 🟡 | A verificação do repositório, a das ligações entre os documentos e os testes das ferramentas correm na CI e passam. |
-| Testes | 🟠 | 574 testes das ferramentas passam num computador, alguns sobre pequenos repositórios de brincar; os documentos e as afirmações que contêm são lidos e verificados à mão e pelos scripts. |
+| Testes | 🟠 | 583 testes das ferramentas passam num computador, alguns sobre pequenos repositórios de brincar; os documentos e as afirmações que contêm são lidos e verificados à mão e pelos scripts. |
 | Contrato da suite | 🟡 | O contrato entre os repositórios lê cada manifesto com o analisador do Updater e avisa dos desvios (portas, idiomas do README, ferramentas partilhadas, formulários de problemas); corre todos os dias na CI como simples aviso, e os repositórios que nomeia são postos em dia um a um. |
 | Ferramentas de versão e publicação | 🟠 | Os scripts que sobem uma versão, escrevem as notas e verificam uma publicação, e o fluxo de validação reutilizável, estão testados em repositórios de brincar; nenhum repositório publicou ainda uma versão com eles. |
 | Espaço de trabalho e repositórios novos | 🟠 | Os scripts que listam e clonam o que um repositório precisa e que criam um repositório novo estão testados em repositórios de brincar numa pasta temporária; nenhum preparou ainda um espaço de trabalho real nem criou um repositório real. |
@@ -133,7 +133,7 @@ Para ler os documentos, comece pelo [mapa da suite](docs/SUITE_MAP.md).
 
 ## 🧪 Testes
 
-As ferramentas têm 574 testes (`python -I -m unittest discover -s tools -p "test_*.py"`), e passam. A CI executa a verificação do repositório (`tools/ci_validate.py`), a das ligações entre os documentos (`tools/check_links.py`), as verificações das duas imagens e esses testes; um fluxo diário executa o contrato da suite. Os documentos não têm mais testes do que esses: o que afirmam é mantido honesto pela matriz de capacidades e pela leitura. A CI mede ainda quanto do código das ferramentas é executado por esses testes e falha abaixo de 85 %.
+As ferramentas têm 583 testes (`python -I -m unittest discover -s tools -p "test_*.py"`), e passam. A CI executa a verificação do repositório (`tools/ci_validate.py`), a das ligações entre os documentos (`tools/check_links.py`), as verificações das duas imagens e esses testes; um fluxo diário executa o contrato da suite. Os documentos não têm mais testes do que esses: o que afirmam é mantido honesto pela matriz de capacidades e pela leitura. A CI mede ainda quanto do código das ferramentas é executado por esses testes e falha abaixo de 85 %.
 
 ## 🏗️ Compilação e publicação
 
@@ -151,6 +151,10 @@ A versão vive no ficheiro `VERSION` e em `eh3d.project.json`, e cada versão te
 ```text
 EH3D-DOCS/
 ├── docs/
+│   ├── NOT_YET.md                               boas ideias fora desta versão, com o porquê e o quando
+│   ├── REQUIREMENTS.md                          o registo de requisitos: estado, evidência e teste de cada um
+│   ├── SCOPE.md                                 finalidade, limites e o que nunca decide
+│   ├── STATUS.md                                o que existe, o que falta e o que continua em aberto
 │   ├── SUITE_MAP.md                             cada repositório e se já existe
 │   ├── ARCHITECTURE.md                          as camadas e as regras
 │   ├── CAPABILITY_MATRIX.md                     o que foi testado e o que foi executado numa máquina
@@ -179,6 +183,7 @@ EH3D-DOCS/
 ├── eh3d.project.json                            manifesto: versão, papel, maturidade e comando de compilação
 ├── VERSION                                      a versão dos documentos
 ├── CHANGELOG.md                                 o que mudou em cada versão
+├── AGENTS.md                                    as regras para quem altera o repositório
 ├── SECURITY.md SUPPORT.md                       como comunicar uma vulnerabilidade e onde perguntar
 └── CONTRIBUTING.md CODE_OF_CONDUCT.md LICENSE   como contribuir, o código de conduta e a licença
 ```
@@ -223,6 +228,11 @@ O README e os textos existem em inglês, espanhol, francês, italiano, alemão, 
 * Os guias comuns: [painéis e menus](docs/DOCKING.md), [contrato das definições e clientes](docs/CLIENT_SYNC.md), [códigos de erro](docs/ERROR_CODES.md), [um só leitor de Gerber](docs/GERBER_MIGRATION.md), [dados comuns](docs/MATERIALS_DATA.md), [cadeia de publicação e lições do CI](docs/RELEASE_CHAIN.md), [regras de projeto](docs/DESIGN_RULES.md), [os cinco documentos de um repositório](docs/DOCS_TEMPLATE.md) e [o glossário](docs/GLOSSARY.md).
 * [Usar os crates partilhados a partir de outro repositório](https://github.com/JuanenRac/EH3D-COMMON/blob/main/docs/CONSUMING.md): as pastas vizinhas, a linha de caminho e versão, as etiquetas contra as quais a CI compila e o `min_common`.
 * [Registo de alterações](CHANGELOG.md)
+* [Âmbito](docs/SCOPE.md): para que serve o programa, o que não fará e o que nunca decide.
+* [Requisitos](docs/REQUIREMENTS.md): o registo das capacidades, o estado de cada uma e o teste que a mostra.
+* [Estado](docs/STATUS.md): o que existe, o que falta e o que continua em aberto.
+* [Ainda não](docs/NOT_YET.md): boas ideias que ficam fora desta versão.
+* [Regras para alterar o repositório](AGENTS.md): as regras para quem altera o repositório.
 
 ## 🤝 Contribuir e comunidade
 
