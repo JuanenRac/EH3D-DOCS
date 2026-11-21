@@ -166,6 +166,17 @@ class RuleTests(unittest.TestCase):
                           ("on:\n  - release\n", {"release"})):
             self.assertEqual(wh.Workflow(src).triggers(), want, src)
 
+    def test_triggers_ignore_the_filters_of_an_event(self):
+        src = "on:\n  push:\n    branches: [main]\n    paths:\n      - 'src/**'\n  pull_request:\n    types: [opened]\n"
+        self.assertEqual(wh.Workflow(src).triggers(), {"push", "pull_request"})
+
+    def test_triggers_with_four_space_indent_and_dispatch_inputs(self):
+        src = "on:\n    workflow_dispatch:\n        inputs:\n            dry:\n                type: boolean\n    schedule:\n        - cron: '0 3 * * 1'\n"
+        self.assertEqual(wh.Workflow(src).triggers(), {"workflow_dispatch", "schedule"})
+
+    def test_triggers_of_a_file_without_on_are_empty(self):
+        self.assertEqual(wh.Workflow("name: x\njobs: {}\n").triggers(), set())
+
     def test_known_false_positive_secret_in_comment_line_of_inline_run(self):
         # documented: a one line `run: echo ${{ secrets.X }}` is reported (the secret should go through env:)
         self.assertTrue([x for x in check("on: push\njobs:\n  a:\n    timeout-minutes: 1\n    steps:\n      - run: echo ${{ secrets.X }}\n") if x["rule"] == "secret-in-run"])

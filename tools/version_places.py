@@ -26,7 +26,7 @@ MANIFEST = "eh3d.project.json"
 MANIFESTS = (MANIFEST, "electro-hobby-3d.project.json")
 READMES = ("README.md", "README_spa.md", "README_deu.md", "README_fra.md", "README_ita.md", "README_jpn.md", "README_zho.md", "README_por.md")
 SKIP_DIRS = {".git", "target", "node_modules", "build", "dist", ".gradle", ".venv", "venv", "__pycache__", ".cxx", ".idea", ".compile", "managed_components"}
-VERSION_RE = re.compile(r"^\d+\.\d+\.\d+(\.\d+)?$")
+VERSION_RE = re.compile(r"[0-9]+\.[0-9]+\.[0-9]+(\.[0-9]+)?")
 
 
 class VersionError(Exception):
@@ -43,7 +43,7 @@ def manifest_name(root: Path | str) -> str:
 
 
 def parse(version: str) -> tuple[int, ...]:
-    if not VERSION_RE.match(version):
+    if not VERSION_RE.fullmatch(version):  # fullmatch: no trailing newline, and only ASCII digits (\d takes any script)
         raise VersionError(f"'{version}' is not a version of three or four numbers")
     return tuple(int(part) for part in version.split("."))
 
