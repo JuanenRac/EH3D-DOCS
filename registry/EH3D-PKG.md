@@ -1,6 +1,6 @@
-# Registry of container codes: `EH3D-PKG-001` to `EH3D-PKG-014`
+# Registry of container codes: `EH3D-PKG-001` to `EH3D-PKG-024`
 
-These are the stable codes that the shared project container (the `eh3d-container` crate of EH3D-COMMON) reports when it refuses a package or fails to write one. A code never changes its meaning and is never reused; a new reason gets a new number. Programs show the text through the translation key `diag.<code>` and fill in the entry name; the codes themselves are never translated.
+These are the stable codes that the shared project container (the `eh3d-container` crate of EH3D-COMMON) and the `.eh3d` project container with branches (the `eh3d-project` crate) report when they refuse a package or fail to write one. Codes 001 to 014 are those of the container; 015 to 024 are those of the project with branches. A code never changes its meaning and is never reused; a new reason gets a new number. Programs show the text through the translation key `diag.<code>` and fill in the entry name; the codes themselves are never translated.
 
 The rules in the table are the **strict policy** that applies to new formats (`.phoenixproj`, `.eh3dproj` 1.1.0). The `.eh3dproj` 1.0.0 preset keeps the behaviour of its readers and writers: names by the old rule, exact duplicates only, and flags and data after the archive not examined.
 
@@ -20,9 +20,20 @@ The rules in the table are the **strict policy** that applies to new formats (`.
 | EH3D-PKG-012 | Time or memory budget exceeded | The decompression took longer than the time budget, or a read into memory would exceed the memory budget. | reader |
 | EH3D-PKG-013 | Format version newer than supported | The format version has a newer major, or the same major and a newer minor than the reader knows (where the preset refuses newer minors). The version is checked before the roots. | reader |
 | EH3D-PKG-014 | Atomic replacement failed | The temporary file could not replace the target after the bounded retries (an antivirus scanner, an indexer or a cloud-sync client may hold a file for a moment). The target is left exactly as it was. | writer |
+| EH3D-PKG-015 | Branch or project record missing or invalid | `project.json`, a `branch.json` or an optional record (metadata, index of documents, report of a conversion) is missing, malformed, inconsistent with the files or with the index of the project. | project reader, writer |
+| EH3D-PKG-016 | Branch content hash differs from its record | The SHA-256 of the files of a branch is not the content hash that its record or the index of the project states. | project reader |
+| EH3D-PKG-017 | Write to a branch of another application refused | A program tried to write a branch that it does not own (the shared branches `common` and `docs/project` excepted). | project writer |
+| EH3D-PKG-018 | Reference between branches invalid or dangling | A dependency is malformed, points to the branch itself or to a branch that is not in the file, or a branch that was asked for is not there. | project reader, writer |
+| EH3D-PKG-019 | Derived data out of date | A branch was derived from a state of another branch that has changed since. A warning: the file is valid and the derived data can be updated. | project reader |
+| EH3D-PKG-020 | Branch or project sealed read-only | A write to a branch or to a project that carries a seal. | project writer |
+| EH3D-PKG-021 | Signature does not verify | The signature of a branch or of the project is not correct for its record and key. | project reader |
+| EH3D-PKG-022 | Signature required but missing or its key unknown | A signature was required and there is none, no verifier was given, or the key or algorithm is not known. | project reader |
+| EH3D-PKG-023 | Branch encrypted and its key not available | A branch is stored encrypted and cannot be read without its key; it is kept and can be extracted as it is. | project reader |
+| EH3D-PKG-024 | Branch format version newer than supported | The format of a branch is newer than the program that opens it supports. Only that branch is affected. | project reader |
 
 ## Notes
 
 * Integrity is not authenticity: `integrity.json` does not prove who wrote the package.
 * A missing `integrity.json` is 010; any other missing required entry is 009.
+* Integrity is not authenticity; 021 and 022 are about authenticity (a signature), which is optional. 019 is the only warning; every other code is a refusal.
 * Adding a code is a documentation change here and a change in the container crate in the same step; the test `test_error_codes.py` and a test in the container crate keep both lists in agreement.

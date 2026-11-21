@@ -30,7 +30,7 @@ class RegistryTests(unittest.TestCase):
     def test_codes_are_numbered_without_gaps_or_repeats(self):
         numbers = [int(r[1]) for r in rows()]
         self.assertEqual(numbers, list(range(1, len(numbers) + 1)))
-        self.assertEqual(len(numbers), 14)
+        self.assertEqual(len(numbers), 24)
 
     def test_every_row_is_complete(self):
         for code, _number, title, rule, raised_by in rows():
@@ -46,7 +46,7 @@ class RegistryTests(unittest.TestCase):
     def test_titles_match_the_container_crate(self):
         source = CODES_RS.read_text(encoding="utf-8")
         crate_titles = dict(re.findall(r'PkgCode::(\w+) => "([^"]+)"', source))
-        self.assertEqual(len(crate_titles), 14)
+        self.assertEqual(len(crate_titles), 24)
         self.assertEqual(sorted(crate_titles.values()), sorted(r[2].strip() for r in rows()))
 
 

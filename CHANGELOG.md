@@ -3,6 +3,7 @@
 All notable changes to this project are documented here.
 
 ## [Unreleased]
+- **The registry of the container codes goes from 14 to 24:** `EH3D-PKG-015` to `EH3D-PKG-024` are the codes of the `.eh3d` project container with branches (a record missing or invalid, a branch hash that differs, a write to a branch of another program, a reference between branches that is invalid or dangling, derived data out of date (the only warning), a sealed branch or project, a signature that does not verify, a signature required and missing, a branch encrypted without its key and a branch format newer than supported), and the test that keeps the registry and the crate in step counts 24.
 - **The version reader refuses what is not a plain version, and the trigger list of the workflow check no longer counts filters:** `0.1.2` followed by a line end, or written with the digits of another script, was taken as a version and now is refused; `workflow_hygiene.triggers()` took `branches`, `paths` and `types` under an event as if they were events and now reads only the keys at the indent of the first event. 47 new tests (the odometer over a long walk, the changelog promotion, the case-exact link check) cover them.
 
 - **The supply-chain workflow no longer takes a ref from an input:** the tool that writes the bill of materials is fetched with git at a full commit that is checked first (40 hexadecimal characters, a branch name is refused), so the value never reaches a checkout step; `tools-ref` is now required when the workflow is enabled.
