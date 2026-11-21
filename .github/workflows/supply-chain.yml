@@ -39,9 +39,9 @@ on:
         type: string
         required: true
       tools-ref:
-        description: "Commit of JuanenRac/EH3D-DOCS whose tools/make_release_sbom.py writes the bill; use the same commit the caller names in `uses`"
+        description: "Full commit (40 hexadecimal characters) of JuanenRac/EH3D-DOCS whose tools/make_release_sbom.py writes the bill; use the same commit the caller names in `uses`. Required when enabled"
         type: string
-        default: main
+        default: ""
       attach-to-release:
         description: "Attach the bill to the DRAFT release named by release-tag (never to a published one)"
         type: boolean
@@ -61,13 +61,23 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          repository: JuanenRac/EH3D-DOCS
-          ref: ${{ inputs.tools-ref }}
-          path: supply-chain-tools
-          persist-credentials: false
-          sparse-checkout: tools/make_release_sbom.py
+      - name: Fetch the bill tool at the commit that was named
+        env:
+          TOOLS_REF: ${{ inputs.tools-ref }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ ! "${TOOLS_REF}" =~ ^[0-9a-f]{40}$ ]]; then
+            echo "tools-ref must be a full commit of the tools repository (40 hexadecimal characters)"
+            exit 1
+          fi
+          mkdir supply-chain-tools
+          cd supply-chain-tools
+          git init -q
+          git remote add origin https://github.com/JuanenRac/EH3D-DOCS.git
+          git sparse-checkout set --no-cone tools/make_release_sbom.py
+          git fetch -q --depth 1 origin "${TOOLS_REF}"
+          git checkout -q FETCH_HEAD
       - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
         with:
           python-version: "3.12"

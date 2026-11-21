@@ -4,6 +4,7 @@ All notable changes to this project are documented here.
 
 ## [Unreleased]
 
+- **The supply-chain workflow no longer takes a ref from an input:** the tool that writes the bill of materials is fetched with git at a full commit that is checked first (40 hexadecimal characters, a branch name is refused), so the value never reaches a checkout step; `tools-ref` is now required when the workflow is enabled.
 - **Requirements with identifiers and tests that name them:** `docs/REQUIREMENTS.md` is the register of what the program must do, one row for each capability with an identifier (`DOCS-001` on), its state (planned, prototype, implemented or validated), how far it is (done, partial, pending or blocked), its evidence and the test that shows it; a capability that is not written names the test that will show it. `tools/test_requirements.py` reads the table and fails when a test does not exist, when a state does not agree with the progress or the evidence, when `docs/STATUS.md` does not say the same numbers, when a README does not link the documents or when a document holds a date or a private reference. The five documents of the family (`docs/SCOPE.md`, `docs/REQUIREMENTS.md`, `docs/STATUS.md`, `docs/NOT_YET.md` and `AGENTS.md`) are in the repository and are linked from the eight READMEs.
 
 ## [0.1.2] - Common guides of the suite and the map and the matrix up to the published releases

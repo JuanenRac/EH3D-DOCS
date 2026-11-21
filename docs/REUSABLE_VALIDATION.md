@@ -197,7 +197,7 @@ The calling workflow builds the files, uploads them as one artifact (a flat list
 | `artifact` | string | (required) | the artifact of the calling workflow that holds the files of the release |
 | `name` | string | (required) | the name of the release in the bill (the repository) |
 | `version` | string | (required) | the version of the release in the bill |
-| `tools-ref` | string | `main` | the commit of this repository whose `tools/make_release_sbom.py` writes the bill; name the same commit as in `uses` |
+| `tools-ref` | string | empty | the full commit (40 hexadecimal characters) of this repository whose `tools/make_release_sbom.py` writes the bill; name the same commit as in `uses`; required when `enabled` is true, a branch name is refused |
 | `attach-to-release` | boolean | `false` | attach the bill to the draft release named by `release-tag` |
 | `release-tag` | string | empty | the tag of the draft release that gets the bill |
 
