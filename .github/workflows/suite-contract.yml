@@ -25,20 +25,18 @@ jobs:
         with:
           persist-credentials: false
           path: EH3D-DOCS
+          # the whole history: the check of the translations asks git blame when each section was written, and the tags are the releases
+          fetch-depth: 0
       - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
         with:
           python-version: "3.12"
       - name: Bring the repositories of the suite
         run: |
-          # the repositories named in the map of the suite; one that is not published yet is skipped
+          # the repositories named in the map of the suite; one that is not published yet is skipped. The clones are whole (no --depth): with a single
+          # commit every line has the same date and the check of the translations never warns. The tags come with them: they are the newest releases.
           for name in $(grep -o '^| \[EH3D-[A-Z0-9-]*\]' EH3D-DOCS/docs/SUITE_MAP.md | grep -o 'EH3D-[A-Z0-9-]*' | sort -u); do
             [ "$name" = "EH3D-DOCS" ] && continue
-            if git clone --depth 1 --quiet "https://github.com/JuanenRac/$name.git" "$name"; then
-              # the tags too, or the newest release of a repository would be read as its manifest version
-              git -C "$name" fetch --quiet --depth 1 --tags origin || echo "no tags for $name"
-            else
-              echo "not published: $name"
-            fi
+            git clone --quiet "https://github.com/JuanenRac/$name.git" "$name" || echo "not published: $name"
           done
       - name: Run the checks
         run: |
