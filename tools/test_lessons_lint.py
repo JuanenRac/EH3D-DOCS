@@ -2,6 +2,7 @@
 import contextlib
 import io
 import json
+import subprocess
 import sys
 import tempfile
 import time
@@ -66,6 +67,23 @@ class SubprocessTimeout(unittest.TestCase):
     def test_skips_hidden_dirs_and_bad_syntax(self):
         files = {"node_modules/a.py": "import subprocess\nsubprocess.run(['a'])\n", "bad.py": "def (:\n"}
         self.assertEqual(run(files, ["subprocess-timeout"])["findings"], [])
+
+
+class IgnoredByGit(unittest.TestCase):
+    BAD = "import subprocess\nsubprocess.run(['a'])\n"
+
+    def test_managed_components_and_build_are_skipped_without_git(self):
+        files = {"managed_components/x/a.py": self.BAD, "main/managed_components/b.py": self.BAD, "build/c.py": self.BAD}
+        self.assertEqual(run(files, ["subprocess-timeout"])["findings"], [])
+
+    def test_what_git_ignores_is_not_read_and_a_tracked_file_still_is(self):
+        files = {".gitignore": "downloads/\n*.gen.py\nkept.py\n", "downloads/deep/a.py": self.BAD, "tools/b.gen.py": self.BAD,
+                 "kept.py": self.BAD, "tools/mine.py": self.BAD, "new.py": self.BAD}
+        with Repo(files) as repo:
+            for args in (["init", "-q"], ["add", ".gitignore", "tools/mine.py"], ["add", "-f", "kept.py"]):
+                subprocess.run(["git", *args], cwd=repo, check=True, capture_output=True, timeout=60)
+            found = sorted(f["file"] for f in ll.lint_repo(repo, ["subprocess-timeout"])["findings"])
+        self.assertEqual(found, ["kept.py", "new.py", "tools/mine.py"])
 
 
 CATALOG = {f"locales/{l}.json": {"k.a": "a", "k.b": "b"} for l in ll.LANGS}

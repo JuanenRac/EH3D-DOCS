@@ -4,6 +4,8 @@ All notable changes to this project are documented here.
 
 ## [Unreleased]
 
+- **The lessons check reads only what is part of the repository:** what git ignores, and folders such as `managed_components` that a firmware build downloads, are no longer analysed, so a local check no longer fails over code the CI never sees. 2 new tests.
+
 ## [0.1.4] - Guides for attachments, the slicer and the signed release record, and the map up to today
 
 - **Each prefix of the error codes has one meaning:** `docs/ERROR_CODES.md` lists the codes of `phoenix pnp` as `PHOENIX-PCBPNP-001` to `011` (they were `PHOENIX-PNP-` up to the release 0.1.6 of the electronic design program) and `PHOENIX-PNP-` for the program EH3D-PHOENIX-PNP only.
