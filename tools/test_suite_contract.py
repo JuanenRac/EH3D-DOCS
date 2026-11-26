@@ -419,6 +419,26 @@ class TranslationsCheckTests(unittest.TestCase):
             ok, _ = CONTRACT.run(root, only="translations", strict=True, allow_file=root / "none.txt")
             self.assertFalse(ok)
 
+    def test_the_clones_of_the_workflow_keep_the_history_the_check_needs(self) -> None:
+        import _toy_repo as toy
+
+        text = (TOOLS.parent / ".github" / "workflows" / "suite-contract.yml").read_text(encoding="utf-8")
+        self.assertIn("fetch-depth: 0", text)  # the checkout of this repository
+        command = re.search(r'git clone ([^\n]*?)"https://github\.com/JuanenRac/\$name\.git"', text)
+        self.assertIsNotNone(command)
+        options = command.group(1).split()
+        self.assertNotIn("--depth", " ".join(re.findall(r"^\s*git .*$", text, re.M)))
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "origin").mkdir()
+            self.stale_workspace(root / "origin")
+            source = (root / "origin" / "EH3D-TOY").resolve().as_uri()
+            for folder, extra, expected in (("workflow", options, 7), ("shallow", ["--quiet", "--depth", "1"], 0)):
+                (root / folder).mkdir()
+                toy.git(root / folder, "clone", *extra, source, "EH3D-TOY")
+                _, found = CONTRACT.run(root / folder, only="translations", allow_file=root / "none.txt")
+                self.assertEqual(len(found), expected, (folder, found))
+
     def test_a_repository_without_a_history_is_not_compared(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)

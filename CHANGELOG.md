@@ -4,6 +4,7 @@ All notable changes to this project are documented here.
 
 ## [Unreleased]
 
+- **The workflow of the suite contract clones the repositories with their history:** with a single commit every line of a README had the same date, and the check of the translations never warned on GitHub. 1 new test.
 - **The lessons check reads only what is part of the repository:** what git ignores, and folders such as `managed_components` that a firmware build downloads, are no longer analysed, so a local check no longer fails over code the CI never sees. 2 new tests.
 
 ## [0.1.4] - Guides for attachments, the slicer and the signed release record, and the map up to today
