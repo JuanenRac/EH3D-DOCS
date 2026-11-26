@@ -13,7 +13,8 @@ REPOSITORY is a folder name next to this repository (or a path). NEW is the vers
 --explicit. The places: the manifest, Cargo.toml and Cargo.lock, package.json and package-lock.json, pyproject.toml and the
 `__version__` mirror, versionName (and versionCode + 1) of the Android Gradle files, MARKETING_VERSION (and
 CURRENT_PROJECT_VERSION + 1) of project.yml, the file named by native_version, the badge and the table of the eight README
-files, and CHANGELOG.md, whose [Unreleased] entries become the section of the new version.
+files, for EH3D-DOCS its own row of docs/SUITE_MAP.md, and CHANGELOG.md, whose [Unreleased] entries become the section
+of the new version.
 
 Nothing is written unless every place can be changed; at the end the script reads the files again and fails if any place
 differs from the manifest. --dry-run writes nothing and shows what would change. The line ends (CRLF or LF) of each file are kept."""

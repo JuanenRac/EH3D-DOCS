@@ -30,7 +30,7 @@
 |---|---|
 | Versión | `0.1.3` |
 | Madurez | Funcional |
-| Pruebas | 636 |
+| Pruebas | 640 |
 | Pila tecnológica | Markdown, con herramientas en Python 3.10+ |
 | En hardware real | No aplica: documentación |
 
@@ -45,7 +45,7 @@ Cada línea es una parte de este repositorio y la luz dice hasta dónde llega ho
 | Área | Estado | Qué significa aquí |
 |---|---|---|
 | Comprobaciones del repositorio | 🟡 | La comprobación del repositorio, la de los enlaces entre los documentos y las pruebas de las herramientas se ejecutan en el CI y pasan. |
-| Pruebas | 🟠 | 636 pruebas de las herramientas pasan en un ordenador, algunas sobre pequeños repositorios de juguete; los documentos y las afirmaciones que contienen se leen y comprueban a mano y con los scripts. |
+| Pruebas | 🟠 | 640 pruebas de las herramientas pasan en un ordenador, algunas sobre pequeños repositorios de juguete; los documentos y las afirmaciones que contienen se leen y comprueban a mano y con los scripts. |
 | Contrato de la suite | 🟡 | El contrato entre los repositorios lee cada manifiesto con el analizador del Updater y avisa de las desviaciones (puertos, idiomas del README, herramientas compartidas, formularios de incidencias); se ejecuta cada día en el CI como aviso, y los repositorios que nombra se ponen al día uno a uno. |
 | Herramientas de versión y publicación | 🟠 | Los scripts que suben una versión, escriben las notas y comprueban una publicación, y el flujo de validación reutilizable, están probados sobre repositorios de juguete; ningún repositorio ha publicado todavía una versión con ellos. |
 | Espacio de trabajo y repositorios nuevos | 🟠 | Los scripts que listan y clonan lo que necesita un repositorio y que crean un repositorio nuevo están probados sobre repositorios de juguete en una carpeta temporal; ninguno ha preparado aún un espacio de trabajo real ni creado un repositorio real. |
@@ -133,7 +133,7 @@ Para leer los documentos, empieza por [el mapa de la suite](docs/SUITE_MAP.md).
 
 ## 🧪 Pruebas
 
-Las herramientas tienen 636 pruebas (`python -I -m unittest discover -s tools -p "test_*.py"`), y pasan. El CI ejecuta la comprobación del repositorio (`tools/ci_validate.py`), la de los enlaces entre los documentos (`tools/check_links.py`), las comprobaciones de las dos imágenes y esas pruebas; un flujo diario ejecuta el contrato de la suite. Los documentos no tienen más pruebas que esas: lo que afirman se mantiene honesto con la matriz de capacidades y leyéndolos. El CI mide además cuánto del código de las herramientas ejecutan esas pruebas y falla si baja del 85 %.
+Las herramientas tienen 640 pruebas (`python -I -m unittest discover -s tools -p "test_*.py"`), y pasan. El CI ejecuta la comprobación del repositorio (`tools/ci_validate.py`), la de los enlaces entre los documentos (`tools/check_links.py`), las comprobaciones de las dos imágenes y esas pruebas; un flujo diario ejecuta el contrato de la suite. Los documentos no tienen más pruebas que esas: lo que afirman se mantiene honesto con la matriz de capacidades y leyéndolos. El CI mide además cuánto del código de las herramientas ejecutan esas pruebas y falla si baja del 85 %.
 
 ## 🏗️ Compilación y publicación
 

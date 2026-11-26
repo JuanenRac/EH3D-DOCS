@@ -388,6 +388,10 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--strict", action="store_true", help="warnings fail too")
     parser.add_argument("--write-map", action="store_true", help="put the newest published release of each repository (the manifest version when it has no tag) in the Release column of SUITE_MAP.md and stop (nothing else of the map changes)")
     args = parser.parse_args(argv)
+    # A finding may quote a title in any language, and a console or a pipe of Windows (cp1252 with `python -I`) cannot write it: write UTF-8.
+    for stream in (sys.stdout, sys.stderr):
+        if hasattr(stream, "reconfigure"):
+            stream.reconfigure(encoding="utf-8", errors="replace")
     if args.write_map:
         changed = write_map(args.workspace)
         for line in changed:

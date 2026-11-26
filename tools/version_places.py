@@ -8,8 +8,8 @@ check that all the places agree with the manifest (eh3d.project.json).
 
 The places: the manifest, Cargo.toml and Cargo.lock, package.json and package-lock.json, pyproject.toml and the
 `__version__` mirror, the Gradle files of an Android app (versionName), project.yml of an iOS app (MARKETING_VERSION),
-the file the manifest names in native_version, the badge and the "Version" row of the eight README files, and the newest
-section of CHANGELOG.md. Used by bump_version.py and prerelease_check.py. Standard library only."""
+the file the manifest names in native_version, the badge and the "Version" row of the eight README files, the row of the
+hub in its own map of the suite, and the newest section of CHANGELOG.md. Used by bump_version.py and prerelease_check.py. Standard library only."""
 from __future__ import annotations
 
 import fnmatch
@@ -22,6 +22,8 @@ from pathlib import Path
 import changelog_tools
 
 MANIFEST = "eh3d.project.json"
+HUB_NAME = "EH3D-DOCS"  # the repository that holds the map of the suite
+SUITE_MAP = "docs/SUITE_MAP.md"
 # The manifest of the updater of the whole family has its own name: it belongs to no ecosystem, so it keeps its own file.
 MANIFESTS = (MANIFEST, "electro-hobby-3d.project.json")
 READMES = ("README.md", "README_spa.md", "README_deu.md", "README_fra.md", "README_ita.md", "README_jpn.md", "README_zho.md", "README_por.md")
@@ -295,6 +297,13 @@ def scan(repo: Repo) -> Scan:
     native = loaded.get("native_version") if isinstance(loaded, dict) else None
     if isinstance(native, dict) and native.get("file") and native["file"] not in handled and repo.read(native["file"]) is not None:
         _native(out, repo, native)
+
+    # the hub states its own release in the map of the suite: that row follows the version with every other place
+    if isinstance(loaded, dict) and loaded.get("name") == HUB_NAME:
+        text = repo.read(SUITE_MAP)
+        if text is not None:
+            _add(out, SUITE_MAP, "release in the row of this hub", text,
+                 r"(?m)^\|\s*\[%s\]\([^)]*\)\s*\|[^|\n]*\|[^|\n]*\|\s*(?P<v>\d+(?:\.\d+)+)\s*\|" % HUB_NAME, limit=1)
 
     for rel in READMES:
         text = repo.read(rel)
