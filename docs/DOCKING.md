@@ -17,9 +17,13 @@ Every desktop program of the suite is meant to behave like a professional applic
 4. Put the program in the list of migrated programs of its own `docs/STATUS.md` and take new screenshots, because the window changes.
 5. Test the program with the model of the frame (no window), and check by hand, once, what the frame cannot check: how it looks.
 
+## Colour, About window and recent projects
+
+The frame also gives the PHOENIX programs one colour each, a common About window and a list of recent projects kept in the folder of the user: see [PHOENIX_FAMILY.md](PHOENIX_FAMILY.md).
+
 ## Order of migration
 
-The frame is published; the programs move one at a time, each in its own version, and COMMON is repinned by the program that moves. A program that has not moved yet draws its own layout, and its README says so in the status table. Do not copy the model of the frame into a program to avoid the dependency: a fix there would not reach the copy.
+The frame is published; the programs move one at a time, each in its own version, and COMMON is repinned by the program that moves. The six PHOENIX programs draw their windows with it. A program that has not moved yet draws its own layout, and its README says so in the status table. Do not copy the model of the frame into a program to avoid the dependency: a fix there would not reach the copy.
 
 ## What the frame does not do
 

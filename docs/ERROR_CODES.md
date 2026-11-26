@@ -6,13 +6,20 @@ A refusal or a failure is told with a stable code, never with a sentence that a 
 
 | Family | Where it is raised | Where it is listed |
 |---|---|---|
-| `EH3D-PKG-nnn` | the project container (a `.eh3dproj` that is refused or cannot be written) | `registry/EH3D-PKG.md` of this repository |
+| `EH3D-PKG-nnn` | the project containers: `001` to `014` the container itself (a `.eh3dproj` or `.eh3d` that is refused or cannot be written), `015` to `024` the branches of an `.eh3d` project (`019` is the only warning) | `registry/EH3D-PKG.md` of this repository |
 | `EH3D-ID-nnn` | the identity of an object (an id that cannot be read or made) | `registry/EH3D-ID.md` of this repository |
-| `EH3D-MAT-nnn` | the database of board materials (`EH3D-MAT-001` to `EH3D-MAT-009`) | `docs/MATERIALS.md` of EH3D-COMMON |
+| `EH3D-MAT-nnn` | the database of materials: `001` to `009` board materials, `010` to `015` machining materials | `docs/MATERIALS.md` and `docs/MACHINING.md` of EH3D-COMMON |
+| `EH3D-PMAT-nnn` | the database of filaments and resins | `crates/printmaterials/README.md` of EH3D-COMMON |
+| `EH3D-PRN-nnn` | the catalog of 3D printers (`EH3D-PRN-001` to `EH3D-PRN-009`) | `docs/PRINTERS.md` of EH3D-COMMON |
+| `EH3D-BUILD-nnn` | the build text of a program (`EH3D-BUILD-001` to `EH3D-BUILD-008`) | `docs/BUILD.md` of EH3D-COMMON |
 | `EH3D-FORMATS-nnn` | the files of the Bungard machines (drill, plot and outline files) | `docs/FORMAT_ERRORS.md` of EH3D-COMMON |
-| a lower-case word (`bad_policy`, `enclosure_open`...) | the refusals of EH3D-SERVER, with the HTTP status | `docs/error-codes.json` of EH3D-SERVER |
+| `EH3D-TASK-nnn` | the tasks of the server | `docs/API.md` of EH3D-SERVER |
+| a lower-case word (`bad_policy`, `printers_off`...) | the refusals of EH3D-SERVER, with the HTTP status | `docs/error-codes.json` of EH3D-SERVER |
+| `PHOENIX-<AREA>-nnn` | the electronic design program, one area for each part of it; among the newest, `PHOENIX-EAGLEBIN-001` to `011` (what a binary EAGLE library gave) and `PHOENIX-KIT-001` to `008` (the starter kit) | `docs/ERROR_CODES.md` of EH3D-PHOENIX-PCB |
+| `PHOENIX-CAD-nnn` | the mechanical design program | `docs/ERROR_CODES.md` of EH3D-PHOENIX-CAD |
+| `PHOENIX-PNP-nnn` | the pick and place program; **read the code together with the program**: the command `phoenix pnp` of EH3D-PHOENIX-PCB uses the same prefix with meanings of its own | the README of EH3D-PHOENIX-PNP; `docs/ERROR_CODES.md` of EH3D-PHOENIX-PCB |
 
-A program that uses a family reports its codes as they are and keeps its own family for its own failures. A new code is a change of the list and of the code in the same commit; the tests of this repository and of the repository that raises it keep both lists in agreement.
+The codes of a family that is not in a release yet are in the repository only. A program that uses a family reports its codes as they are and keeps its own family for its own failures. A new code is a change of the list and of the code in the same commit; the tests of this repository and of the repository that raises it keep both lists in agreement.
 
 ## The tables of the clients
 

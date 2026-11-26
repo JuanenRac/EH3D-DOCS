@@ -30,9 +30,34 @@ A key is written in one of two ways. Through the security policy (`PUT /api/v1/a
 | Client | State |
 |---|---|
 | EH3D-STUDIO | The settings page is drawn from the contract, with the confirmations, the notice of a restart and a backup; the parity guard exists. |
-| The phone apps, the touch screens and the programs of the machines | Not done yet. Each one adopts the contract in its own version and then adds the guard. |
+| EH3D-ANDROID-CONTROL, EH3D-IOS-CONTROL | A page draws every setting from the contract of the server, or read only from the copy kept in the app; a script of the repository checks the copy. The screens of the iPhone have not been seen on a device. |
+| The touch screens | They read the contract of the server and, when they cannot, show the copy they carry, read only; a change is off by default. The firmware has not run on a module. |
+| The programs of the machines | Not done yet. Each one adopts the contract in its own version and then adds the guard. |
 
-The phone apps and the touch screens also owe the other two files: the error codes in eight languages and the routes they call (see [ERROR_CODES.md](ERROR_CODES.md)).
+The clients also keep the sentences of the error codes in the eight languages (see [ERROR_CODES.md](ERROR_CODES.md)).
+
+## Example: the printers the server watches, read only
+
+The server can keep a list of 3D printers (Bambu Lab in LAN mode, Klipper through Moonraker, or simulated ones) and read their state. It is **read only** from end to end: there is no route that sends a printer an order, a temperature, G-code or a file.
+
+| Client | What it shows | State |
+|---|---|---|
+| EH3D-SERVER | `GET /api/v1/printers` and `/printers/:id` (contract `eh3d.printers.status/1`); an administrator changes the list of the server only | released in 0.2.4 |
+| EH3D-STUDIO | a Printers tab with health, state, temperatures, progress, layers, job and alerts | released in 0.2.0 |
+| EH3D-ANDROID-CONTROL, EH3D-IOS-CONTROL | the same list on the home page | in the repositories, not yet in a release; the iPhone screen has not been seen on a device |
+
+What a printer did not say is unknown, never zero. The settings, in `server.cfg`:
+
+| Key | Default | Meaning |
+|---|---|---|
+| `printers_enabled` | `false` | off: the routes answer `501 printers_off` and no connection to a printer is opened |
+| `printers_max` | 8 | most printers in the list (1 to 64) |
+| `printer_poll_s` | 5 | seconds between two readings (1 to 3600) |
+| `printer_stale_s` | 90 | how old a reading may be and still count (5 to 3600) |
+| `printer_timeout_s` | 5 | time limit of a request to Moonraker (1 to 30) |
+| `bambu_lan_enabled` | `false` | a real Bambu Lab printer on the local network also needs this |
+
+All of it has been tried against printers in memory only: **nothing has run against a real printer.**
 
 ## The rule for the server
 
