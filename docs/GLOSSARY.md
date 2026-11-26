@@ -10,7 +10,10 @@ The names as they are today, one line each. A repository is always called by the
 | EH3D-COMMON | The common source of **code and data**: the container, the machine types, the docking frame, the shared databases, the client of the server and the firmware base of the nodes. |
 | EH3D-CORE-LIBS | The readers of Gerber, Excellon and G-code and the geometry and CAM crates that the CAM programs share. |
 | EH3D-DOCS | This hub: the common source of **documentation**, the shared checks and the scripts of versions and releases. |
-| `.eh3dproj` | The project container: a ZIP archive with a manifest, an integrity record and the layers and toolpaths of a job. |
+| `.eh3dproj` | The package of a job: a ZIP archive with a manifest, an integrity record and the layers and toolpaths. |
+| `.eh3d` | The project of the suite: one file with a branch for each program, attachments and optional signatures ([PROJECT_FILE.md](PROJECT_FILE.md)). |
+| `eh3d-project`, `eh3d-viewer` | The crate of the `.eh3d` project, and the viewer of its attachments. |
+| `eh3d-printers` | The catalog of 3D printers, with the page of the maker behind every claim. |
 | Manifest | `eh3d.project.json`, the file with which a repository describes itself; nothing keeps a list of repositories. |
 | Contract of the settings | The document of the server that lists every setting and switch with its texts ([CLIENT_SYNC.md](CLIENT_SYNC.md)). |
 | `eh3d-dock` | The crate of the docking frame ([DOCKING.md](DOCKING.md)). |

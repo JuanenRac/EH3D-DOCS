@@ -293,6 +293,32 @@
           }
         },
         {
+          "name": "PROJECT_FILE.md",
+          "desc": {
+            "en": "the .eh3d project: branches, attachments, viewer and signatures",
+            "es": "el proyecto .eh3d: ramas, adjuntos, visor y firmas",
+            "de": "das .eh3d-Projekt: Zweige, Anhänge, Betrachter und Signaturen",
+            "fr": "le projet .eh3d : branches, pièces jointes, visionneuse, signatures",
+            "it": "il progetto .eh3d: rami, allegati, visualizzatore e firme",
+            "ja": ".eh3d プロジェクト：ブランチ、添付、ビューアー、署名",
+            "zh": ".eh3d 项目：分支、附件、查看器和签名",
+            "pt": "o projeto .eh3d: ramos, anexos, visualizador e assinaturas"
+          }
+        },
+        {
+          "name": "PHOENIX_FAMILY.md",
+          "desc": {
+            "en": "the PHOENIX programs: colour, About window and recent projects",
+            "es": "los programas PHOENIX: color, ventana Acerca de y recientes",
+            "de": "die PHOENIX-Programme: Farbe, Über-Fenster, zuletzt verwendet",
+            "fr": "les programmes PHOENIX : couleur, fenêtre À propos et récents",
+            "it": "i programmi PHOENIX: colore, finestra Informazioni e recenti",
+            "ja": "PHOENIX プログラム：色、バージョン情報、最近の項目",
+            "zh": "PHOENIX 程序：颜色、“关于”窗口和最近项目",
+            "pt": "os programas PHOENIX: cor, janela Acerca de e recentes"
+          }
+        },
+        {
           "name": "suite.json",
           "desc": {
             "en": "the constants of the suite",

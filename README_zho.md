@@ -18,7 +18,7 @@
 
 ---
 
-**诚实性核对 - 今天真正能运行的内容：** 文档和套件的工具，它们只在计算机上运行（每个仓库都带的仓库检查和图片绘制工具、仓库之间的契约、提升版本并准备发布的脚本、准备工作区的脚本，以及创建新仓库的脚本）。套件处于最初阶段：已发布三十八个仓库（库、Bungard 程序、服务器和 Studio、节点和触摸屏、手机应用、CAM 和实用程序、更新器、本仓库，以及电子设计项目的九个早期库和工具，各有首个发布版本和早期代码），两个仅处于计划中（用于小型触摸屏的手持控制器，以及通往 HYDRA-UMC 的适配器）。已发布的内容都在计算机上测试过，界面支持 37 种语言；整个套件中只有 EH3D-DRILLPRO 的串行协议让真实机床动过（在一台 Bungard CCD MTC 上做了参考运行和各轴运动），还没有任何完整作业在机床上运行过。14 个测试覆盖仓库检查。
+**诚实性核对 - 今天真正能运行的内容：** 文档和套件的工具，它们只在计算机上运行（每个仓库都带的仓库检查和图片绘制工具、仓库之间的契约、提升版本并准备发布的脚本、准备工作区的脚本，以及创建新仓库的脚本）。套件处于最初阶段：已发布四十一个仓库（库、Bungard 程序、服务器和 Studio、节点和触摸屏、手机应用、CAM 和实用程序、更新器、本仓库，以及电子设计项目的九个早期库和工具，各有首个发布版本和早期代码），两个仅处于计划中（用于小型触摸屏的手持控制器，以及通往 HYDRA-UMC 的适配器）。已发布的内容都在计算机上测试过，界面正在改为套件的八种语言（钻孔、铣切程序和 Bungard 窗口仍支持 37 种）；整个套件中只有 EH3D-DRILLPRO 的串行协议让真实机床动过（在一台 Bungard CCD MTC 上做了参考运行和各轴运动），还没有任何完整作业在机床上运行过。14 个测试覆盖仓库检查。
 
 ---
 
@@ -49,7 +49,7 @@
 | 套件契约 | 🟡 | 仓库之间的契约用 Updater 的解析器读取每个清单，并对偏差发出警告（端口、README 语言、共享工具、问题表单）；它每天在 CI 中作为警告运行，被点名的仓库会逐个更新。 |
 | 版本与发布工具 | 🟠 | 提升版本、撰写说明和检查发布的脚本，以及可复用的验证工作流，都在玩具仓库上测试过；还没有任何仓库用它们发布过版本。 |
 | 工作区与新仓库 | 🟠 | 列出并克隆仓库所需内容的脚本和创建新仓库的脚本，都在临时文件夹中的玩具仓库上测试过；两者都还没有建立过真实的工作区或创建过真实的仓库。 |
-| 地图与能力矩阵 | 🟡 | 套件地图、架构说明和能力矩阵涵盖四十个仓库：三十八个已发布的仓库及各自的版本（其中九个是有代码和测试的早期库和工具）和两个计划中的仓库（只有书面范围、没有代码）；它们由人工编写，可能落后于仓库。 |
+| 地图与能力矩阵 | 🟡 | 套件地图、架构说明和能力矩阵涵盖四十三个仓库：四十一个已发布的仓库及各自的版本（其中九个是有代码和测试的早期库和工具）和两个计划中的仓库（只有书面范围、没有代码）；它们由人工编写，可能落后于仓库。 |
 | 真实硬件 | 🟡 | 不适用：文档，这里的内容不会在硬件上运行。 |
 | 文档 | 🟡 | 八种语言的 README，每次更改都会与清单和变更日志对照。 |
 
@@ -63,7 +63,7 @@
 * **套件契约：** `tools/suite_contract.py` 检查任何单个仓库都无法自行检查的关系：每个清单都能被 Updater 的解析器读取并带有其文件夹的名称，按路径依赖同级仓库时要写明所需版本，地图中的版本与清单一致，屏幕和服务器在端口上一致，共享验证器处处相同，`docs/suite.json` 与重复其取值的位置一致，并且每个仓库都有问题表单。它只发出警告。
 * **版本、发布与新工作：** `bump_version.py`、`release_notes.py`、`prerelease_check.py`、`readme_staleness.py` 和 `vendored_tools_report.py`（[docs/RELEASING.md](docs/RELEASING.md)），可复用的验证工作流（[docs/REUSABLE_VALIDATION.md](docs/REUSABLE_VALIDATION.md)），用于获取仓库所需内容的 `bootstrap_workspace.py`，以及用于创建新仓库的 `new_repo.py`。`bump_version.py` 还会更新要求最低版本的内部依赖、工作区各软件包在 `Cargo.lock` 中的条目，以及整个家族更新器的清单。
 * **如何更新：** 车间的 CM5 **通过发布版本**更新（EH3D-SERVER 的 `deploy/eh3d-update.py` 把 GitHub 的发布版本下载到 `/opt`）；EH3D-UPDATER 供**开发电脑使用，通过 git**（[docs/UPDATING.md](docs/UPDATING.md)）。
-* **通用指南：** 多个仓库共用的内容在这里只写一次，各仓库链接到这里：程序的面板框架、设置契约及遵循它的客户端、错误代码及其对照表、迁移到统一的 Gerber 和 Excellon 读取器、共用数据库、发布链与 CI 的经验教训、设计规则、每个仓库的五份文档以及名称术语表。
+* **通用指南：** 多个仓库共用的内容在这里只写一次，各仓库链接到这里：程序的面板框架、设置契约及遵循它的客户端、错误代码及其对照表、迁移到统一的 Gerber 和 Excellon 读取器、共用数据库、发布链与 CI 的经验教训、设计规则、每个仓库的五份文档、名称术语表、`.eh3d` 项目文件以及 PHOENIX 程序共有的外观。
 
 ## 🧩 在 EH3D 中的角色
 
@@ -172,6 +172,8 @@ EH3D-DOCS/
 │   ├── DESIGN_RULES.md                          整个套件的设计规则：安全、证据、数据
 │   ├── DOCS_TEMPLATE.md                         每个仓库的五份文档以及缺少者
 │   ├── GLOSSARY.md                              套件中的名称，每个一行
+│   ├── PROJECT_FILE.md                          .eh3d 项目：分支、附件、查看器和签名
+│   ├── PHOENIX_FAMILY.md                        PHOENIX 程序：颜色、“关于”窗口和最近项目
 │   ├── suite.json                               套件常量
 │   ├── suite_contract_allow.txt                 契约的已知例外
 │   ├── templates/                               新仓库的模板
@@ -225,7 +227,7 @@ README 和文本提供英语、西班牙语、法语、意大利语、德语、�
 
 * [套件地图](docs/SUITE_MAP.md)、[架构](docs/ARCHITECTURE.md)、[能力矩阵](docs/CAPABILITY_MATRIX.md)和[约定](docs/CONVENTIONS.md)。
 * [发布版本](docs/RELEASING.md)、[机器如何保持更新](docs/UPDATING.md)和[可复用的验证](docs/REUSABLE_VALIDATION.md)。
-* 通用指南：[面板与菜单](docs/DOCKING.md)、[设置契约与客户端](docs/CLIENT_SYNC.md)、[错误代码](docs/ERROR_CODES.md)、[统一的 Gerber 读取器](docs/GERBER_MIGRATION.md)、[共用数据](docs/MATERIALS_DATA.md)、[发布链与 CI 经验](docs/RELEASE_CHAIN.md)、[设计规则](docs/DESIGN_RULES.md)、[仓库的五份文档](docs/DOCS_TEMPLATE.md)和[术语表](docs/GLOSSARY.md)。
+* 通用指南：[面板与菜单](docs/DOCKING.md)、[设置契约与客户端](docs/CLIENT_SYNC.md)、[错误代码](docs/ERROR_CODES.md)、[统一的 Gerber 读取器](docs/GERBER_MIGRATION.md)、[共用数据](docs/MATERIALS_DATA.md)、[发布链与 CI 经验](docs/RELEASE_CHAIN.md)、[设计规则](docs/DESIGN_RULES.md)、[仓库的五份文档](docs/DOCS_TEMPLATE.md)、[术语表](docs/GLOSSARY.md)、[`.eh3d` 项目](docs/PROJECT_FILE.md)和 [PHOENIX 系列](docs/PHOENIX_FAMILY.md)。
 * [从其他仓库使用共享 crate](https://github.com/JuanenRac/EH3D-COMMON/blob/main/docs/CONSUMING.md)：相邻文件夹、路径与版本行、CI 构建所用的标签以及 `min_common`。
 * [变更日志](CHANGELOG.md)
 * [范围](docs/SCOPE.md)： 程序的用途、不做什么，以及永远不由它决定的事。
