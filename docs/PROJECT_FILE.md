@@ -36,10 +36,11 @@ Before a settings file goes into a project the program asks `suiteview::sets_key
 | EH3D-PHOENIX-CAD | the branch `cad/`; makes a box round the board that the branch `pcb/` describes | released |
 | EH3D-GERBERVIEWER | opens the job and keeps the picture in its branch | released |
 | EH3D-DRILLPRO | plans the drill layers of the job and keeps the plans in its branch | released in 0.2.2 |
+| EH3D-STENCILCAM | turns the paste layers of the job into stencils kept in its branch | released in 0.1.3 |
 | EH3D-PHOENIX-PCB | the branch `pcb/` | in the repository, not yet in a release |
 | EH3D-PHOENIX-CNC, EH3D-PHOENIX-LASER | their branch, from the command line and from the File menu of the window | in the repository, not yet in a release |
 | EH3D-PHOENIX-PNP | the branch `pnp/`, from the command line | in the repository, not yet in a release |
-| EH3D-ISOCAM, EH3D-STENCILCAM, EH3D-ROUTEPRO | read the layers of the job and keep their results in their branch | in the repository, not yet in a release |
+| EH3D-ISOCAM, EH3D-ROUTEPRO | read the layers of the job and keep their results in their branch | in the repository, not yet in a release |
 | EH3D-PHOENIX-3DP, EH3D-SERVER and its clients | nothing yet | not done |
 
 The box round the board has only been tried with boards made up by tests: the board program does not write that description yet. None of the windows that handle a project has been looked at on a screen by a person.
