@@ -4,6 +4,8 @@ All notable changes to this project are documented here.
 
 ## [Unreleased]
 
+- **Each prefix of the error codes has one meaning:** `docs/ERROR_CODES.md` lists the codes of `phoenix pnp` as `PHOENIX-PCBPNP-001` to `011` (they were `PHOENIX-PNP-` up to the release 0.1.6 of the electronic design program) and `PHOENIX-PNP-` for the program EH3D-PHOENIX-PNP only.
+- **The map and the guides follow the newest releases:** the attachments of a project, their panel and viewer are released in EH3D-COMMON 0.3.4; the limits of a slice to the machine in EH3D-PHOENIX-3DP, the signed record of a release and the times after which the nodes of the pick-and-place machines go to their safe state are described; texts that still said "unreleased" about what is in a release are corrected.
 - **The map follows the releases of EH3D-ISOCAM 0.1.7, EH3D-ROUTEPRO 0.1.9 and EH3D-SERVER 0.2.5.**
 - **The workflow of the suite contract fails when the check fails:** a pipe hid the result, and a run with `SUITE_CONTRACT=FAIL` ended as success.
 - **`tools/suite_contract.py` writes its findings on a console of Windows:** with `python -I` a finding with a character outside the code page stopped it with an error.

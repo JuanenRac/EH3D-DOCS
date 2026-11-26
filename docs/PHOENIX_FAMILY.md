@@ -36,8 +36,8 @@ It holds paths and nothing else: an entry with `://`, which could carry a passwo
 
 | Piece | EH3D-COMMON | The six programs |
 |---|---|---|
-| Palette and About window | released in 0.3.2 | in their repositories, not yet in a release |
-| Accents of the window and recent projects | released in 0.3.3 | in their repositories, not yet in a release |
+| Palette and About window | released in 0.3.2 | released in EH3D-PHOENIX-PCB 0.1.7 and EH3D-PHOENIX-CAD 0.1.5; in the repositories of the other four, not yet in a release |
+| Accents of the window and recent projects | released in 0.3.3 | released in EH3D-PHOENIX-PCB 0.1.7 and EH3D-PHOENIX-CAD 0.1.5; in the repositories of the other four, not yet in a release |
 
 EH3D-PHOENIX-3DP also has the golden phoenix as its application icon, in its repository.
 

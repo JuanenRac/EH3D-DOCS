@@ -41,6 +41,10 @@ The SHA-256 that a release publishes only proves that the file arrived whole: wh
 
 Turning the signature check on is a decision about the machine, not about the software: a machine that has the file will refuse every release published before the signing step was part of the process. The packages of the server 0.1.1 and of Studio 0.1.0 and later are signed; the check has not been run on a real machine yet.
 
+### Which release it is: the signed record
+
+The signature of a package says who made it, not which program or which version it is. A release therefore also publishes its record, `eh3d-release.json`, signed with the same key: the repository, the version and every package with its size and SHA-256 ([RELEASE_KEY.md](RELEASE_KEY.md)). The helper of the server and the update of EH3D-BUNGARD-GUI demand it for every version later than the last one published without it (EH3D-SERVER 0.2.5, EH3D-STUDIO 0.2.0, EH3D-BUNGARD-GUI 0.3.0), and refuse a record that disagrees with the download; earlier releases are judged as before. This check is in their repositories and not yet in a release.
+
 ## A development PC: by git
 
 **EH3D-UPDATER** (and ELECTRO-HOBBY-3D-UPDATER above it, for the four ecosystems) is for the computers of the people who **develop** the suite: it finds the repositories next to each other in a folder, clones the ones that are missing (and the siblings they depend on, first), updates an existing checkout with git, builds and tests the new version in a staging copy before it replaces the old one, and keeps a backup. It is not how the CM5 is updated. ELECTRO-HOBBY-3D-UPDATER hands over to the latest EH3D-UPDATER and can show a preview of the install; it warns about pins that are behind.
