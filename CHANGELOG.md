@@ -6,7 +6,7 @@ All notable changes to this project are documented here.
 
 - **The workflow of the suite contract clones the repositories with their history:** with a single commit every line of a README had the same date, and the check of the translations never warned on GitHub. 1 new test.
 - **The lessons check reads only what is part of the repository:** what git ignores, and folders such as `managed_components` that a firmware build downloads, are no longer analysed, so a local check no longer fails over code the CI never sees. 2 new tests.
-- **The map follows the releases of EH3D-COMMON 0.3.6, EH3D-DRILLPRO 0.2.3, EH3D-ROUTEPRO 0.2.0, EH3D-NODE-BUNGARD 0.0.9, EH3D-NODE-BUNGARD-HMI 0.1.3, EH3D-NODE-PNP-HEAD 0.0.3 and EH3D-BUNGARD-GUI 0.3.1, whose update already demands the signed record of a release.**
+- **The map follows the releases of EH3D-COMMON 0.3.6, EH3D-DRILLPRO 0.2.3, EH3D-ROUTEPRO 0.2.0, EH3D-NODE-BUNGARD 0.0.9, EH3D-NODE-BUNGARD-HMI 0.1.3, EH3D-NODE-PNP-HEAD 0.0.3, EH3D-BUNGARD-GUI 0.3.1 (whose update already demands the signed record of a release), EH3D-PHOENIX-CNC 0.2.4, EH3D-PHOENIX-LASER 0.1.7, EH3D-PHOENIX-PNP 0.1.5, EH3D-PHOENIX-3DP 0.0.9 and EH3D-AUTOLEVEL 0.1.3.**
 - **The map, the matrix and the architecture say the languages of each program:** the Bungard window and the Bungard touch screen have the eight of the suite; the drilling and routing programs and the released general purpose touch screen still have 37.
 
 ## [0.1.4] - Guides for attachments, the slicer and the signed release record, and the map up to today
