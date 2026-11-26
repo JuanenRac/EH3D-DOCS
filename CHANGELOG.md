@@ -4,6 +4,11 @@ All notable changes to this project are documented here.
 
 ## [Unreleased]
 
+- **The map follows the releases of EH3D-ISOCAM 0.1.7, EH3D-ROUTEPRO 0.1.9 and EH3D-SERVER 0.2.5.**
+- **The workflow of the suite contract fails when the check fails:** a pipe hid the result, and a run with `SUITE_CONTRACT=FAIL` ended as success.
+- **`tools/suite_contract.py` writes its findings on a console of Windows:** with `python -I` a finding with a character outside the code page stopped it with an error.
+- **A new version of the hub moves its own row of the map of the suite:** `tools/bump_version.py` updates it and the check of the version places reports one that is behind.
+
 ## [0.1.3] - Guides for the project file and the PHOENIX family, current map and error codes
 
 - **The map and the project guide follow the release of EH3D-STENCILCAM 0.1.3,** which reads the paste layers of an `.eh3d` project.

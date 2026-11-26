@@ -6,7 +6,9 @@
 """The check that the repositories of the suite fit each other (tools/suite_contract.py)."""
 from __future__ import annotations
 
+import contextlib
 import importlib.util
+import io
 import json
 import re
 import tempfile
@@ -26,6 +28,29 @@ def make(root: Path, name: str, version: str = "0.0.1", cargo: str = "") -> Path
     if cargo:
         (repo / "Cargo.toml").write_text(cargo, encoding="utf-8")
     return repo
+
+
+class ResultTests(unittest.TestCase):
+    def test_a_finding_in_any_language_is_written_on_a_console_of_windows(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            repo = make(root, "EH3D-COMMON")
+            (repo / "eh3d.project.json").write_text(json.dumps({"name": "EH3D-\u65e5\u672c \u2192", "version": "0.0.1"}), encoding="utf-8")
+            raw = io.BytesIO()
+            console = io.TextIOWrapper(raw, encoding="cp1252")
+            with contextlib.redirect_stdout(console):
+                code = CONTRACT.main(["--workspace", str(root), "--only", "manifests"])
+            console.flush()
+            self.assertEqual(code, 1)
+            said = raw.getvalue().decode("utf-8")
+            self.assertIn("EH3D-\u65e5\u672c \u2192", said)
+            self.assertIn("SUITE_CONTRACT=FAIL", said)
+
+    def test_the_workflow_fails_when_the_check_fails(self) -> None:
+        text = (TOOLS.parent / ".github" / "workflows" / "suite-contract.yml").read_text(encoding="utf-8")
+        self.assertIn("set -o pipefail", text)
+        self.assertIn("| tee contract.txt || status=$?", text)
+        self.assertIn('exit "$status"', text)
 
 
 class SuiteContractTests(unittest.TestCase):

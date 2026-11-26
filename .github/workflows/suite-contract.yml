@@ -42,5 +42,9 @@ jobs:
           done
       - name: Run the checks
         run: |
-          python -I EH3D-DOCS/tools/suite_contract.py --workspace . | tee contract.txt
+          # the result of the check is the result of the step: the pipe to tee must not hide it, and the summary is written first
+          set -o pipefail
+          status=0
+          python -I EH3D-DOCS/tools/suite_contract.py --workspace . | tee contract.txt || status=$?
           { echo "### The repositories of the suite"; echo; echo '```'; cat contract.txt; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
+          exit "$status"

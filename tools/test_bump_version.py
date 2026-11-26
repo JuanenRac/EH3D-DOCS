@@ -55,6 +55,25 @@ class OdometerTests(unittest.TestCase):
         self.assertEqual(vp.compare("0.1.0", "0.0.9"), 1)
 
 
+class HubRowTests(unittest.TestCase):
+    ROW = "| [EH3D-DOCS](https://example.invalid/EH3D-DOCS) | Documentation | Published | {} | The hub. |\n"
+    OTHER = "| [EH3D-COMMON](https://example.invalid/EH3D-COMMON) | Library | Published | 0.0.9 | Shared. |\n"
+
+    def test_the_hub_moves_its_own_row_of_the_map_with_the_version_and_no_other(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            repo = toy.make_repo(Path(tmp), name="EH3D-DOCS")
+            toy.write(repo, "docs/SUITE_MAP.md", "# Map\n\n" + self.OTHER + self.ROW.format("0.0.9"))
+            code, out = run([str(repo), "next", "The second", "--workspace", tmp])
+            self.assertEqual(code, 0, out)
+            self.assertEqual(text(repo, "docs/SUITE_MAP.md"), "# Map\n\n" + self.OTHER + self.ROW.format("0.1.0"))
+
+    def test_a_row_of_the_hub_that_is_behind_is_found(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            repo = toy.make_repo(Path(tmp), name="EH3D-DOCS")
+            toy.write(repo, "docs/SUITE_MAP.md", self.ROW.format("0.0.8"))
+            self.assertTrue(any("docs/SUITE_MAP.md" in p for p in vp.check(vp.Repo(repo))))
+
+
 class BumpTests(unittest.TestCase):
     def test_every_place_gets_the_new_version_and_the_old_one_is_left_nowhere_but_in_the_history(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
