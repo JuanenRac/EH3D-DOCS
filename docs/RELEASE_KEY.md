@@ -27,3 +27,17 @@ The answer must be `Good "eh3d-release" signature`. Any other answer means that 
 The builds of the programs also carry an attestation of GitHub that ties each file to the workflow and the commit that built it: `gh attestation verify <package> --repo JuanenRac/<repository>`.
 
 The key is changed only with a notice in the changelog of this repository and in the release notes; an older release stays valid with the key it was signed with.
+
+## The record of a release
+
+A signature of a file does not say what the file is, and every repository is signed with this same key. So a release also publishes its record, `eh3d-release.json`, signed the same way (`eh3d-release.json.sig`):
+
+```json
+{"format": "eh3d-release", "format_version": 1, "repository": "JuanenRac/<repository>", "version": "X.Y.Z",
+ "files": [{"name": "<package>", "arch": "linux-x86_64", "size": 0, "sha256": "..."}]}
+```
+
+* Check the record like any file: `ssh-keygen -Y verify -f allowed_signers -I eh3d-release -n eh3d-release -s eh3d-release.json.sig < eh3d-release.json`.
+* Check that it names the repository and the version you wanted, and your package with its SHA-256.
+
+`tools/verify_release.py` does all these checks. A release that has a record must be checked against it. The releases published before the record existed have only the `.sig` of each file and stay valid; the tool keeps, for each repository, the last version published without a record, and for any later version a missing record is a failure.
