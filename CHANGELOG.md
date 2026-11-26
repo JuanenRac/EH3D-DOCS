@@ -8,6 +8,7 @@ All notable changes to this project are documented here.
 - **The workflow of the suite contract fails when the check fails:** a pipe hid the result, and a run with `SUITE_CONTRACT=FAIL` ended as success.
 - **`tools/suite_contract.py` writes its findings on a console of Windows:** with `python -I` a finding with a character outside the code page stopped it with an error.
 - **A new version of the hub moves its own row of the map of the suite:** `tools/bump_version.py` updates it and the check of the version places reports one that is behind.
+- **The check of a release reads its signed record and its version (security):** `tools/verify_release.py` demands `eh3d-release.json`, signed, for every version later than the last one of each repository published without it, checks that every package is listed in it and is of that repository and version, and checks with `--version`, or with the tag of the release, which version the files are. Earlier releases, which only have the `.sig` of each file, still pass. `docs/RELEASE_KEY.md`, `docs/RELEASING.md` and `docs/RELEASE_CHAIN.md` describe the record.
 
 ## [0.1.3] - Guides for the project file and the PHOENIX family, current map and error codes
 
