@@ -36,9 +36,9 @@ It holds paths and nothing else: an entry with `://`, which could carry a passwo
 
 | Piece | EH3D-COMMON | The six programs |
 |---|---|---|
-| Palette and About window | released in 0.3.2 | released in EH3D-PHOENIX-PCB 0.1.7 and EH3D-PHOENIX-CAD 0.1.5; in the repositories of the other four, not yet in a release |
-| Accents of the window and recent projects | released in 0.3.3 | released in EH3D-PHOENIX-PCB 0.1.7 and EH3D-PHOENIX-CAD 0.1.5; in the repositories of the other four, not yet in a release |
+| Palette and About window | released in 0.3.2 | released in EH3D-PHOENIX-PCB 0.1.7, EH3D-PHOENIX-CAD 0.1.5, EH3D-PHOENIX-CNC 0.2.4, EH3D-PHOENIX-LASER 0.1.7, EH3D-PHOENIX-PNP 0.1.5 and EH3D-PHOENIX-3DP 0.0.9 |
+| Accents of the window and recent projects | released in 0.3.3 | released in EH3D-PHOENIX-PCB 0.1.7, EH3D-PHOENIX-CAD 0.1.5, EH3D-PHOENIX-CNC 0.2.4, EH3D-PHOENIX-LASER 0.1.7, EH3D-PHOENIX-PNP 0.1.5 and EH3D-PHOENIX-3DP 0.0.9 |
 
-EH3D-PHOENIX-3DP also has the golden phoenix as its application icon, in its repository.
+EH3D-PHOENIX-3DP also has the golden phoenix as its application icon, since 0.0.9.
 
 The tests check the contrasts, the words and the files, and draw frames without a window. **No person has reviewed these windows on a screen yet.**

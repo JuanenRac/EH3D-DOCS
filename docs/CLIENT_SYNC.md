@@ -75,7 +75,7 @@ A node of a pick-and-place machine goes to its safe state when it stops hearing 
 | EH3D-SERVER | asks each node on a connection of its own and says `poll_too_slow` when the interval is too long for a node | released in 0.2.5 |
 | EH3D-ANDROID-CONTROL, EH3D-IOS-CONTROL | show that warning on the card of the node | released in 0.1.8 and 0.1.7 |
 | EH3D-STUDIO | shows the warnings with the time of each node | in the repository, not yet in a release |
-| EH3D-NODE-PNP-HEAD | says its `link_lost_ms` in its status and goes on listening during a long order | in the repository, not yet in a release |
+| EH3D-NODE-PNP-HEAD | says its `link_lost_ms` in its status and goes on listening during a long order | released in 0.0.3 |
 | EH3D-NODE-PNP-FEEDER | says its `server_lost_ms` in its status | in the repository, not yet in a release |
 
 Until a node says its time, the server takes the default of its contract. All of it has been tried against simulators only: **no node has firmware or has run on a board.**

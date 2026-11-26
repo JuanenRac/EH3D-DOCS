@@ -43,7 +43,7 @@ Turning the signature check on is a decision about the machine, not about the so
 
 ### Which release it is: the signed record
 
-The signature of a package says who made it, not which program or which version it is. A release therefore also publishes its record, `eh3d-release.json`, signed with the same key: the repository, the version and every package with its size and SHA-256 ([RELEASE_KEY.md](RELEASE_KEY.md)). The helper of the server and the update of EH3D-BUNGARD-GUI demand it for every version later than the last one published without it (EH3D-SERVER 0.2.5, EH3D-STUDIO 0.2.0, EH3D-BUNGARD-GUI 0.3.0), and refuse a record that disagrees with the download; earlier releases are judged as before. This check is in their repositories and not yet in a release.
+The signature of a package says who made it, not which program or which version it is. A release therefore also publishes its record, `eh3d-release.json`, signed with the same key: the repository, the version and every package with its size and SHA-256 ([RELEASE_KEY.md](RELEASE_KEY.md)). The helper of the server and the update of EH3D-BUNGARD-GUI demand it for every version later than the last one published without it (EH3D-SERVER 0.2.5, EH3D-STUDIO 0.2.0, EH3D-BUNGARD-GUI 0.3.0), and refuse a record that disagrees with the download; earlier releases are judged as before. The update of EH3D-BUNGARD-GUI has this check in its release 0.3.1; the helper of the server has it in its repository, not yet in a release.
 
 ## A development PC: by git
 

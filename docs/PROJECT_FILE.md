@@ -40,8 +40,8 @@ Before a settings file goes into a project the program asks `suiteview::sets_key
 | EH3D-DRILLPRO | plans the drill layers of the job and keeps the plans in its branch | released in 0.2.2 |
 | EH3D-STENCILCAM | turns the paste layers of the job into stencils kept in its branch | released in 0.1.3 |
 | EH3D-PHOENIX-PCB | the branch `pcb/`, with the outline of the board for EH3D-PHOENIX-CAD (`pcb/outline2d.json`) | released in 0.1.7 |
-| EH3D-PHOENIX-CNC, EH3D-PHOENIX-LASER | their branch, from the command line and from the File menu of the window | in the repository, not yet in a release |
-| EH3D-PHOENIX-PNP | the branch `pnp/`, from the command line; its window opens the project for the attachments | in the repository, not yet in a release |
+| EH3D-PHOENIX-CNC, EH3D-PHOENIX-LASER | their branch, from the command line and from the File menu of the window | released in 0.2.4 and 0.1.7 |
+| EH3D-PHOENIX-PNP | the branch `pnp/`, from the command line; its window opens the project for the attachments | released in 0.1.5 |
 | EH3D-ISOCAM, EH3D-ROUTEPRO | read the layers of the job and keep their results in their branch | released in 0.1.7 and 0.1.9 |
 | EH3D-PHOENIX-3DP, EH3D-SERVER and its clients | nothing yet | not done |
 
@@ -57,7 +57,7 @@ Any file can be attached to a project: data sheets, manuals, office documents, d
 
 **The panel.** `eh3d-attachpanel` ([`docs/ATTACHMENTS_PANEL.md`](https://github.com/JuanenRac/EH3D-COMMON/blob/main/docs/ATTACHMENTS_PANEL.md) of EH3D-COMMON) is what a window shows: the list, attaching a file or a link (also by dropping it on the panel), the links to parts, extracting and removing with a confirmation, and the viewer beside the list. A program passes it the lines of its settings that start with `attachments.` or `viewer.`; the limits come from the settings of the person, never from a file inside a project.
 
-**State:** released in EH3D-COMMON 0.3.4. EH3D-PHOENIX-CNC, EH3D-PHOENIX-LASER and EH3D-PHOENIX-PNP mount the panel in their repositories, not yet in a release.
+**State:** released in EH3D-COMMON 0.3.4. EH3D-PHOENIX-CNC mounts the panel since 0.2.4, EH3D-PHOENIX-LASER since 0.1.7 and EH3D-PHOENIX-PNP since 0.1.5.
 
 ## The viewer of attachments
 
