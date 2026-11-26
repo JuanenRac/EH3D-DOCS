@@ -33,7 +33,7 @@ The suite is a set of independent programs that share two libraries and one proj
 * **A file from outside is hostile until proven otherwise:** sizes, entry names and number formats are checked before they are used.
 * **A program does not decide that a G-code is safe to run.** Limits, interlocks and the emergency stop belong to the machine and its controller.
 * **Every repository describes itself** with an `eh3d.project.json` manifest; nothing keeps a list of projects, so a new repository appears by having a manifest.
-* **Texts exist in eight languages** wherever a repository shows text to people (README files and texts of the interfaces); the suite is moving to these eight only, and the drilling, routing and Bungard window programs still speak 37.
+* **Texts exist in eight languages** wherever a repository shows text to people (README files and texts of the interfaces); the suite is moving to these eight only, and the drilling and routing programs still speak 37.
 * **Every behaviour has a test**, including the refusals.
 * **Every option of security is a switch that can be seen** in the studio and in every client, and its default is the conservative one. When something goes wrong, a program goes towards what is safer, never towards what is looser ([DESIGN_RULES.md](DESIGN_RULES.md)).
 * **Evidence is declared.** A capability is `simulator`, `bench` or `field`; nothing is called working on hardware that has not run on hardware.
