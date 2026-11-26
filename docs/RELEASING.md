@@ -69,7 +69,7 @@ The workflow `release-binaries.yml` of every desktop program publishes each file
 1. Download the files of the release to the machine that has the private key of releases (`gh release download vX.Y.Z --repo JuanenRac/<repository>`).
 2. Sign each binary: `ssh-keygen -Y sign -f <private key of releases> -n eh3d-release <file>`. This makes `<file>.sig`.
 3. Upload the `.sig` files to the same release (`gh release upload vX.Y.Z <file>.sig`).
-4. Check them before telling anybody to download: `python tools/verify_release.py --repo <repository> --signers allowed_signers` (the signers file is the one on [RELEASE_KEY.md](RELEASE_KEY.md)), or `--all` for the twelve desktop programs. It checks every sum and every signature, and a binary without a `.sig` is a failure.
+4. Check them before telling anybody to download: `python tools/verify_release.py --repo <repository> --signers allowed_signers` (the signers file is the one on [RELEASE_KEY.md](RELEASE_KEY.md)), or `--all` for the twelve desktop programs. It checks every sum and every signature, and a binary without a `.sig` is a failure. A release also carries its record, `eh3d-release.json`, with its `.sig` ([RELEASE_KEY.md](RELEASE_KEY.md)): the signing helper writes and signs it with the other files. Publish them in the same step, never add a file to a published release without signing a new record, and use `--version` to say which version a folder of downloads has to be. The updaters and this tool refuse a later version that has no record.
 
 ## When to publish
 

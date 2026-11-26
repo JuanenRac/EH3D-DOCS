@@ -4,6 +4,8 @@ All notable changes to this project are documented here.
 
 ## [Unreleased]
 
+- **The check of a release reads its signed record and its version (security):** `tools/verify_release.py` demands `eh3d-release.json`, signed, for every version later than the last one of each repository published without it, checks that every package is listed in it and is of that repository and version, and checks with `--version`, or with the tag of the release, which version the files are. Earlier releases, which only have the `.sig` of each file, still pass. `docs/RELEASE_KEY.md`, `docs/RELEASING.md` and `docs/RELEASE_CHAIN.md` describe the record.
+
 ## [0.1.3] - Guides for the project file and the PHOENIX family, current map and error codes
 
 - **The map and the project guide follow the release of EH3D-STENCILCAM 0.1.3,** which reads the paste layers of an `.eh3d` project.
