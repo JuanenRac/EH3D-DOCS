@@ -44,7 +44,7 @@ The server can keep a list of 3D printers (Bambu Lab in LAN mode, Klipper throug
 |---|---|---|
 | EH3D-SERVER | `GET /api/v1/printers` and `/printers/:id` (contract `eh3d.printers.status/1`); an administrator changes the list of the server only | released in 0.2.4 |
 | EH3D-STUDIO | a Printers tab with health, state, temperatures, progress, layers, job and alerts | released in 0.2.0 |
-| EH3D-ANDROID-CONTROL, EH3D-IOS-CONTROL | the same list on the home page | in the repositories, not yet in a release; the iPhone screen has not been seen on a device |
+| EH3D-ANDROID-CONTROL, EH3D-IOS-CONTROL | the same list on the home page | released in 0.1.8 (Android) and 0.1.7 (iPhone); the iPhone screen has not been seen on a device |
 
 What a printer did not say is unknown, never zero. The settings, in `server.cfg`:
 
@@ -58,6 +58,26 @@ What a printer did not say is unknown, never zero. The settings, in `server.cfg`
 | `bambu_lan_enabled` | `false` | a real Bambu Lab printer on the local network also needs this |
 
 All of it has been tried against printers in memory only: **nothing has run against a real printer.**
+
+## Example: the nodes of the pick-and-place machines stay heard
+
+A node of a pick-and-place machine goes to its safe state when it stops hearing whoever commands it. The server must therefore ask it more often than the time it waits, also while the node is busy with a long order.
+
+| Time | Where it is set | Default | What happens when it passes |
+|---|---|---|---|
+| `link_lost_ms` of a head node | `head.cfg` (500 to 600000) | 2000 | no request with the token has arrived: the head goes to its safe state |
+| `server_lost_ms` of a feeder node | settings of the node (1000 to 600000) | 15000 | the server is not heard: the node stops its feeders |
+| `link_lost_ms` of a feeder | settings of the node (200 to 60000) | 3000 | the feeder does not hear its node: it stops the tape and holds a fault |
+| `pnp_node_poll_s` of the server | `server.cfg` (1 to 3600) | 1 | how often each node is asked |
+
+| Piece | What it does | State |
+|---|---|---|
+| EH3D-SERVER | asks each node on a connection of its own and says `poll_too_slow` when the interval is too long for a node | released in 0.2.5 |
+| EH3D-ANDROID-CONTROL, EH3D-IOS-CONTROL | show that warning on the card of the node | released in 0.1.8 and 0.1.7 |
+| EH3D-STUDIO | shows the warnings with the time of each node | in the repository, not yet in a release |
+| EH3D-NODE-PNP-HEAD | says its `link_lost_ms` in its status and goes on listening during a long order | in the repository, not yet in a release |
+
+Until a node says its time, the server takes the default of its contract. All of it has been tried against simulators only: **no node has firmware or has run on a board.**
 
 ## The rule for the server
 

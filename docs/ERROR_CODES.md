@@ -17,7 +17,10 @@ A refusal or a failure is told with a stable code, never with a sentence that a 
 | a lower-case word (`bad_policy`, `printers_off`...) | the refusals of EH3D-SERVER, with the HTTP status | `docs/error-codes.json` of EH3D-SERVER |
 | `PHOENIX-<AREA>-nnn` | the electronic design program, one area for each part of it; among the newest, `PHOENIX-EAGLEBIN-001` to `011` (what a binary EAGLE library gave) and `PHOENIX-KIT-001` to `008` (the starter kit) | `docs/ERROR_CODES.md` of EH3D-PHOENIX-PCB |
 | `PHOENIX-CAD-nnn` | the mechanical design program | `docs/ERROR_CODES.md` of EH3D-PHOENIX-CAD |
-| `PHOENIX-PNP-nnn` | the pick and place program; **read the code together with the program**: the command `phoenix pnp` of EH3D-PHOENIX-PCB uses the same prefix with meanings of its own | the README of EH3D-PHOENIX-PNP; `docs/ERROR_CODES.md` of EH3D-PHOENIX-PCB |
+| `PHOENIX-PNP-nnn` | the pick and place program | the README of EH3D-PHOENIX-PNP |
+| `PHOENIX-PCBPNP-001` to `PHOENIX-PCBPNP-011` | the command `phoenix pnp` of the electronic design program | `docs/ERROR_CODES.md` of EH3D-PHOENIX-PCB |
+
+Up to its release 0.1.6 the electronic design program published the codes of `phoenix pnp` with the prefix `PHOENIX-PNP-`, which belongs to the program EH3D-PHOENIX-PNP, where the same numbers mean other things. They are `PHOENIX-PCBPNP-` since 0.1.7, with the same numbers and meanings, so each prefix has one meaning; a filter or a script that looks for the old prefix has to be changed.
 
 The codes of a family that is not in a release yet are in the repository only. A program that uses a family reports its codes as they are and keeps its own family for its own failures. A new code is a change of the list and of the code in the same commit; the tests of this repository and of the repository that raises it keep both lists in agreement.
 

@@ -25,7 +25,9 @@ The older package `.eh3dproj` (the job of a machine: layers, toolpaths and visio
 | `appbranch` | what a program does with its branch: save, open, import with the original and a report, take from another branch, list, extract |
 | `manufacturing` | reading the job of a project and keeping what a program makes from it |
 | `suiteview`, `suitetext` | what a window shows and asks about a project, and its words in the eight languages |
-| `attachments`, `attachfile` | the attached files |
+| `attachments` | the attached files |
+
+Two crates beside it serve the same files: `eh3d-filekind`, the one classification of a file and of its danger, and `eh3d-attachpanel`, the panel «Attachments» of the windows.
 
 Before a settings file goes into a project the program asks `suiteview::sets_key` whether it gives a value to a credential, because a project is a file that is passed on.
 
@@ -37,23 +39,25 @@ Before a settings file goes into a project the program asks `suiteview::sets_key
 | EH3D-GERBERVIEWER | opens the job and keeps the picture in its branch | released |
 | EH3D-DRILLPRO | plans the drill layers of the job and keeps the plans in its branch | released in 0.2.2 |
 | EH3D-STENCILCAM | turns the paste layers of the job into stencils kept in its branch | released in 0.1.3 |
-| EH3D-PHOENIX-PCB | the branch `pcb/` | in the repository, not yet in a release |
+| EH3D-PHOENIX-PCB | the branch `pcb/`, with the outline of the board for EH3D-PHOENIX-CAD (`pcb/outline2d.json`) | released in 0.1.7 |
 | EH3D-PHOENIX-CNC, EH3D-PHOENIX-LASER | their branch, from the command line and from the File menu of the window | in the repository, not yet in a release |
-| EH3D-PHOENIX-PNP | the branch `pnp/`, from the command line | in the repository, not yet in a release |
-| EH3D-ISOCAM, EH3D-ROUTEPRO | read the layers of the job and keep their results in their branch | in the repository, not yet in a release |
+| EH3D-PHOENIX-PNP | the branch `pnp/`, from the command line; its window opens the project for the attachments | in the repository, not yet in a release |
+| EH3D-ISOCAM, EH3D-ROUTEPRO | read the layers of the job and keep their results in their branch | released in 0.1.7 and 0.1.9 |
 | EH3D-PHOENIX-3DP, EH3D-SERVER and its clients | nothing yet | not done |
 
-The box round the board has only been tried with boards made up by tests: the board program does not write that description yet. None of the windows that handle a project has been looked at on a screen by a person.
+The box round the board has only been tried with boards made up by tests. None of the windows that handle a project has been looked at on a screen by a person.
 
 ## Attachments
 
 Any file can be attached to a project: data sheets, manuals, office documents, drawings, video, sound or anything else. They are in the shared branch `attachments/`, stored once under the SHA-256 of their content and linked to the pieces of the design that use them (designator, value, or part number with or without manufacturer), or kept only as a link with its address and hash.
 
-* Programs, scripts, documents with macros, compressed archives and pages that can run code are accepted, marked as dangerous and taken out only when a person agrees. Nothing is run, opened or downloaded by itself, and no name from outside becomes a path.
+* Programs, scripts, documents with macros, compressed archives and pages that can run code are accepted, marked as dangerous and taken out only when a person agrees; a kind the suite does not know asks for the same agreement. Nothing is run, opened or downloaded by itself, and no name from outside becomes a path.
 * One attachment may be up to 1 GiB (setting `attachments.max_mb`, 1 to 4096, 1024 by default) and the whole project stays under 4 GiB. A large file is stored in parts, so a program that knows nothing of attachments still opens the project and keeps them.
 * From the command line: `eh3d-project attach`, `attach-link`, `attachments`, `extract-attachment`, `attachment-links` and `detach`.
 
-**State:** in the repository of EH3D-COMMON and not yet in a release. No window of a program shows attachments yet.
+**The panel.** `eh3d-attachpanel` ([`docs/ATTACHMENTS_PANEL.md`](https://github.com/JuanenRac/EH3D-COMMON/blob/main/docs/ATTACHMENTS_PANEL.md) of EH3D-COMMON) is what a window shows: the list, attaching a file or a link (also by dropping it on the panel), the links to parts, extracting and removing with a confirmation, and the viewer beside the list. A program passes it the lines of its settings that start with `attachments.` or `viewer.`; the limits come from the settings of the person, never from a file inside a project.
+
+**State:** released in EH3D-COMMON 0.3.4. EH3D-PHOENIX-CNC, EH3D-PHOENIX-LASER and EH3D-PHOENIX-PNP mount the panel in their repositories, not yet in a release.
 
 ## The viewer of attachments
 
@@ -67,7 +71,7 @@ The crate `eh3d-viewer` ([`docs/VIEWER.md`](https://github.com/JuanenRac/EH3D-CO
 | `viewer.max_text_mb` | 2 | bytes of a text file shown; the rest is cut |
 | `viewer.max_office_mb` | 128 | largest office document previewed |
 
-**State:** in the repository of EH3D-COMMON and not yet in a release. No program uses it yet, so no person has used the panel. PDFium reads the document inside the process of the program, not in a separate sandbox.
+**State:** released in EH3D-COMMON 0.3.4 and reached through the panel of attachments. No person has used it on a screen. PDFium reads the document inside the process of the program, not in a separate sandbox.
 
 ## Security
 

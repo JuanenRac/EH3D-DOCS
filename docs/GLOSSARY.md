@@ -13,6 +13,7 @@ The names as they are today, one line each. A repository is always called by the
 | `.eh3dproj` | The package of a job: a ZIP archive with a manifest, an integrity record and the layers and toolpaths. |
 | `.eh3d` | The project of the suite: one file with a branch for each program, attachments and optional signatures ([PROJECT_FILE.md](PROJECT_FILE.md)). |
 | `eh3d-project`, `eh3d-viewer` | The crate of the `.eh3d` project, and the viewer of its attachments. |
+| `eh3d-filekind`, `eh3d-attachpanel` | The one classification of a file and of its danger, and the panel «Attachments» of the windows. |
 | `eh3d-printers` | The catalog of 3D printers, with the page of the maker behind every claim. |
 | Manifest | `eh3d.project.json`, the file with which a repository describes itself; nothing keeps a list of repositories. |
 | Contract of the settings | The document of the server that lists every setting and switch with its texts ([CLIENT_SYNC.md](CLIENT_SYNC.md)). |
