@@ -1,6 +1,6 @@
-# Registry of container codes: `EH3D-PKG-001` to `EH3D-PKG-024`
+# Registry of container codes: `EH3D-PKG-001` to `EH3D-PKG-026`
 
-These are the stable codes that the shared project container (the `eh3d-container` crate of EH3D-COMMON) and the `.eh3d` project container with branches (the `eh3d-project` crate) report when they refuse a package or fail to write one. Codes 001 to 014 are those of the container; 015 to 024 are those of the project with branches. A code never changes its meaning and is never reused; a new reason gets a new number. Programs show the text through the translation key `diag.<code>` and fill in the entry name; the codes themselves are never translated.
+These are the stable codes that the shared project container (the `eh3d-container` crate of EH3D-COMMON) and the `.eh3d` project container with branches (the `eh3d-project` crate) report when they refuse a package or fail to write one. Codes 001 to 014 are those of the container; 015 to 026 are those of the project with branches. A code never changes its meaning and is never reused; a new reason gets a new number. Programs show the text through the translation key `diag.<code>` and fill in the entry name; the codes themselves are never translated.
 
 The rules in the table are the **strict policy** that applies to new formats (`.phoenixproj`, `.eh3dproj` 1.1.0). The `.eh3dproj` 1.0.0 preset keeps the behaviour of its readers and writers: names by the old rule, exact duplicates only, and flags and data after the archive not examined.
 
@@ -30,6 +30,8 @@ The rules in the table are the **strict policy** that applies to new formats (`.
 | EH3D-PKG-022 | Signature required but missing or its key unknown | A signature was required and there is none, no verifier was given, or the key or algorithm is not known. | project reader |
 | EH3D-PKG-023 | Branch encrypted and its key not available | A branch is stored encrypted and cannot be read without its key; it is kept and can be extracted as it is. | project reader |
 | EH3D-PKG-024 | Branch format version newer than supported | The format of a branch is newer than the program that opens it supports. Only that branch is affected. | project reader |
+| EH3D-PKG-025 | File changed on disk since it was read | Another program saved the project, or took it away, after it was read: nothing is written over it. The program offers to read it again or to save under another name. | project writer |
+| EH3D-PKG-026 | Signature there already and its replacement not agreed | Signing would put another signature over one that is there and nobody agreed to replace it. | project writer |
 
 ## Notes
 

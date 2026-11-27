@@ -16,7 +16,7 @@ The older package `.eh3dproj` (the job of a machine: layers, toolpaths and visio
 
 * A program writes only its own branch. A branch it does not know is kept byte for byte.
 * A branch built from another one records the content hash its source had. When the source changes, the derived branch is **out of date**: a warning (`EH3D-PKG-019`), never an error, and no program rewrites the branch of another.
-* The codes of a refusal are `EH3D-PKG-001` to `EH3D-PKG-024` ([registry](../registry/EH3D-PKG.md)).
+* The codes of a refusal are `EH3D-PKG-001` to `EH3D-PKG-026` ([registry](../registry/EH3D-PKG.md)).
 
 ## The modules every program shares
 
