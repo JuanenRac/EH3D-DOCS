@@ -6,7 +6,7 @@ A refusal or a failure is told with a stable code, never with a sentence that a 
 
 | Family | Where it is raised | Where it is listed |
 |---|---|---|
-| `EH3D-PKG-nnn` | the project containers: `001` to `014` the container itself (a `.eh3dproj` or `.eh3d` that is refused or cannot be written), `015` to `024` the branches of an `.eh3d` project (`019` is the only warning) | `registry/EH3D-PKG.md` of this repository |
+| `EH3D-PKG-nnn` | the project containers: `001` to `014` the container itself (a `.eh3dproj` or `.eh3d` that is refused or cannot be written), `015` to `026` the branches of an `.eh3d` project (`019` is the only warning; `025` and `026` refuse a write that would lose what another program saved or a signature) | `registry/EH3D-PKG.md` of this repository |
 | `EH3D-ID-nnn` | the identity of an object (an id that cannot be read or made) | `registry/EH3D-ID.md` of this repository |
 | `EH3D-MAT-nnn` | the database of materials: `001` to `009` board materials, `010` to `015` machining materials | `docs/MATERIALS.md` and `docs/MACHINING.md` of EH3D-COMMON |
 | `EH3D-PMAT-nnn` | the database of filaments and resins | `crates/printmaterials/README.md` of EH3D-COMMON |
