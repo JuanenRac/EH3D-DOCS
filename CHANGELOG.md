@@ -4,6 +4,8 @@ All notable changes to this project are documented here.
 
 ## [Unreleased]
 
+- **The map and the documents follow the newest releases:** the Release column of the suite map is brought up to date, the drilling and routing programs and the touch screens are said to speak the eight languages of the suite, and the map, the architecture and the capability matrix say the new questions of a job that goes on after a stop and that a drill file has to declare its number format; the READMEs say when the suite contract fails.
+
 ## [0.1.5] - Container codes up to 026, a checker of lessons limited to the repository and the map up to today
 
 - **The registry of the container codes goes to 026:** `EH3D-PKG-025` (the file changed on disk since it was read, so nothing was written over it) and `EH3D-PKG-026` (a signature is there already and replacing it was not agreed).

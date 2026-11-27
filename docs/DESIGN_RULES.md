@@ -34,7 +34,7 @@ These are the decisions that every repository follows. They are written here onc
 
 ## Languages and text
 
-* **The documents and the text that people read exist in eight languages:** English, Spanish, German, French, Italian, Japanese, Chinese and European Portuguese (`ficheiro`, `atualizar`, `ecrã`, `telemóvel`). The drilling and routing programs go further, to 37, and so does the released general purpose touch screen.
+* **The documents and the text that people read exist in eight languages:** English, Spanish, German, French, Italian, Japanese, Chinese and European Portuguese (`ficheiro`, `atualizar`, `ecrã`, `telemóvel`).
 * **A text is never improvised for a language;** a code with a text in seven languages is a build error, and a new key goes to every language file in the same change.
 * **French, German and Portuguese texts of the catalogues are formal** (vous, Sie, the third person in Portuguese).
 
